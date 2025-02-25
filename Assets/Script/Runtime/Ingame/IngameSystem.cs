@@ -19,6 +19,12 @@ public class IngameSystem : MonoBehaviour
             Debug.LogWarning("対象のインスタンスがありません");
         }
         
+        //前のインスタンスを破壊
+        if (instance != _cucumber)
+        {
+            Destroy(_cucumber);
+        }
+        
         _cucumber = instance;
     }
 
