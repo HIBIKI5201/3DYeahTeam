@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using UnityEngine;
 
 namespace SymphonyFrameWork.System
@@ -40,7 +41,7 @@ namespace SymphonyFrameWork.System
         public static void Save()
         {
             _saveData = new SaveData(Data);
-            var data = JsonUtility.ToJson(_saveData);
+            var data = JsonConvert.SerializeObject(_saveData);
             Debug.Log($"{_saveData.SaveDate}\n{data}");
             PlayerPrefs.SetString(typeof(DataType).Name, data);
         }
@@ -61,7 +62,7 @@ namespace SymphonyFrameWork.System
 
             #region JSONに変換して保存
 
-            var data = JsonUtility.FromJson<SaveData>(json);
+            var data = JsonConvert.DeserializeObject<SaveData>(json);
             if (data is not null)
             {
                 Debug.Log($"{typeof(DataType).Name}のデータがロードされました\n{data}");
