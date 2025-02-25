@@ -19,9 +19,9 @@ public class CutterMoveController : MonoBehaviour
 
     private Vector3 _cuttingObjectPosition;
     private bool _movingRight = true;
-    // 針の位置が更新されるたびに通知
-    public event Action<float> _OnCuttingData;
-
+    private int _cutCount;
+    private float _distance1;
+    private float _distance2;
     private void Update()
     {
         MoveGauge();
@@ -45,15 +45,25 @@ public class CutterMoveController : MonoBehaviour
 
                 // 右側のオブジェクトを少し移動
                 rightSide.transform.position += rightSide.transform.up * 0.5f;
-
-                Debug.Log($"差{Mathf.Abs(_currentPosition - _bestTiming1)}");
-               // var s = ServiceLocator.GetInstance<>();
+                _cutCount++;
+                if (_cutCount >= 2)
+                {
+                    SendIngameSystem();
+                }
             }
             else
             {
                 Debug.LogError("オブジェクトの切断に失敗しました。");
             }
         }
+    }
+
+    private void SendIngameSystem()
+    {
+        var _distance1 = Mathf.Abs(_currentPosition - _bestTiming1);
+        var _distance2 = Mathf.Abs(_currentPosition - _bestTiming2);
+        var inGameSystem = ServiceLocator.GetInstance<IngameSystem>();
+        inGameSystem.CucumberData.Phase1Data = _distance1 + _distance2; //差分の合計値を一旦入れとく
     }
 
     /// <summary>
