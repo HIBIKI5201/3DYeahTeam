@@ -7,7 +7,7 @@ using UnityEngine.ProBuilder.MeshOperations;
 
 public class TrajectionMovement : MonoBehaviour
 {
-    [SerializeField]List<float> checkSpeed = new List<float>();
+    [SerializeField , Tooltip("小さい順に評価値を入れて")]float[] checkSpeed = new float[7] {0f,10f,20f,30f,40f,50f,60f};
     List<float> caluculateSpeed = new List<float>();
     IngameSystem ingameSystem;
     ShellWork shellwork;
@@ -24,7 +24,7 @@ public class TrajectionMovement : MonoBehaviour
     void CheckPow(float Phase1Data, float Phase2Data, float Phase3Data)
     {
         var resultPow= Phase1Data + Phase2Data + Phase3Data;
-        for (int i = checkSpeed.Count-1; i  >= 0  ; i--)
+        for (int i = checkSpeed.Length-1; i  >= 0  ; i--)
         {
             if (checkSpeed[i] >= resultPow)
             {
