@@ -47,12 +47,7 @@ public class IngameSystem : MonoBehaviour
         
         _cucumber = instance;
     }
-
-    public void SetCucumberData(CucumberData cucumberData)
-    {
-        _cucumberData = cucumberData;
-    }
-
+    
     /// <summary>
     /// 次のフェーズに遷移する
     /// </summary>
