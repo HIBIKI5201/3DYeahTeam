@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using SymphonyFrameWork.System;
+using UnityEngine;
 
 public class ChargeManager : MonoBehaviour
 {
@@ -19,6 +20,8 @@ public class ChargeManager : MonoBehaviour
     [SerializeField]
     private float _countLimit = 50;
 
+    private bool _chageFinish = false;
+
     private void Start()
     {
         _timer = Time.time;
@@ -26,9 +29,17 @@ public class ChargeManager : MonoBehaviour
 
     private void Update()
     {
-        if (Time.time < _timeLimit + _timer)
+        if (Time.time < _timer + _timeLimit)
         {
             ChargeAction();
+        }
+        else if (!_chageFinish)
+        {
+            _chageFinish = true;
+
+            IngameSystem system = ServiceLocator.GetInstance<IngameSystem>();
+            system.CucumberData.Phase3Data = _pushCounter;//一旦そのままデータを代入しているが、後々スコアにするために計算すると思う
+            system.NextPhaseEvent();
         }
     }
 
@@ -37,17 +48,20 @@ public class ChargeManager : MonoBehaviour
     /// </summary>
     private void ChargeAction()
     {
-        //時間経過でカウントが減っていく処理
-        if (_pushCounter > 0)
+        if (!_chageFinish)
         {
-            _pushCounter -= _waitForSecondsDown;
-        }
+            //時間経過でカウントが減っていく処理
+            if (_pushCounter > 0)
+            {
+                _pushCounter -= _waitForSecondsDown;
+            }
 
-        //キー入力でカウントに加算する処理
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            _pushCounter += _pushUp;
-            Debug.Log($"現在値は　{_pushCounter}");
+            //キー入力でカウントに加算する処理
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                _pushCounter += _pushUp;
+                Debug.Log($"現在値は　{_pushCounter}");
+            }
         }
     }
 }
