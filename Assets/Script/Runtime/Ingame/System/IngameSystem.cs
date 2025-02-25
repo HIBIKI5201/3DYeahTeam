@@ -51,7 +51,6 @@ public class IngameSystem : MonoBehaviour
     /// <summary>
     /// 次のフェーズに遷移する
     /// </summary>
-    /// <param name="phase"></param>
     [ContextMenu("NextPhase")]
     public async void NextPhaseEvent()
     {
