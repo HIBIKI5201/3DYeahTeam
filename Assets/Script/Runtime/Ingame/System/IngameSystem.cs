@@ -11,6 +11,7 @@ public class IngameSystem : MonoBehaviour
     private Task _loadTask = Task.CompletedTask;
     
     private GameObject _cucumber;
+    public GameObject Cucumber { get => _cucumber; }
     
     private CucumberData _cucumberData;
     public CucumberData CucumberData { get => _cucumberData; }
