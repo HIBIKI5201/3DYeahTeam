@@ -12,10 +12,6 @@ public class IngameUI : MonoBehaviour
     private void Awake()
     {
         _uiDocument = GetComponent<UIDocument>();
-    }
-
-    private void Start()
-    {
         _blackScreen = _uiDocument.rootVisualElement.Q<VisualElement>("black-screen");
     }
     
