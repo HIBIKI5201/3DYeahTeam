@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 using System.Threading.Tasks;
 using SymphonyFrameWork.System;
@@ -36,8 +36,14 @@ public class MainSystem : MonoBehaviour
             _nowScene ==  SceneListEnum.IngamePhase_2 ||
             _nowScene == SceneListEnum.IngamePhase_3)
         {
-            _ = SceneLoader.LoadScene(SceneListEnum.Ingame.ToString());
-            SceneLoader.SetActiveScene(SceneListEnum.Ingame.ToString());
+            LoadIngameScene();
+
+            //インゲームを非同期でロード
+            async void LoadIngameScene()
+            {
+                await SceneLoader.LoadScene(SceneListEnum.Ingame.ToString());
+                SceneLoader.SetActiveScene(SceneListEnum.Ingame.ToString());
+            }
         }
         #endif
     }
