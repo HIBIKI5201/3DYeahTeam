@@ -13,7 +13,7 @@ public class IngameSystem : MonoBehaviour
     private GameObject _cucumber;
     public GameObject Cucumber { get => _cucumber; }
     
-    private CucumberData _cucumberData;
+    private CucumberData _cucumberData = new();
     public CucumberData CucumberData { get => _cucumberData; }
     
     private void Awake()
