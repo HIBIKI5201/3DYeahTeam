@@ -11,11 +11,19 @@ public class TrajectionMovement : MonoBehaviour
     List<float> caluculateSpeed = new List<float>();
     IngameSystem ingameSystem;
     ShellWork shellwork;
+    GameObject effect;
+    ParticleSystem jetEffect;
 
     private void Start()
     {
+        Camera camera = Camera.main;
         ingameSystem = ServiceLocator.GetInstance<IngameSystem>();
         shellwork = GetComponent<ShellWork>();
+        shellwork.hitWithPlanet += SetHitStop;
+        camera.transform.parent = ingameSystem.Cucumber.transform;
+        effect.transform.parent = ingameSystem.Cucumber.transform;
+        jetEffect = effect.GetComponent<ParticleSystem>();
+
         for (int i = 0; i < shellwork.Planets.Length; i++)
         {
             caluculateSpeed.Add( shellwork.Planets[i].transform.position.z / 10 );
@@ -35,17 +43,43 @@ public class TrajectionMovement : MonoBehaviour
         }
     }
 
+    void SetHitStop(int index)
+    {
+        hitStopTimeRemaining = hitStopDuration;
+        hittingPlanetIndex = index;
+    }
     void TranjectCucumber(int index)
     {
         resultSpeed = caluculateSpeed[index];
-        
+        finalPlanteIndex = index;
         tranjected = true;
+        jetEffect.Play();
+        slidingTimer = coastTime;
     }
+
+    int hittingPlanetIndex;
+    int finalPlanteIndex;
+    float hitStopTimeRemaining = 0;
+    [SerializeField] float hitStopDuration = 0.5f;
+    [SerializeField] float coastTime = 3f;
+    float slidingTimer;
     float resultSpeed;
     bool tranjected;
     private void Update()
     {
-        if(tranjected)
+        if (hitStopTimeRemaining > 0f)
+        {
+            hitStopTimeRemaining -= Time.unscaledDeltaTime;
+            return;
+        }
+        if(hittingPlanetIndex == finalPlanteIndex)
+        {
+            slidingTimer -= Time.unscaledDeltaTime;
+            if (coastTime > 0f) ingameSystem.Cucumber.transform.Translate(transform.forward * Time.deltaTime * coastTime);
+            if (jetEffect.isPlaying) jetEffect.Stop(); 
+            return;
+        }
+        if (tranjected)
         ingameSystem.Cucumber.transform.Translate(transform.forward * Time.deltaTime * resultSpeed);
     }
 

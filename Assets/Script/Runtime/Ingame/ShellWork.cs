@@ -24,9 +24,11 @@ public class ShellWork : MonoBehaviour
             SetCrashing((int)crashedPlanet);
         }
     }
+    public Action<int> hitWithPlanet;
     void SetCrashing(int index)
     {
         animator.SetInteger("crashed", index);
+        hitWithPlanet?.Invoke(index);
     }
     private void OnTriggerEnter(Collider other)
     {
