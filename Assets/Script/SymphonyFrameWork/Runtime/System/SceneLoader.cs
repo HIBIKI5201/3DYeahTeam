@@ -57,8 +57,12 @@ namespace SymphonyFrameWork.System
                 SceneManager.SetActiveScene(scene);
                 return true;
             }
+            else
+            {
+                Debug.Log($"{sceneName}をActiveSceneにできませんでした");
+            }
 
-            return false;
+                return false;
         }
 
         /// <summary>
@@ -115,6 +119,7 @@ namespace SymphonyFrameWork.System
             var operation = SceneManager.UnloadSceneAsync(sceneName);
             if (operation == null)
             {
+                Debug.Log($"{sceneName}のアンロードを開始できませんでした");
                 return false;
             }
 
