@@ -1,9 +1,10 @@
 ﻿using System;
 using UnityEngine;
 
-public class shellWork : MonoBehaviour
+public class ShellWork : MonoBehaviour
 {
     GameObject[] planets;
+    public GameObject[] Planets{ get => planets; }
     Animator animator;
     void Start()
     {
