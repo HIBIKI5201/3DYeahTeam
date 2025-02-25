@@ -1,7 +1,7 @@
-﻿using System;
-using UnityEngine;
+﻿using SymphonyFrameWork.System;
+using System;
 using System.Threading.Tasks;
-using SymphonyFrameWork.System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MainSystem : MonoBehaviour
@@ -12,18 +12,18 @@ public class MainSystem : MonoBehaviour
 
     private SceneListEnum _nowScene;
     public SceneListEnum NowScene { get => _nowScene; }
-    
-    #if UNITY_EDITOR
+
+#if UNITY_EDITOR
     [SerializeField] private SceneListEnum _targetScene;
-    
+
     [ContextMenu("SceneChange")]
     private void DebugSceneChange() => SceneChange(_targetScene);
-    #endif
+#endif
     private void Awake()
     {
         _mainUI = GetComponent<MainUI>();
-        Debug.Log($"ランキングデータを確認\n{string.Join(" ", SaveDataSystem<RankingData>.Data.Datas)}");
-        
+        Debug.Log($"ランキングデータを確認\n{string.Join("\n", SaveDataSystem<RankingData>.Data.Datas)}");
+
         //現在のシーンを保存する
         Scene scene = SceneManager.GetActiveScene();
         if (!Enum.TryParse(scene.name, out _nowScene))
@@ -31,10 +31,10 @@ public class MainSystem : MonoBehaviour
             Debug.LogWarning($"Scene '{scene.name}' is not a valid scene.");
         }
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         //インゲームのフェーズから始めた場合の処理
         if (_nowScene == SceneListEnum.IngamePhase_1 ||
-            _nowScene ==  SceneListEnum.IngamePhase_2 ||
+            _nowScene == SceneListEnum.IngamePhase_2 ||
             _nowScene == SceneListEnum.IngamePhase_3)
         {
             LoadIngameScene();
@@ -46,7 +46,7 @@ public class MainSystem : MonoBehaviour
                 SceneLoader.SetActiveScene(SceneListEnum.Ingame.ToString());
             }
         }
-        #endif
+#endif
     }
 
     public async void SceneChange(SceneListEnum scene)
@@ -76,4 +76,14 @@ public class MainSystem : MonoBehaviour
             await _mainUI.FadeIn(1f);
         }
     }
+
+#if UNITY_EDITOR
+    [ContextMenu("ランキングをリセット")]
+    private void RankingReset()
+    {
+        SaveDataSystem<RankingData>.Data.Datas.Clear();
+        SaveDataSystem<RankingData>.Save();
+        Debug.Log($"{SaveDataSystem<RankingData>.Data.Datas.ToString()}をリセットしました");
+    }
+#endif
 }
