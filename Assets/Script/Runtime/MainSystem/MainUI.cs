@@ -1,9 +1,8 @@
-using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Threading.Tasks;
 
-public class IngameUI : MonoBehaviour
+public class MainUI : MonoBehaviour
 {
     private UIDocument _uiDocument;
     

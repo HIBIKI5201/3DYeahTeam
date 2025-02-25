@@ -18,8 +18,14 @@ public class IngameSystem : MonoBehaviour
     private void Awake()
     {
         _nowPhase = PhaseKind.Phase1;
-
+        
         _ingameUi = GetComponent<IngameUI>();
+    }
+
+    private void Start()
+    {
+        var scene = GetSceneEnumByPhaseKind(_nowPhase);
+        _ = SceneLoader.LoadScene(scene.ToString());
     }
 
     /// <summary>
@@ -41,28 +47,33 @@ public class IngameSystem : MonoBehaviour
         
         _cucumber = instance;
     }
-
-    public void SetCucumberData(CucumberData cucumberData)
-    {
-        _cucumberData = cucumberData;
-    }
-
+    
     /// <summary>
     /// 次のフェーズに遷移する
     /// </summary>
-    /// <param name="phase"></param>
     [ContextMenu("NextPhase")]
     public async void NextPhaseEvent()
     {
         if (!_loadTask.IsCompleted)
         {
             Debug.LogWarning("既にロードが開始されています");
+            return;
         }
 
-        _loadTask = Task.Run(async () =>
+        if (_nowPhase >= PhaseKind.Result)
+        {
+            Debug.LogWarning("リザルトの次のシーンはありません");
+            return;
+        }
+
+        _loadTask = LoadScene();
+        
+        await _loadTask;
+
+        async Task LoadScene()
         {
             await _ingameUi.FadeOut(0.5f);
-            
+
             // 今のシーンをアンロード
             SceneListEnum scene = GetSceneEnumByPhaseKind(_nowPhase);
             await SceneLoader.UnloadScene(scene.ToString());
@@ -71,12 +82,9 @@ public class IngameSystem : MonoBehaviour
             _nowPhase++;
             scene = GetSceneEnumByPhaseKind(_nowPhase);
             await SceneLoader.LoadScene(scene.ToString());
-            
-            await _ingameUi.FadeIn(0.5f);
-        });
-        
-        await _loadTask;
 
+            await _ingameUi.FadeIn(0.5f);
+        }
     }
 
     private SceneListEnum GetSceneEnumByPhaseKind(PhaseKind kind)
