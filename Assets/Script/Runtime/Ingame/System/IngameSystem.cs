@@ -51,6 +51,7 @@ public class IngameSystem : MonoBehaviour
     /// 次のフェーズに遷移する
     /// </summary>
     /// <param name="phase"></param>
+    [ContextMenu("NextPhase")]
     public async void NextPhaseEvent()
     {
         if (!_loadTask.IsCompleted)
@@ -60,6 +61,8 @@ public class IngameSystem : MonoBehaviour
 
         _loadTask = Task.Run(async () =>
         {
+            await _ingameUi.FadeOut(0.5f);
+            
             // 今のシーンをアンロード
             SceneListEnum scene = GetSceneEnumByPhaseKind(_nowPhase);
             await SceneLoader.UnloadScene(scene.ToString());
@@ -68,6 +71,8 @@ public class IngameSystem : MonoBehaviour
             _nowPhase++;
             scene = GetSceneEnumByPhaseKind(_nowPhase);
             await SceneLoader.LoadScene(scene.ToString());
+            
+            await _ingameUi.FadeIn(0.5f);
         });
         
         await _loadTask;

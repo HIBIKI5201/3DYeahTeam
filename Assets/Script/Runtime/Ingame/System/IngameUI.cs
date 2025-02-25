@@ -19,7 +19,7 @@ public class IngameUI : MonoBehaviour
         _blackScreen = _uiDocument.rootVisualElement.Q<VisualElement>("black-screen");
     }
     
-    private async Task FadeIn(float timer)
+    public async Task FadeIn(float timer)
     {
         float speed = 1 / timer; //透明度の秒間変化スピード
         
@@ -36,7 +36,7 @@ public class IngameUI : MonoBehaviour
         _blackScreen.style.opacity = 0;
     }
     
-    private async Task FadeOut(float timer)
+   public async Task FadeOut(float timer)
     {
         float speed = 1 / timer; //透明度の秒間変化スピード
         
