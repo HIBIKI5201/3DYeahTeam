@@ -1,10 +1,14 @@
 using System;
+using System.Threading.Tasks;
 using SymphonyFrameWork.System;
 using UnityEngine;
 
 public class IngameSystem : MonoBehaviour
 {
+    private IngameUI _ingameUi;
+    
     private PhaseKind _nowPhase = 0;
+    private Task _loadTask = Task.CompletedTask;
     
     private GameObject _cucumber;
     
@@ -14,6 +18,8 @@ public class IngameSystem : MonoBehaviour
     private void Awake()
     {
         _nowPhase = PhaseKind.Phase1;
+
+        _ingameUi = GetComponent<IngameUI>();
     }
 
     /// <summary>
@@ -45,16 +51,27 @@ public class IngameSystem : MonoBehaviour
     /// 次のフェーズに遷移する
     /// </summary>
     /// <param name="phase"></param>
-    public void NextPhaseEvent()
+    public async void NextPhaseEvent()
     {
-        //今のシーンをアンロード
-        SceneListEnum scene = GetSceneEnumByPhaseKind(_nowPhase);
-        _ = SceneLoader.UnloadScene(scene.ToString());
+        if (!_loadTask.IsCompleted)
+        {
+            Debug.LogWarning("既にロードが開始されています");
+        }
+
+        _loadTask = Task.Run(async () =>
+        {
+            // 今のシーンをアンロード
+            SceneListEnum scene = GetSceneEnumByPhaseKind(_nowPhase);
+            await SceneLoader.UnloadScene(scene.ToString());
+
+            // 次のシーンをロードする
+            _nowPhase++;
+            scene = GetSceneEnumByPhaseKind(_nowPhase);
+            await SceneLoader.LoadScene(scene.ToString());
+        });
         
-        //次のシーンをロードする
-        _nowPhase++;
-        scene = GetSceneEnumByPhaseKind(_nowPhase);
-        _ = SceneLoader.LoadScene(scene.ToString());
+        await _loadTask;
+
     }
 
     private SceneListEnum GetSceneEnumByPhaseKind(PhaseKind kind)
