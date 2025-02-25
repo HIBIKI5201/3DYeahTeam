@@ -1,16 +1,19 @@
 using UnityEngine;
+using UnityEngine.UIElements;
+using System.Threading.Tasks;
 
 public class MainUI : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    private UIDocument _uiDocument;
+    
+    private VisualElement _blackScreen;
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        
+        _uiDocument = GetComponent<UIDocument>();
+        _blackScreen = _uiDocument.rootVisualElement.Q<VisualElement>("black-screen");
     }
+    
+    public async Task FadeIn(float timer) => await UI_Utility.FadeIn(_blackScreen, timer);
+    public async Task FadeOut(float timer) => await UI_Utility.FadeOut(_blackScreen, timer);
 }
