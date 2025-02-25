@@ -2,14 +2,22 @@
 
 public class ChargeManager : MonoBehaviour
 {
-    //チャージ機能を作る
-    //時間制限があり、そのなかでボタンを押された回数を保存しておく
     private float _pushCounter;
-    public float PushCounter { get => _pushCounter; }
     private float _timer;
 
     [SerializeField]
-    private float _timLimit;
+    private float _pushUp = 3;
+    [SerializeField]
+    private float _waitForSecondsDown = 0.1f;
+
+    [Space(10)]
+    [SerializeField]
+    private float _timeLimit = 5;
+
+    [Space(10)]
+    [Tooltip("UI上での上限、PushCountは全然上限を超える")]
+    [SerializeField]
+    private float _countLimit = 50;
 
     private void Start()
     {
@@ -18,17 +26,27 @@ public class ChargeManager : MonoBehaviour
 
     private void Update()
     {
-        if (Time.time < _timLimit + _timer)
+        if (Time.time < _timeLimit + _timer)
         {
             ChargeAction();
         }
     }
 
+    /// <summary>
+    /// カウントアップとカウントダウンを行うスクリプト
+    /// </summary>
     private void ChargeAction()
     {
+        //時間経過でカウントが減っていく処理
+        if (_pushCounter > 0)
+        {
+            _pushCounter -= _waitForSecondsDown;
+        }
+
+        //キー入力でカウントに加算する処理
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            _pushCounter++;
+            _pushCounter += _pushUp;
             Debug.Log($"現在値は　{_pushCounter}");
         }
     }
