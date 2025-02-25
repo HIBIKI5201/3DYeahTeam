@@ -8,6 +8,6 @@ public class TitleRankingWindow : SymphonyVisualElement
     public TitleRankingWindow() : base("") { }
     protected override Task Initialize_S(TemplateContainer container)
     {
-
+        return Task.CompletedTask;
     }
 }
