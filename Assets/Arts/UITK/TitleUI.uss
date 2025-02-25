@@ -8,12 +8,27 @@
     border-right-color: rgba(0, 0, 0, 0);
     border-top-color: rgba(0, 0, 0, 0);
     border-bottom-color: rgba(0, 0, 0, 0);
+    justify-content: flex-end;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-out;
 }
 
 .button:hover {
     scale: 1.1 1.1;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in;
 }
 
-.font {
-    -unity-font-definition: url("project://database/Assets/AssetStoreTools/Font/851CHIKARA-YOWAKU_002.ttf?fileID=12800000&guid=595748de8db42994daa8c4921bcf1d83&type=3#851CHIKARA-YOWAKU_002");
+.back {
+    background-color: rgba(0, 145, 255, 0.41);
+    height: 5%;
+    width: 0;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-in-out;
+}
+
+.button:hover .back {
+    width: 100%;
+    transition-timing-function: ease-out;
+    transition-duration: 0.2s;
 }
