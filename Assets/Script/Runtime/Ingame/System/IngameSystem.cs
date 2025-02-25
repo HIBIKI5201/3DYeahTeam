@@ -28,6 +28,12 @@ public class IngameSystem : MonoBehaviour
         _ = SceneLoader.LoadScene(scene.ToString());
     }
 
+    private void OnDestroy()
+    {
+        SceneListEnum scene = GetSceneEnumByPhaseKind(_nowPhase);
+        _ = SceneLoader.UnloadScene(scene.ToString());
+    }
+
     /// <summary>
     /// キュウリをインゲームシーンに保存する
     /// </summary>
