@@ -52,7 +52,7 @@ namespace SymphonyFrameWork.System
             var json = PlayerPrefs.GetString(typeof(DataType).Name);
             if (string.IsNullOrEmpty(json))
             {
-                Debug.LogWarning($"{typeof(DataType).Name}のデータが見つかりませんでした");
+                Debug.Log($"{typeof(DataType).Name}のデータが見つからないので生成しました");
                 _saveData = new SaveData(new DataType());
                 return;
             }
