@@ -1,4 +1,4 @@
-using ChargeShot.Runtime.Ingame;
+﻿using ChargeShot.Runtime.Ingame;
 using UnityEngine;
 
 public class MeshCutSample : MonoBehaviour
@@ -15,7 +15,6 @@ public class MeshCutSample : MonoBehaviour
         // オブジェクトを切断
         var pieces = MeshCutService.Cut(_targetObject, _cuttingPlane.transform.position, _cuttingPlane.transform.up,
             _capMaterial);
-
         // 切断されたオブジェクトが存在する場合のみ処理を行う
         if (pieces != null)
         {
