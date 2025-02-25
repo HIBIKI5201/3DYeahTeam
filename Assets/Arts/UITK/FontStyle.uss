@@ -1,0 +1,3 @@
+.font {
+    -unity-font-definition: url("project://database/Packages/com.unity.cinemachine/Runtime/Debug/CinemachineRuntimeTheme.tss?fileID=2230732570650464555&guid=df9aec944f4474a04847b6d6375e4138&type=3#NotInter-Regular");
+}
