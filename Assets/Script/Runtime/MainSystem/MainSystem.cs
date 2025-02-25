@@ -36,7 +36,8 @@ public class MainSystem : MonoBehaviour
             _nowScene ==  SceneListEnum.IngamePhase_2 ||
             _nowScene == SceneListEnum.IngamePhase_3)
         {
-            SceneLoader.LoadScene(SceneListEnum.Ingame.ToString());
+            _ = SceneLoader.LoadScene(SceneListEnum.Ingame.ToString());
+            SceneLoader.SetActiveScene(SceneListEnum.Ingame.ToString());
         }
         #endif
     }
@@ -61,8 +62,8 @@ public class MainSystem : MonoBehaviour
             await SceneLoader.UnloadScene(_nowScene.ToString());
 
             // 次のシーンをロードする
-            await SceneLoader.LoadScene(scene.ToString());
             _nowScene = scene;
+            await SceneLoader.LoadScene(scene.ToString());
             SceneLoader.SetActiveScene(scene.ToString());
 
             await _mainUI.FadeIn(1f);

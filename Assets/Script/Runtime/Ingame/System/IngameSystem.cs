@@ -29,6 +29,7 @@ public class IngameSystem : MonoBehaviour
         var system = ServiceLocator.GetInstance<MainSystem>();
         if (system.NowScene != SceneListEnum.Ingame)
         {
+            //現在のシーンが何か取得
             _nowPhase = system.NowScene switch
             {
                 SceneListEnum.IngamePhase_1 => PhaseKind.Phase1,
@@ -37,14 +38,18 @@ public class IngameSystem : MonoBehaviour
                 SceneListEnum.IngamePhase_Result => PhaseKind.Result,
                 _ => PhaseKind.Phase1,
             };
+            
+            //既に読み込まれているので終わる
+            return;
         }
 #endif
         
+        //インゲームのフェーズをロード
         var scene = GetSceneEnumByPhaseKind(_nowPhase);
         _ = SceneLoader.LoadScene(scene.ToString());
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         SceneListEnum scene = GetSceneEnumByPhaseKind(_nowPhase);
         _ = SceneLoader.UnloadScene(scene.ToString());
