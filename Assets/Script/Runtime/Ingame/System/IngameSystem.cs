@@ -11,6 +11,7 @@ public class IngameSystem : MonoBehaviour
     private Task _loadTask = Task.CompletedTask;
     
     private GameObject _cucumber;
+    public GameObject Cucumber { get => _cucumber; }
     
     private CucumberData _cucumberData;
     public CucumberData CucumberData { get => _cucumberData; }
@@ -24,8 +25,35 @@ public class IngameSystem : MonoBehaviour
 
     private void Start()
     {
+#if UNITY_EDITOR
+        //フェーズシーンから始めた時の特殊処理
+        var system = ServiceLocator.GetInstance<MainSystem>();
+        if (system.NowScene != SceneListEnum.Ingame)
+        {
+            //現在のシーンが何か取得
+            _nowPhase = system.NowScene switch
+            {
+                SceneListEnum.IngamePhase_1 => PhaseKind.Phase1,
+                SceneListEnum.IngamePhase_2 => PhaseKind.Phase2,
+                SceneListEnum.IngamePhase_3 => PhaseKind.Phase3,
+                SceneListEnum.IngamePhase_Result => PhaseKind.Result,
+                _ => PhaseKind.Phase1,
+            };
+            
+            //既に読み込まれているので終わる
+            return;
+        }
+#endif
+        
+        //インゲームのフェーズをロード
         var scene = GetSceneEnumByPhaseKind(_nowPhase);
         _ = SceneLoader.LoadScene(scene.ToString());
+    }
+
+    private void OnDisable()
+    {
+        SceneListEnum scene = GetSceneEnumByPhaseKind(_nowPhase);
+        _ = SceneLoader.UnloadScene(scene.ToString());
     }
 
     /// <summary>
