@@ -11,6 +11,7 @@ public class MainSystem : MonoBehaviour
     private Task _loadTask = Task.CompletedTask;
 
     private SceneListEnum _nowScene;
+    public SceneListEnum NowScene { get => _nowScene; }
     
     #if UNITY_EDITOR
     [SerializeField] private SceneListEnum _targetScene;
@@ -28,6 +29,16 @@ public class MainSystem : MonoBehaviour
         {
             Debug.LogWarning($"Scene '{scene.name}' is not a valid scene.");
         }
+
+        #if UNITY_EDITOR
+        //インゲームのフェーズから始めた場合の処理
+        if (_nowScene == SceneListEnum.IngamePhase_1 ||
+            _nowScene ==  SceneListEnum.IngamePhase_2 ||
+            _nowScene == SceneListEnum.IngamePhase_3)
+        {
+            SceneLoader.LoadScene(SceneListEnum.Ingame.ToString());
+        }
+        #endif
     }
 
     public async void SceneChange(SceneListEnum scene)
