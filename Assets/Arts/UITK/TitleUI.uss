@@ -4,8 +4,16 @@
     background-color: rgba(0, 0, 0, 0);
     color: rgb(255, 255, 255);
     font-size: 50px;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
 }
 
 .button:hover {
     scale: 1.1 1.1;
+}
+
+.font {
+    -unity-font-definition: url("project://database/Assets/AssetStoreTools/Font/851CHIKARA-YOWAKU_002.ttf?fileID=12800000&guid=595748de8db42994daa8c4921bcf1d83&type=3#851CHIKARA-YOWAKU_002");
 }
