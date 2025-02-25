@@ -1,16 +1,21 @@
+﻿using SymphonyFrameWork.Debugger;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class TitleUI : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    private UIDocument _document;
 
-    // Update is called once per frame
-    void Update()
+    private TitleMainWindow _mainWindow;
+    private void Awake()
     {
-        
+        _document = GetComponent<UIDocument>();
+        _document.CheckComponentNull();
+
+        if (_document)
+        {
+            var root = _document.rootVisualElement;
+            _mainWindow = root.Q<TitleMainWindow>();
+        }
     }
 }
