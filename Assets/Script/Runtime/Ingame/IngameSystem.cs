@@ -1,4 +1,5 @@
 using System;
+using SymphonyFrameWork.System;
 using UnityEngine;
 
 public class IngameSystem : MonoBehaviour
@@ -46,7 +47,26 @@ public class IngameSystem : MonoBehaviour
     /// <param name="phase"></param>
     public void NextPhaseEvent()
     {
+        //今のシーンをアンロード
+        SceneListEnum scene = GetSceneEnumByPhaseKind(_nowPhase);
+        _ = SceneLoader.UnloadScene(scene.ToString());
         
+        //次のシーンをロードする
+        _nowPhase++;
+        scene = GetSceneEnumByPhaseKind(_nowPhase);
+        _ = SceneLoader.LoadScene(scene.ToString());
+    }
+
+    private SceneListEnum GetSceneEnumByPhaseKind(PhaseKind kind)
+    {
+        return kind switch
+        {
+            PhaseKind.Phase1 => SceneListEnum.IngamePhase_1,
+            PhaseKind.Phase2 => SceneListEnum.IngamePhase_2,
+            PhaseKind.Phase3 => SceneListEnum.IngamePhase_3,
+            PhaseKind.Result => SceneListEnum.IngamePhase_Result,
+            _ => SceneListEnum.None,
+        };
     }
 
     public enum PhaseKind
