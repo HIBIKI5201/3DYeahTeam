@@ -1,4 +1,5 @@
 ﻿using SymphonyFrameWork.Debugger;
+using SymphonyFrameWork.System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -19,9 +20,26 @@ public class TitleUI : MonoBehaviour
 
             await _mainWindow.InitializeTask;
 
-            _mainWindow.StartButton.clicked += () => Debug.Log("Start");
-            _mainWindow.RankingButton.clicked += () => Debug.Log("Ranking");
-            _mainWindow.CreditButton.clicked += () => Debug.Log("Credit");
+            _mainWindow.StartButton.clicked += OnStart;
+            _mainWindow.RankingButton.clicked += OnRanking;
+            _mainWindow.CreditButton.clicked += OnCredit;
         }
     }
+
+    private void OnStart()
+    {
+        var system = ServiceLocator.GetInstance<MainSystem>();
+        system.SceneChange(SceneListEnum.Ingame);
+    }
+
+    private void OnRanking()
+    {
+        Debug.Log("Ranking");
+    }
+
+    private void OnCredit()
+    {
+        Debug.Log("Credit");
+    }
+
 }
