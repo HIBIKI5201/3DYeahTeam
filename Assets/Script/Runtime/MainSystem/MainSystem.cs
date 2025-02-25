@@ -22,6 +22,7 @@ public class MainSystem : MonoBehaviour
     private void Awake()
     {
         _mainUI = GetComponent<MainUI>();
+        Debug.Log($"ランキングデータを確認\n{string.Join(" ", SaveDataSystem<RankingData>.Data.Datas)}");
         
         //現在のシーンを保存する
         Scene scene = SceneManager.GetActiveScene();

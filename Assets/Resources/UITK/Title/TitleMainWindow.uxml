@@ -2,9 +2,15 @@
     <Style src="project://database/Assets/Arts/UITK/FontStyle.uss?fileID=7433441132597879392&amp;guid=e8187ea6642c0a540847976336f5c26f&amp;type=3#FontStyle" />
     <Style src="project://database/Assets/Arts/UITK/TitleUI.uss?fileID=7433441132597879392&amp;guid=26fa05aa0c822fe4194e88beeaf615f4&amp;type=3#TitleUI" />
     <engine:Label text="ちくわキュウリ&#10;チャージショット" class="font" style="font-size: 150px; -unity-text-align: middle-center; position: absolute; align-self: center; top: 15%; color: rgb(255, 255, 255);" />
-    <engine:VisualElement style="flex-grow: 1; position: absolute; align-self: center; bottom: 5%; width: 35%; height: 40%; justify-content: space-evenly; align-items: center;">
-        <engine:Button text="Start" name="start-button" class="button" />
-        <engine:Button text="Ranking" name="ranking-button" class="button" />
-        <engine:Button text="Credit" name="credit-button" class="button" />
+    <engine:VisualElement class="font" style="flex-grow: 1; position: absolute; align-self: center; bottom: 5%; width: 35%; height: 40%; justify-content: space-evenly; align-items: center;">
+        <engine:Button text="Start" name="start-button" class="button">
+            <engine:VisualElement class="back" style="height: 10%; background-color: rgb(115, 195, 255);" />
+        </engine:Button>
+        <engine:Button text="Ranking" name="ranking-button" class="button">
+            <engine:VisualElement class="back" style="height: 10%; background-color: rgb(115, 195, 255);" />
+        </engine:Button>
+        <engine:Button text="Credit" name="credit-button" class="button">
+            <engine:VisualElement class="back" style="height: 10%; background-color: rgb(115, 195, 255);" />
+        </engine:Button>
     </engine:VisualElement>
 </engine:UXML>
