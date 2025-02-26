@@ -42,12 +42,15 @@ public class CutterMoveController : MonoBehaviour
     int initial = 0;
     private IngameSystem _ingameSystem;
 
+    private AudioManager _audioManager;
+
     private void Awake()
     {
         _cuttingObject = new GameObject[3];
     }
     private async void Start()
     {
+        _audioManager = ServiceLocator.GetInstance<AudioManager>();
         _cuttingObjectPosition = transform.position;
 
         await SymphonyTask.WaitUntil(() => SceneLoader.GetExistScene(SceneListEnum.SpaceShip.ToString(), out _));
@@ -96,60 +99,67 @@ public class CutterMoveController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            var pieces = MeshCutService.Cut(_targetObject, this.transform.position, this.transform.right,
-           _capMaterial);
-            if (pieces == null) return;
-
-            _cutCount++;
-
-            //戻り値オブジェクトをリストや変数にいれて新規オブジェクトにBoxCollider付与
-            var leftSide = pieces[0];
-            var rightSide = pieces[1];
-
-            if (_cutCount == 1)
-            {
-                _cuttingObject[0] = leftSide;
-                _cuttingObject[2] = rightSide;
-
-                _lastPositionX = _currentPositionX;
-            }
-            else
-            {
-                if (_lastPositionX < _currentPositionX)
-                {
-                    _cuttingObject[1] = leftSide;
-                    _cuttingObject[2] = rightSide;
-                }
-                else
-                {
-                    _cuttingObject[0] = leftSide;
-                    _cuttingObject[1] = rightSide;
-                }
-            }
-
-                rightSide.AddComponent<BoxCollider>();
-            _distanceList.Add(Mathf.Abs(_bestTimings[_cutCount - 1] - _currentPositionX));
-
-
-            if (_cutCount == 1)
-            {
-                // 右側のオブジェクトを少し移動
-                leftSide.transform.position += leftSide.transform.right * -300f;
-            }
-            else
-            {
-                // 左側のオブジェクトを少し移動
-                rightSide.transform.position += rightSide.transform.right * 300f;
-            }
-
-            MakeDiff(rightSide, leftSide);
-
-            if (_cutCount > 1)
-            {
-                StartCoroutine(nameof(SendIngameSystem));
-            }
+            kiru();
         }
     }
+
+    private void kiru()
+    {
+        _audioManager.PlaySoundEffect(3);
+        var pieces = MeshCutService.Cut(_targetObject, this.transform.position, this.transform.right,
+       _capMaterial);
+        if (pieces == null) return;
+
+        _cutCount++;
+
+        //戻り値オブジェクトをリストや変数にいれて新規オブジェクトにBoxCollider付与
+        var leftSide = pieces[0];
+        var rightSide = pieces[1];
+
+        if (_cutCount == 1)
+        {
+            _cuttingObject[0] = leftSide;
+            _cuttingObject[2] = rightSide;
+
+            _lastPositionX = _currentPositionX;
+        }
+        else
+        {
+            if (_lastPositionX < _currentPositionX)
+            {
+                _cuttingObject[1] = leftSide;
+                _cuttingObject[2] = rightSide;
+            }
+            else
+            {
+                _cuttingObject[0] = leftSide;
+                _cuttingObject[1] = rightSide;
+            }
+        }
+
+        rightSide.AddComponent<BoxCollider>();
+        _distanceList.Add(Mathf.Abs(_bestTimings[_cutCount - 1] - _currentPositionX));
+
+
+        if (_cutCount == 1)
+        {
+            // 右側のオブジェクトを少し移動
+            leftSide.transform.position += leftSide.transform.right * -300f;
+        }
+        else
+        {
+            // 左側のオブジェクトを少し移動
+            rightSide.transform.position += rightSide.transform.right * 300f;
+        }
+
+        MakeDiff(rightSide, leftSide);
+
+        if (_cutCount > 1)
+        {
+            StartCoroutine(nameof(SendIngameSystem));
+        }
+    }
+
 
     private void MakeDiff(GameObject right, GameObject left)
     {

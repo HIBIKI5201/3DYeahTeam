@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 public partial class IngameButtonWindow : SymphonyVisualElement
 {
     private Button _chargeButton;
-    public Button ChargeButton {  get => _chargeButton;  }
+    public Button ChargeButton { get => _chargeButton; }
 
     public IngameButtonWindow() : base("UITK/Ingame/IngameButonnWindow") { }
 

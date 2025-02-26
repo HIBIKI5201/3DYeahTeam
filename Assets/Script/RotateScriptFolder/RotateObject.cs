@@ -22,8 +22,11 @@ public class RotateObject : MonoBehaviour
     private List<GameObject> _cutObject = new List<GameObject>();
     public event Action<List<GameObject>> OnCutEnd;
     private int _cutCount = 0;
+
+    private AudioManager _audioManager;
     private async void Start()
     {
+        _audioManager = ServiceLocator.GetInstance<AudioManager>();
         var system = ServiceLocator.GetInstance<IngameSystem>();
 
         if (system)
@@ -59,6 +62,7 @@ public class RotateObject : MonoBehaviour
         {
             if (_cutCount <= 0)
             {
+                _audioManager.PlaySoundEffect(3);
                 saveFirstRotation = transform.rotation; // 1回目の回転を保存  // 1回目の回転
                 Cut(_targetObject);
                 // 最初のカット
@@ -66,6 +70,7 @@ public class RotateObject : MonoBehaviour
             else if (_cutCount == 1)
             {
                 // 右側のオブジェクトをさらにカット
+                _audioManager.PlaySoundEffect(3);
                 Cut(_targetObject);
                 Cut(savedRightSide);
                 Quaternion secondRotation = transform.rotation;  // 2回目の回転

@@ -43,7 +43,7 @@ public class Phase3UI : MonoBehaviour
         if (_document)
         {
             //ボタンの処理、イメージ画像を登録
-            _buttonWindow.ChargeButton.clicked += () => _chargeManager.OnChangePushCounter(0);
+            _buttonWindow.ChargeButton.clicked += _chargeManager.OnChangePushCounter;
             _buttonWindow.ChargeButton.style.backgroundImage = new StyleBackground(_buttontexture);
 
             //アップデート用コルーチン起動
@@ -65,14 +65,15 @@ public class Phase3UI : MonoBehaviour
             if (_countDown >= 0)
             {
                 //カウントダウン用のテキストを表示
-                _countDown = _chargeManager.TimeLimit + _chargeManager.Timer - Time.time;
+                Debug.Log($"{_chargeManager.TimeLimit} , {_chargeManager.Timer}, {Time.time}");
+                _countDown = (_chargeManager.TimeLimit + _chargeManager.Timer) - Time.time;
                 _phase3Window.TimerText.text = _countDown.ToString("0.00");
             }
             yield return null;
         }
 
         //ボタン処理の無効化、0以下にならないようにしている
-        _buttonWindow.ChargeButton.clicked -= () => _chargeManager.OnChangePushCounter(0);
+        _buttonWindow.ChargeButton.clicked -= _chargeManager.OnChangePushCounter;
         _phase3Window.TimerText.text = "0.00";
 
         yield break;
