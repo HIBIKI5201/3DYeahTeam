@@ -1,8 +1,10 @@
-﻿using UnityEngine;
-using ChargeShot.Runtime.Ingame;
-using System.Collections.Generic;
-using System;
+﻿using ChargeShot.Runtime.Ingame;
 using SymphonyFrameWork.System;
+using SymphonyFrameWork.Utility;
+using System;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
 
 public class RotateObject : MonoBehaviour
 {
@@ -19,10 +21,17 @@ public class RotateObject : MonoBehaviour
     private List<GameObject> _cutObject = new List<GameObject>();
     public event Action<List<GameObject>> OnCutEnd;
     private int _cutCount = 0;
-    private void Awake()
+    private async void Start()
     {
-        _targetObject = GameObject.Find("center");
-        _targetObject.transform.position = CucumberPosition.transform.position;
+        var system = ServiceLocator.GetInstance<IngameSystem>();
+
+        if (system)
+        {
+            await SymphonyTask.WaitUntil(() => system.Cucumber, destroyCancellationToken);
+
+            system.Cucumber.transform.position = CucumberPosition.position;
+            _targetObject = system.Cucumber.CucumberModel;
+        }
     }
 
     void Update()
@@ -50,8 +59,8 @@ public class RotateObject : MonoBehaviour
             if (_cutCount <= 0)
             {
                 saveFirstRotation = transform.rotation; // 1回目の回転を保存  // 1回目の回転
-                // 最初のカット
                 Cut(_targetObject);
+                // 最初のカット
             }
             else if (_cutCount == 1)
             {

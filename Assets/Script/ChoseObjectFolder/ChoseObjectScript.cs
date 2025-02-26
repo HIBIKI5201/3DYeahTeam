@@ -12,8 +12,10 @@ public class ChoseObjectScript : MonoBehaviour
     [SerializeField] private Material _isSelectMaterial;
     [SerializeField] RotateObject _rotateobj;
     List<GameObject> a = new List<GameObject>();
-    private void Awake()
+    private async void Awake()
     {
+        await Awaitable.NextFrameAsync();
+
         _ingameSystem = ServiceLocator.GetInstance<IngameSystem>();
     }
     private async void Start()
@@ -41,7 +43,11 @@ public class ChoseObjectScript : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            _selectedObject.name = "select";
+            if (_selectedObject)
+            {
+                _selectedObject.name = "select";
+            }
+
             if (_isOkNextPhase && _isDone)
             {
                 // "select" 以外を削除
