@@ -19,6 +19,6 @@ public class SetBreakObjBreak : MonoBehaviour
     bool onlyOnce;
     private void Update()
     {
-        if(ingameSystem.Cucumber.transform.position.z >= transform.position.z && !onlyOnce) { onlyOnce = true; animator.SetTrigger("break"); trajectionMovment.SetCrashedName(transform.name); }
+        if(ingameSystem.Cucumber.transform.position.z >= transform.position.z && !onlyOnce) { onlyOnce = true; animator.SetTrigger("break"); trajectionMovment.SetCrashedName(transform.name); trajectionMovment.PlayExplosionSound(9); }
     }
 }
