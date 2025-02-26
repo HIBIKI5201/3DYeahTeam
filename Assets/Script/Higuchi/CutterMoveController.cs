@@ -1,10 +1,10 @@
-﻿using UnityEngine;
-using System;
-using ChargeShot.Runtime.Ingame;
+﻿using ChargeShot.Runtime.Ingame;
 using SymphonyFrameWork.System;
-using Unity.VisualScripting;
+using SymphonyFrameWork.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 /// <summary>
 /// カッターの管理クラス
 /// </summary>
@@ -14,38 +14,61 @@ public class CutterMoveController : MonoBehaviour
     public float _speed = 2.0f; // 移動速度
     public float _maxPosition = 1.0f; // 右端
     public float _minPosition = -1.0f; // 左端
+
     [SerializeField, Header("きゅうり情報")] Material _capMaterial;
-    [SerializeField] Mesh _cucumberMesh;
-    private float _currentPosition;
-    private float _defaultXPosition = 0.0f;
+    private float _currentPositionX;
+    private float _lastPositionX;
+    private Vector3 _firstPos;
+
     [SerializeField, Header("ベストタイミング")] float[] _bestTimings = new float[2];
     private Vector3 _cuttingObjectPosition;
     List<float> _distanceList = new List<float>();
-    List<GameObject> _cuttingObject = new List<GameObject>();
+
+    GameObject[] _cuttingObject = new GameObject[3];
     private GameObject _targetObject;
-    private GameObject _centerObject;
+
+    [SerializeField, Header("演出設定")]
+    private Vector3 _knifeOffset = new Vector3(0, 100, 0);
+
     private bool _movingRight = true;
     private int _cutCount = 0;
     private float diffResult = 0;
     private float _result;
+
     public event Action<GameObject> OnCuttingFinish;
 
-    private GameObject _leftSide;
-    private GameObject _rightSide;
     private GameObject center;
+
     int initial = 0;
     private IngameSystem _ingameSystem;
+
+    private void Awake()
+    {
+        _cuttingObject = new GameObject[3];
+    }
     private async void Start()
     {
-        await Awaitable.NextFrameAsync();
+        _cuttingObjectPosition = transform.position;
 
-        ServiceLocator.SetInstance(this, ServiceLocator.LocateType.Singleton);
+        await SymphonyTask.WaitUntil(() => SceneLoader.GetExistScene(SceneListEnum.SpaceShip.ToString(), out _));
+
         _ingameSystem = ServiceLocator.GetInstance<IngameSystem>();
-        _ingameSystem.Cucumber.gameObject.SetActive(true);
-        var a = _ingameSystem.Cucumber.CucumberModel;
-        a.AddComponent<BoxCollider>();
+        var cucumber = _ingameSystem.Cucumber.gameObject;
+        var collider = cucumber.AddComponent<BoxCollider>();
+        _targetObject = _ingameSystem.Cucumber.CucumberModel;
+        collider.isTrigger = true;
+        _firstPos = cucumber.transform.position;
 
-        _ingameSystem.Cucumber.transform.position = new Vector3(20, 0, 20);
+        var ship = ServiceLocator.GetInstance<SpaceShip>();
+        if (ship)
+        {
+            var knife = ship.Knife;
+            knife.transform.position = transform.position + _knifeOffset;
+            knife.transform.parent = transform;
+            knife.transform.rotation = Quaternion.Euler(3, -90, 5) * Quaternion.identity;
+        }
+
+        _ingameSystem.Cucumber.transform.position = new Vector3(20, 0, 20) + _cuttingObjectPosition;
     }
     private void Update()
     {
@@ -57,24 +80,65 @@ public class CutterMoveController : MonoBehaviour
     /// </summary>
     private void CuttingObject()
     {
+        if (2 <= _cutCount)
+        {
+            return;
+        }
+
+        if (!_targetObject)
+        {
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            var pieces = MeshCutService.Cut(_targetObject, this.transform.position, this.transform.up,
+            var pieces = MeshCutService.Cut(_targetObject, this.transform.position, this.transform.right,
            _capMaterial);
             if (pieces == null) return;
 
-            //戻り値オブジェクトをリストや変数にいれて新規オブジェクトにBoxCollider付与
-            _leftSide = pieces[0];
-            _rightSide = pieces[1];
-            _cuttingObject.Add(_leftSide);
-            _cuttingObject.Add(_rightSide);
-            _rightSide.AddComponent<BoxCollider>();
-            // 右側のオブジェクトを少し移動
-            _rightSide.transform.position += _rightSide.transform.right * -300f;
-            _distanceList.Add(Mathf.Abs(_bestTimings[_cutCount] - _currentPosition));
             _cutCount++;
 
-            MakeDiff();
+            //戻り値オブジェクトをリストや変数にいれて新規オブジェクトにBoxCollider付与
+            var leftSide = pieces[0];
+            var rightSide = pieces[1];
+
+            if (_cutCount == 1)
+            {
+                _cuttingObject[0] = leftSide;
+                _cuttingObject[2] = rightSide;
+
+                _lastPositionX = _currentPositionX;
+            }
+            else
+            {
+                if (_lastPositionX < _currentPositionX)
+                {
+                    _cuttingObject[1] = leftSide;
+                    _cuttingObject[2] = rightSide;
+                }
+                else
+                {
+                    _cuttingObject[0] = leftSide;
+                    _cuttingObject[1] = rightSide;
+                }
+            }
+
+                rightSide.AddComponent<BoxCollider>();
+            _distanceList.Add(Mathf.Abs(_bestTimings[_cutCount - 1] - _currentPositionX));
+
+
+            if (_cutCount == 1)
+            {
+                // 右側のオブジェクトを少し移動
+                leftSide.transform.position += leftSide.transform.right * -300f;
+            }
+            else
+            {
+                // 左側のオブジェクトを少し移動
+                rightSide.transform.position += rightSide.transform.right * 300f;
+            }
+
+            MakeDiff(rightSide, leftSide);
 
             if (_cutCount > 1)
             {
@@ -83,16 +147,14 @@ public class CutterMoveController : MonoBehaviour
         }
     }
 
-    private void MakeDiff()
+    private void MakeDiff(GameObject right, GameObject left)
     {
-        if (_cuttingObjectPosition.x > 0)
+        if (_cuttingObjectPosition.x > _firstPos.x)
         {
-
             diffResult += _cuttingObjectPosition.x - _bestTimings[0];
             _cuttingObjectPosition.x = 0;
             _maxPosition = 0;
             if (initial != 0) return;
-            center = _rightSide;
         }
         else
         {
@@ -100,29 +162,29 @@ public class CutterMoveController : MonoBehaviour
             _cuttingObjectPosition.x = 0;
             _minPosition = 0;
             if (initial != 0) return;
-            center = _leftSide;
         }
+        center = _cuttingObject[1];
         _result = Mathf.Abs((diffResult / 100) - 100);
     }
 
     private System.Collections.IEnumerator SendIngameSystem()
     {
 
-        float _distance = 0;
-        foreach (var data in _distanceList)
-        {
-            _distance += data;
-        }
+        float distance = _distanceList.Sum();
+
         center.name = "center";
         Debug.Log($"{center.name}  : {center.gameObject.transform.position}");
         var inGameSystem = ServiceLocator.GetInstance<IngameSystem>();
         inGameSystem.CucumberData.Phase1Data = _result; //差分の合計値を一旦入れとく
+
         yield return new WaitForSeconds(3f);
+
         foreach (var data in _cuttingObject)
         {
             if (data.name == "center") continue;
             Destroy(data);
         }
+
         OnCuttingFinish?.Invoke(center);
         Destroy(gameObject);
     }
@@ -133,16 +195,18 @@ public class CutterMoveController : MonoBehaviour
     private void MoveCutter()
     {
         if (_cutCount >= 2) return;
-        _cuttingObjectPosition.x = _currentPosition;
+
+        _cuttingObjectPosition.x = _currentPositionX;
         transform.position = _cuttingObjectPosition;
         if (_movingRight)
-            _currentPosition += _speed * Time.deltaTime;
+            _currentPositionX += _speed * Time.deltaTime;
         else
-            _currentPosition -= _speed * Time.deltaTime;
+            _currentPositionX -= _speed * Time.deltaTime;
 
-        if (_currentPosition >= _maxPosition) _movingRight = false;
-        if (_currentPosition <= _minPosition) _movingRight = true;
+        if (_currentPositionX >= _maxPosition) _movingRight = false;
+        if (_currentPositionX <= _minPosition) _movingRight = true;
     }
+
     private void OnDestroy()
     {
         ServiceLocator.DestroyInstance<CutterMoveController>();
@@ -150,10 +214,14 @@ public class CutterMoveController : MonoBehaviour
     /// <summary>
     /// 現在の位置を取得
     /// </summary>
-    public float GetCurrentPosition() => _currentPosition;
+    public float GetCurrentPosition() => _currentPositionX;
     private void OnTriggerEnter(Collider other)
     {
-        _targetObject = other.gameObject;
-       // Debug.Log(_targetObject.name);
+        var filter = other.GetComponentInChildren<MeshFilter>();
+        if (filter)
+        {
+            _targetObject = filter.gameObject;
+
+        }
     }
 }

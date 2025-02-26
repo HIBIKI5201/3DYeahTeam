@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using SymphonyFrameWork.System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -18,6 +19,9 @@ public class ResultUI : MonoBehaviour
 
     private void Start()
     {
+        var trajection = ServiceLocator.GetInstance<TrajectionMovement>();
+        trajection.AllFinished += OpenResult;
+
         if (!_document)
         {
             Debug.LogWarning("UI Documentがありません");

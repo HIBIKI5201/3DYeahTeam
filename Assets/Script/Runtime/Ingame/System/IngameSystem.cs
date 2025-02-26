@@ -1,12 +1,11 @@
-﻿using System;
+﻿using SymphonyFrameWork.System;
 using System.Threading.Tasks;
-using SymphonyFrameWork.System;
 using UnityEngine;
 
 public class IngameSystem : MonoBehaviour
 {
     private IngameUI _ingameUi;
-    
+
     private PhaseKind _nowPhase = 0;
     private Task _loadTask = Task.CompletedTask;
 
@@ -15,27 +14,33 @@ public class IngameSystem : MonoBehaviour
 
     private CucumberManager _cucumber;
     public CucumberManager Cucumber { get => _cucumber; }
-    
+
     private CucumberData _cucumberData = new();
     public CucumberData CucumberData { get => _cucumberData; }
-    
+
     private void Awake()
     {
         _nowPhase = PhaseKind.Phase1;
-        
+
         _ingameUi = GetComponent<IngameUI>();
     }
 
-    private void Start()
+    private async void Start()
     {
-        //インゲーム開始時に生成
-        if (_cucumberModel)
+#if UNITY_EDITOR
+        if (!SceneLoader.GetExistScene(SceneListEnum.SpaceShip.ToString(), out _))
         {
-            var go = Instantiate(_cucumberModel, Vector3.zero, Quaternion.identity);
-            go.transform.localScale = Vector3.one;
-
-            GenerateCucumberManager(go);
+            await SceneLoader.LoadScene(SceneListEnum.SpaceShip.ToString());
         }
+#endif
+
+        //宇宙船シーンからキュウリを登録
+        var ship = ServiceLocator.GetInstance<SpaceShip>();
+        if (ship || ship.Cucumber)
+        {
+            GenerateCucumberManager(ship.Cucumber.CucumberModel);
+        }
+
 
 #if UNITY_EDITOR
         //フェーズシーンから始めた時の特殊処理
@@ -51,12 +56,12 @@ public class IngameSystem : MonoBehaviour
                 SceneListEnum.IngamePhase_Result => PhaseKind.Result,
                 _ => PhaseKind.Phase1,
             };
-            
+
             //既に読み込まれているので終わる
             return;
         }
 #endif
-        
+
         //インゲームのフェーズをロード
         var scene = GetSceneEnumByPhaseKind(_nowPhase);
         _ = SceneLoader.LoadScene(scene.ToString());
@@ -78,7 +83,7 @@ public class IngameSystem : MonoBehaviour
         {
             Debug.LogWarning("対象のインスタンスがありません");
         }
-        
+
         //前のインスタンスを破壊
         if (instance != _cucumber)
         {
@@ -97,7 +102,7 @@ public class IngameSystem : MonoBehaviour
 
         parent.transform.parent = transform;
     }
-    
+
     /// <summary>
     /// 次のフェーズに遷移する
     /// </summary>
@@ -117,7 +122,7 @@ public class IngameSystem : MonoBehaviour
         }
 
         _loadTask = LoadScene();
-        
+
         await _loadTask;
 
         async Task LoadScene()

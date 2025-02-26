@@ -1,8 +1,11 @@
-﻿using UnityEngine;
-using ChargeShot.Runtime.Ingame;
-using System.Collections.Generic;
-using System;
+﻿using ChargeShot.Runtime.Ingame;
 using SymphonyFrameWork.System;
+using SymphonyFrameWork.Utility;
+using System;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.AI;
 
 public class RotateObject : MonoBehaviour
 {
@@ -17,21 +20,21 @@ public class RotateObject : MonoBehaviour
     public Material _capMaterial; // 切断面に適用するマテリアル
     public Transform CucumberPosition;
     private List<GameObject> _cutObject = new List<GameObject>();
-    public event Action<List<GameObject>> _cutEnd;
+    public event Action<List<GameObject>> OnCutEnd;
     private int _cutCount = 0;
-    private void Awake()
+    private async void Start()
     {
-        _targetObject = GameObject.Find("center");
-        _targetObject.transform.position = CucumberPosition.transform.position;
+        var system = ServiceLocator.GetInstance<IngameSystem>();
+
+        if (system)
+        {
+            await SymphonyTask.WaitUntil(() => system.Cucumber, destroyCancellationToken);
+
+            system.Cucumber.transform.position = CucumberPosition.position;
+            _targetObject = system.Cucumber.CucumberModel;
+        }
     }
-    private void Start()
-    {
-        ServiceLocator.SetInstance(this, ServiceLocator.LocateType.Singleton);
-    }
-    private void OnDestroy()
-    {
-        ServiceLocator.DestroyInstance(this);
-    }
+
     void Update()
     {
         // 回転方向に応じて回転
@@ -57,8 +60,8 @@ public class RotateObject : MonoBehaviour
             if (_cutCount <= 0)
             {
                 saveFirstRotation = transform.rotation; // 1回目の回転を保存  // 1回目の回転
-                // 最初のカット
                 Cut(_targetObject);
+                // 最初のカット
             }
             else if (_cutCount == 1)
             {
@@ -68,7 +71,7 @@ public class RotateObject : MonoBehaviour
                 Quaternion secondRotation = transform.rotation;  // 2回目の回転
                 float angleDifference = Quaternion.Angle(saveFirstRotation, secondRotation); // クォータニオンの角度差
                 Debug.Log("回転の変化量 (Quaternion): " + angleDifference + "°");
-                _cutEnd?.Invoke(_cutObject);
+                OnCutEnd?.Invoke(_cutObject);
             }
         }
     }
@@ -85,8 +88,10 @@ public class RotateObject : MonoBehaviour
             var rightSide = pieces[1];
             _cutObject.Add(leftSide);
             _cutObject.Add(rightSide);
-            leftSide.AddComponent<MeshCollider>();
-            rightSide.AddComponent<MeshCollider>();
+
+            MeshColliderRefresh(leftSide);
+            MeshColliderRefresh(rightSide);
+
             rightSide.transform.position += rightSide.transform.up * -20f;
             if (savedRightSide == null)
             {
@@ -98,6 +103,22 @@ public class RotateObject : MonoBehaviour
             Debug.LogError("オブジェクトの切断に失敗しました。");
         }
         _cutCount++;
+    }
+
+    private void MeshColliderRefresh(GameObject gameObject)
+    {
+        MeshCollider collider = null;
+
+        if (!gameObject.TryGetComponent(out collider))
+        {
+            collider = gameObject.AddComponent<MeshCollider>();
+        }
+
+        Mesh mesh = gameObject.GetComponent<MeshFilter>().mesh;
+        mesh.RecalculateNormals();
+        mesh.RecalculateBounds();
+
+        collider.sharedMesh = mesh;
     }
     public void Distance(float currentYRotation)
     {
