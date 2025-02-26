@@ -15,6 +15,7 @@ public class TrajectionMovement : MonoBehaviour
 
     List<float> caluculateSpeed = new List<float>();
     IngameSystem ingameSystem;
+    AudioManager audioManager;
     ShellWork shellwork;
     [SerializeField] GameObject effect;
     ParticleSystem jetEffect;
@@ -37,10 +38,16 @@ public class TrajectionMovement : MonoBehaviour
     bool tranjected;
     float theIntensity;
 
+    List<string> destroyObj = new List<string>();
+
+    public List<string> DestroyObj { get { return destroyObj; } }
+
 
     async void Start()
     {
         await Awaitable.NextFrameAsync();
+
+        audioManager = ServiceLocator.GetInstance<AudioManager>();
 
         shellwork = transform.GetComponent<ShellWork>();
         shellwork.hitWithPlanet += SetHitStop;
@@ -118,11 +125,25 @@ public class TrajectionMovement : MonoBehaviour
         }
     }
 
+    
     void SetHitStop(int index)
     {
+        audioManager.PlaySoundEffect(0);
         hitStopTimeRemaining = hitStopDuration;
         hittingPlanetIndex = index;
+        
     }
+
+    void SetCrashedName(int i)
+    {
+        CrashedPlanet crashedPlanet = (CrashedPlanet)i;
+        destroyObj.Add(Enum.GetName(typeof(CrashedPlanet), crashedPlanet));
+    }
+    public void SetCrashedName(string name)
+    {
+        destroyObj.Add(name);
+    }
+
     void TranjectCucumber(int index)
     {
         resultSpeed = caluculateSpeed[index] + caluculateSpeed[index] / 2;
@@ -171,6 +192,17 @@ public class TrajectionMovement : MonoBehaviour
             ingameSystem.Cucumber.transform.Translate(transform.forward * Time.deltaTime * resultSpeed);
         }
         
+    }
+
+    public enum CrashedPlanet
+    {
+        水星,
+        火星,
+        金星,
+        天王星,
+        土星,
+        木星,
+        太陽,
     }
 
 #if UNITY_EDITOR

@@ -10451,12 +10451,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4139737115277202676, guid: bbf19d4045737044e86e23cdbfe4b9d6, type: 3}
       propertyPath: breakableObjects.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4139737115277202676, guid: bbf19d4045737044e86e23cdbfe4b9d6, type: 3}
       propertyPath: 'breakableObjects.Array.data[0]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 6084178732338478373, guid: c05534f587da01745a7031952f2a65d2, type: 3}
     - target: {fileID: 4139737115277202676, guid: bbf19d4045737044e86e23cdbfe4b9d6, type: 3}
       propertyPath: 'breakableObjects.Array.data[1]'
       value: 
