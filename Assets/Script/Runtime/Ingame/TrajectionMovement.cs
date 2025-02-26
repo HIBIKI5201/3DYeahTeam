@@ -14,14 +14,14 @@ public class TrajectionMovement : MonoBehaviour
     ShellWork shellwork;
     [SerializeField] GameObject effect;
     ParticleSystem jetEffect;
-    [SerializeField]Transform _camera;
+    [SerializeField]Transform cameraTarget;
 
     private void Start()
     {
         ingameSystem = ServiceLocator.GetInstance<IngameSystem>();
         shellwork = transform.GetComponent<ShellWork>();
         shellwork.hitWithPlanet += SetHitStop;
-        _camera.parent = ingameSystem.Cucumber.transform;
+        cameraTarget.parent = ingameSystem.Cucumber.transform;
         effect.transform.parent = ingameSystem.Cucumber.transform;
         jetEffect = effect.transform.GetComponent<ParticleSystem>();
         Rigidbody rb = ingameSystem.Cucumber.transform.AddComponent<Rigidbody>();
@@ -41,7 +41,7 @@ public class TrajectionMovement : MonoBehaviour
         var resultPow= Phase1Data + Phase2Data + Phase3Data;
         for (int i = checkSpeed.Length-1; i  >= 0  ; i--)
         {
-            Debug.Log(checkSpeed[i]);
+            //Debug.Log(checkSpeed[i]);
             if (checkSpeed[i] <= resultPow)
             {
                 TranjectCucumber(i);
@@ -78,7 +78,12 @@ public class TrajectionMovement : MonoBehaviour
     private void Update()
     {
         // test用コード
-        //if (Input.GetKeyDown(KeyCode.Space)) { CheckPow(10, 10, 10);  }
+        if (Input.GetKeyDown(KeyCode.Space)) { CheckPow(10, 10, 10);  }
+
+        if (hittingPlanetIndex > 0 && hittingPlanetIndex <= transform.childCount-2 && cameraTarget.localPosition.z <= transform.GetChild(hittingPlanetIndex + 1).localScale.x / 2f)
+        {
+            cameraTarget.localPosition = new Vector3(cameraTarget.localPosition.x, cameraTarget.localPosition.y, cameraTarget.localPosition.z - 0.01f);
+        }
         if (hitStopTimeRemaining > 0f)
         {
             hitStopTimeRemaining -= Time.unscaledDeltaTime;
