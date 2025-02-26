@@ -758,10 +758,6 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
-    - target: {fileID: 384703956076529298, guid: bbe7c304b2cc0a6438f94e5732feb1ce, type: 3}
-      propertyPath: _model
-      value: 
-      objectReference: {fileID: 1947365375}
     - target: {fileID: 419915199858292562, guid: bbe7c304b2cc0a6438f94e5732feb1ce, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
@@ -958,11 +954,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f81a25d1ba646042ae04ae301e8f3f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1947365375 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3695606484852115568, guid: bbe7c304b2cc0a6438f94e5732feb1ce, type: 3}
-  m_PrefabInstance: {fileID: 1947365371}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2076624937
 GameObject:
   m_ObjectHideFlags: 0

@@ -53,11 +53,15 @@ public class CutterMoveController : MonoBehaviour
         await SymphonyTask.WaitUntil(() => SceneLoader.GetExistScene(SceneListEnum.SpaceShip.ToString(), out _));
 
         _ingameSystem = ServiceLocator.GetInstance<IngameSystem>();
-        var cucumber = _ingameSystem.Cucumber.gameObject;
-        var collider = cucumber.AddComponent<BoxCollider>();
-        _targetObject = _ingameSystem.Cucumber.CucumberModel;
+        var cucumber = _ingameSystem.Cucumber.CucumberModel;
+        MeshUtil.MeshColliderRefresh(cucumber);
+
+        _targetObject = cucumber;
+        var collider = _targetObject.GetComponent<MeshCollider>();
+        collider.convex = true;
         collider.isTrigger = true;
-        _firstPos = cucumber.transform.position;
+
+        _firstPos = _ingameSystem.Cucumber.transform.position;
 
         var ship = ServiceLocator.GetInstance<SpaceShip>();
         if (ship)

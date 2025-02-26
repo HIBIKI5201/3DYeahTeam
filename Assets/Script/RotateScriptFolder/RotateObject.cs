@@ -89,8 +89,8 @@ public class RotateObject : MonoBehaviour
             _cutObject.Add(leftSide);
             _cutObject.Add(rightSide);
 
-            MeshColliderRefresh(leftSide);
-            MeshColliderRefresh(rightSide);
+            MeshUtil.MeshColliderRefresh(leftSide);
+            MeshUtil.MeshColliderRefresh(rightSide);
 
             rightSide.transform.position += rightSide.transform.up * -20f;
             if (savedRightSide == null)
@@ -105,21 +105,6 @@ public class RotateObject : MonoBehaviour
         _cutCount++;
     }
 
-    private void MeshColliderRefresh(GameObject gameObject)
-    {
-        MeshCollider collider = null;
-
-        if (!gameObject.TryGetComponent(out collider))
-        {
-            collider = gameObject.AddComponent<MeshCollider>();
-        }
-
-        Mesh mesh = gameObject.GetComponent<MeshFilter>().mesh;
-        mesh.RecalculateNormals();
-        mesh.RecalculateBounds();
-
-        collider.sharedMesh = mesh;
-    }
     public void Distance(float currentYRotation)
     {
         // Mathf.DeltaAngle を使って適切な回転差分を取得
