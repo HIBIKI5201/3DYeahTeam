@@ -68,7 +68,7 @@ public class ChargeManager : MonoBehaviour
     /// </summary>
     public void OnChangePushCounter()
     {
-        _audioManager.PlaySoundEffect(2);
+        _audioManager.PlaySoundEffect(8);
         _pushCounter += _pushUp;
         Debug.Log($"現在値は　{_pushCounter}");
     }
