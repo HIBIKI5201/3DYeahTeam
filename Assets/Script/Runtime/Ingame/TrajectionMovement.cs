@@ -4,8 +4,8 @@ using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.ProBuilder.MeshOperations;
-using static UnityEngine.Rendering.DebugUI;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class TrajectionMovement : MonoBehaviour
 {
@@ -17,13 +17,23 @@ public class TrajectionMovement : MonoBehaviour
     ParticleSystem jetEffect;
     [SerializeField]Transform cameraTarget;
 
+    Volume postPro;
+    Bloom bloom;
+    [SerializeField] float bloomLowIntensity = 2.1f;
+    [SerializeField] float bloomHighIntensity = 150f;
+
     async void Start()
     {
-        ingameSystem = ServiceLocator.GetInstance<IngameSystem>();
+        await Awaitable.NextFrameAsync();
+
         shellwork = transform.GetComponent<ShellWork>();
         shellwork.hitWithPlanet += SetHitStop;
 
-        await Awaitable.NextFrameAsync();
+        ingameSystem = ServiceLocator.GetInstance<IngameSystem>();
+
+        postPro = ServiceLocator.GetInstance<MainSystem>().Volume;
+        postPro.profile.TryGet<Bloom>(out bloom);
+        bloom.intensity.Override(bloomLowIntensity);
 
         float cucumberFixedScale = 0.05f / SerchCucumberLength(ingameSystem.Cucumber.CucumberModel.GetComponent<MeshFilter>());
         if (float.IsInfinity(cucumberFixedScale)) cucumberFixedScale =0.0001f;
@@ -104,6 +114,7 @@ public class TrajectionMovement : MonoBehaviour
         tranjected = true;
         jetEffect.Play();
         slidingTimer = coastTime;
+        cameraTarget.localPosition = new Vector3(0, cameraTarget.localPosition.y, 9.3f);
     }
 
     int hittingPlanetIndex = -100;
@@ -116,27 +127,36 @@ public class TrajectionMovement : MonoBehaviour
     float deceleration;
     bool tranjected;
     public Action AllFinished;
+
+    float theIntensity;
     private void Update()
     {
         // test用コード
         if (Input.GetKeyDown(KeyCode.Space)) { CheckPow(10, 10, 10);  }
 
-        if (hittingPlanetIndex > 0 && hittingPlanetIndex <= transform.childCount-2 && cameraTarget.localPosition.z <= transform.GetChild(hittingPlanetIndex + 1).lossyScale.x / 2f)
+        if (hittingPlanetIndex == transform.childCount - 1 && bloomHighIntensity > theIntensity) { theIntensity += 100 * Time.deltaTime; bloom.intensity.Override(theIntensity); bloom.tint.Override( new Color(theIntensity * 100* Time.deltaTime +10 , 10, 10)); }
+
+        if (hittingPlanetIndex > 0 && hittingPlanetIndex <= transform.childCount-2)
         {
-            cameraTarget.localPosition = new Vector3(cameraTarget.localPosition.x, cameraTarget.localPosition.y, cameraTarget.localPosition.z - 0.01f);
+            cameraTarget.localPosition = new Vector3(cameraTarget.localPosition.x, cameraTarget.localPosition.y, cameraTarget.localPosition.z - 1f * hittingPlanetIndex * Time.deltaTime);
         }
         if (hitStopTimeRemaining > 0f)
         {
             hitStopTimeRemaining -= Time.unscaledDeltaTime;
             return;
         }
-        if(hittingPlanetIndex == finalPlanteIndex && hittingPlanetIndex > 0)
+        if(hittingPlanetIndex-1 == finalPlanteIndex && hittingPlanetIndex > 0)
         {
             //Debug.Log("Sliding");
             slidingTimer -= Time.unscaledDeltaTime;
             if (coastTime > 0f) { ingameSystem.Cucumber.transform.Translate(transform.forward * Time.deltaTime * resultSpeed  );  if(resultSpeed >0) resultSpeed -= deceleration * Time.deltaTime; }
             if (jetEffect.isPlaying) jetEffect.Stop();
-            if(resultSpeed > 0) { AllFinished?.Invoke(); }
+            if(slidingTimer <= 2f )
+            {
+                AllFinished?.Invoke(); 
+                
+                bloom.intensity.Override(bloomLowIntensity); bloom.tint.Override(new Color(0, 0, 0));
+            }
             tranjected = false;
             return;
         }
