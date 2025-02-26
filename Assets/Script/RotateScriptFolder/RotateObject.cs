@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using ChargeShot.Runtime.Ingame;
+using System.Collections.Generic;
+using System;
+using SymphonyFrameWork.System;
 
 public class RotateObject : MonoBehaviour
 {
@@ -12,10 +15,22 @@ public class RotateObject : MonoBehaviour
     public GameObject _targetObject; // 切断したいオブジェクト
     public GameObject _cuttingPlane; // 切断平面
     public Material _capMaterial; // 切断面に適用するマテリアル
-
+    public Transform CucumberPosition;
+    private List<GameObject> _cutObject = new List<GameObject>();
+    public event Action<List<GameObject>> _cutEnd;
+    private int _cutCount = 0;
     private void Awake()
     {
         _targetObject = GameObject.Find("center");
+        _targetObject.transform.position = CucumberPosition.transform.position;
+    }
+    private void Start()
+    {
+        ServiceLocator.SetInstance(this, ServiceLocator.LocateType.Singleton);
+    }
+    private void OnDestroy()
+    {
+        ServiceLocator.DestroyInstance(this);
     }
     void Update()
     {
@@ -39,13 +54,13 @@ public class RotateObject : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (savedRightSide == null)
+            if (_cutCount <= 0)
             {
                 saveFirstRotation = transform.rotation; // 1回目の回転を保存  // 1回目の回転
                 // 最初のカット
                 Cut(_targetObject);
             }
-            else
+            else if (_cutCount == 1)
             {
                 // 右側のオブジェクトをさらにカット
                 Cut(_targetObject);
@@ -53,11 +68,13 @@ public class RotateObject : MonoBehaviour
                 Quaternion secondRotation = transform.rotation;  // 2回目の回転
                 float angleDifference = Quaternion.Angle(saveFirstRotation, secondRotation); // クォータニオンの角度差
                 Debug.Log("回転の変化量 (Quaternion): " + angleDifference + "°");
+                _cutEnd?.Invoke(_cutObject);
             }
         }
     }
     public void Cut(GameObject target)
     {
+
         // オブジェクトを切断
         var pieces = MeshCutService.Cut(target, _cuttingPlane.transform.position, _cuttingPlane.transform.up, _capMaterial);
 
@@ -66,6 +83,8 @@ public class RotateObject : MonoBehaviour
         {
             var leftSide = pieces[0];
             var rightSide = pieces[1];
+            _cutObject.Add(leftSide);
+            _cutObject.Add(rightSide);
             leftSide.AddComponent<MeshCollider>();
             rightSide.AddComponent<MeshCollider>();
             rightSide.transform.position += rightSide.transform.up * -20f;
@@ -78,6 +97,7 @@ public class RotateObject : MonoBehaviour
         {
             Debug.LogError("オブジェクトの切断に失敗しました。");
         }
+        _cutCount++;
     }
     public void Distance(float currentYRotation)
     {
