@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
-using System;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Audio;
-using System.Linq;
 
 public class AudioManager : MonoBehaviour
 {
@@ -16,23 +17,23 @@ public class AudioManager : MonoBehaviour
     {
         Master,
         BGM,
-        SoundEffect,
+        SE,
     }
 
     private Dictionary<AudioType, (AudioMixerGroup group, AudioSource source, float originalVolume)> _audioDict = new();
 
-    [SerializeField] private List<AudioClip> _bgmList = new();
+    [SerializeField] private List<AudioData> _bgmList = new();
     private CancellationTokenSource _bgmChangeToken;
 
     [Serializable]
-    private class SoundEffect
+    private class AudioData
     {
         public float Volume = 1;
         public AudioClip Clip = default;
     }
 
     [SerializeField]
-    private List<SoundEffect> _soundEffectList = new();
+    private List<AudioData> _soundEffectList = new();
 
     private void Awake()
     {
@@ -116,6 +117,33 @@ public class AudioManager : MonoBehaviour
     /// <returns></returns>
     public AudioMixerGroup GetMixerGroup(AudioType type) => _audioDict[type].group;
 
+    public async Task BGMFadeOut(float duration, CancellationToken token = default)
+    {
+        AudioSource source = _audioDict[AudioType.BGM].source;
+
+        while (source.volume > 0)
+        {
+            source.volume -= 1 / (duration / 2) * Time.deltaTime;
+            await Awaitable.NextFrameAsync(token);
+        }
+
+        source.Stop();
+    }
+
+    public async Task BGMFadeIn(float duration, float volume, CancellationToken token = default)
+    {
+        AudioSource source = _audioDict[AudioType.BGM].source;
+
+        source.Play();
+
+        while (source.volume < volume)
+        {
+            source.volume += 1 / (duration / 2) * Time.deltaTime * volume;
+            await Awaitable.NextFrameAsync(token);
+        }
+    }
+
+
     /// <summary>
     /// BGMを変更する
     /// </summary>
@@ -140,40 +168,30 @@ public class AudioManager : MonoBehaviour
         var token = _bgmChangeToken.Token;
 
         AudioSource source = _audioDict[AudioType.BGM].source;
-        AudioClip bgm = _bgmList[index];
+        var data = _bgmList[index];
 
         //BGMをフェードアウト
         try
         {
-            while (source.volume > 0)
-            {
-                source.volume -= duration / 2 * Time.time;
-                await Awaitable.NextFrameAsync(token);
-            }
+            await BGMFadeOut(duration, token);
         }
         finally
         {
             source.volume = 0;
 
             //新たなクリップに差し替え
-            source.Stop();
-            source.clip = bgm;
-            source.Play();
+            source.clip = data.Clip;
         }
 
 
         //BGMをフェードイン
         try
         {
-            while (source.volume < 1)
-            {
-                source.volume += duration / 2 * Time.time;
-                await Awaitable.NextFrameAsync(token);
-            }
+            await BGMFadeIn(duration, data.Volume, token);
         }
         finally
         {
-            source.volume = 1;
+            source.volume = data.Volume;
         }
     }
 
@@ -186,7 +204,7 @@ public class AudioManager : MonoBehaviour
         }
 
         //データを取得して再生
-        AudioSource source = _audioDict[AudioType.SoundEffect].source;
+        AudioSource source = _audioDict[AudioType.SE].source;
         var data = _soundEffectList[index];
 
         source.volume = data.Volume;
