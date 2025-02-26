@@ -28,7 +28,7 @@ public class ShellWork : MonoBehaviour
 
             foreach (GameObject check in planets)
             {
-                if(Mathf.Abs(settedObjLength - check.transform.position.z) < objDuration) settedObjLength += objDuration;
+                if(Mathf.Abs(settedObjLength - check.transform.position.z) < objDuration) settedObjLength += objDuration * 3 ;
             }
 
             Instantiate(breakableObjects[i], new Vector3(0, 0, settedObjLength), Quaternion.identity);
