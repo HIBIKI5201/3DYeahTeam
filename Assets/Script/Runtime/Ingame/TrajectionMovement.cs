@@ -41,13 +41,12 @@ public class TrajectionMovement : MonoBehaviour
         var resultPow= Phase1Data + Phase2Data + Phase3Data;
         for (int i = checkSpeed.Length-1; i  >= 0  ; i--)
         {
-            //Debug.Log(checkSpeed[i]);
+            Debug.Log(checkSpeed[i]);
             if (checkSpeed[i] <= resultPow)
             {
                 TranjectCucumber(i);
                 return;
             }
-                
         }
     }
 
@@ -58,7 +57,7 @@ public class TrajectionMovement : MonoBehaviour
     }
     void TranjectCucumber(int index)
     {
-        resultSpeed = caluculateSpeed[index];
+        resultSpeed = caluculateSpeed[index] + caluculateSpeed[index] / 2;
         deceleration = resultSpeed / 5;
         finalPlanteIndex = index;
         tranjected = true;
@@ -69,7 +68,7 @@ public class TrajectionMovement : MonoBehaviour
     int hittingPlanetIndex = -100;
     int finalPlanteIndex;
     float hitStopTimeRemaining = 0;
-    [SerializeField] float hitStopDuration = 0.5f;
+    [SerializeField] float hitStopDuration = 0.05f;
     [SerializeField] float coastTime = 3f;
     float slidingTimer;
     float resultSpeed;
@@ -79,7 +78,7 @@ public class TrajectionMovement : MonoBehaviour
     private void Update()
     {
         // test用コード
-        //if (Input.GetKeyDown(KeyCode.Space)) { CheckPow(3, 5, 4);  }
+        //if (Input.GetKeyDown(KeyCode.Space)) { CheckPow(10, 10, 10);  }
         if (hitStopTimeRemaining > 0f)
         {
             hitStopTimeRemaining -= Time.unscaledDeltaTime;
