@@ -281,6 +281,10 @@ MonoBehaviour:
   _soundEffectList:
   - Volume: 1
     Clip: {fileID: 8300000, guid: 696588b7babdeee4ca3fdb008321c374, type: 3}
+  - Volume: 1
+    Clip: {fileID: 8300000, guid: 67d74fbb67f09084086a8169fb79c100, type: 3}
+  - Volume: 1
+    Clip: {fileID: 8300000, guid: ffc665ad9ea81ed47876b49600e63b79, type: 3}
 --- !u!114 &589204800
 MonoBehaviour:
   m_ObjectHideFlags: 0

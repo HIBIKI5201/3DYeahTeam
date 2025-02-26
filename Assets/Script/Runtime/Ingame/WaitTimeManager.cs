@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using SymphonyFrameWork.System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.ProBuilder;
 using UnityEngine.UIElements;
@@ -30,6 +31,8 @@ public class WaitTimeManager : MonoBehaviour
         var root = _document.rootVisualElement;
         _firstWaitTimeWindow = root.Q<FirstWaitTimeWindow>();
 
+        var audioMana = ServiceLocator.GetInstance<AudioManager>();
+        audioMana.PlaySoundEffect(1);
         await _firstWaitTimeWindow.InitializeTask;
 
         _chargeManager = GetComponent<ChargeManager>();
