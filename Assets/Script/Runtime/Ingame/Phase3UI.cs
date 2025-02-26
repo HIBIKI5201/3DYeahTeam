@@ -19,6 +19,9 @@ public class Phase3UI : MonoBehaviour
     [SerializeField]
     private Texture2D _buttontexture;
     private float _percent;
+
+    private float _countDown = 1;
+
     private async void Awake()
     {
         _document = GetComponent<UIDocument>();
@@ -42,5 +45,17 @@ public class Phase3UI : MonoBehaviour
     {
         _percent = _chargeManager.PushCounter / _countLimit * 100;
         _phase3Window.Gaugevalue.style.height = Length.Percent(_percent);
+
+        if (_countDown >= 0)
+        {
+            _countDown = _chargeManager.TimeLimit - Time.time - _chargeManager.Timer;
+            _phase3Window.TimerText.text = _countDown.ToString("0.00");
+        }
+        //以下ごり押しコード、直すべきところだが速さを重視して後回しにします
+        else if (_chargeManager.ChargeFinish)
+        {
+            _buttonWindow.ChargeButton.clicked -= _chargeManager.OnClickChargeButton;
+            _phase3Window.TimerText.text = "0.00";
+        }
     }
 }
