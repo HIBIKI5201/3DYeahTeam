@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.ProBuilder.MeshOperations;
+using static UnityEngine.Rendering.DebugUI;
 
 public class TrajectionMovement : MonoBehaviour
 {
@@ -24,8 +25,8 @@ public class TrajectionMovement : MonoBehaviour
 
         await Awaitable.NextFrameAsync();
 
-        float cucumberFixedScale = 0.05f / SerchCucumberLength(ingameSystem.Cucumber.transform.GetChild(0).GetComponent<MeshFilter>());
-        Debug.Log(cucumberFixedScale);
+        float cucumberFixedScale = 0.05f / SerchCucumberLength(ingameSystem.Cucumber.CucumberModel.GetComponent<MeshFilter>());
+        if (float.IsInfinity(cucumberFixedScale)) cucumberFixedScale =0.0001f;
         cameraTarget.parent = ingameSystem.Cucumber.transform;
         effect.transform.parent = ingameSystem.Cucumber.gameObject.transform;
         ingameSystem.Cucumber.transform.GetChild(0).rotation *= new Quaternion(0,Mathf.Sin(Mathf.PI/4),0,Mathf.Cos(Mathf.PI/4));
