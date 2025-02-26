@@ -1,7 +1,9 @@
-﻿using SymphonyFrameWork.System;
+﻿using SymphonyFrameWork.Attribute;
+using SymphonyFrameWork.System;
 using System;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
 public class MainSystem : MonoBehaviour
@@ -13,7 +15,11 @@ public class MainSystem : MonoBehaviour
     private SceneListEnum _nowScene;
     public SceneListEnum NowScene { get => _nowScene; }
 
+    private Volume _volume;
+    public Volume Volume { get => _volume; }
+
 #if UNITY_EDITOR
+    [DisplayText("以下はデバッグ機能")]
     [SerializeField] private SceneListEnum _targetScene;
 
     [ContextMenu("SceneChange")]
@@ -22,6 +28,8 @@ public class MainSystem : MonoBehaviour
     private void Awake()
     {
         _mainUI = GetComponent<MainUI>();
+        _volume = GetComponent<Volume>();
+
         Debug.Log($"ランキングデータを確認\n{string.Join("\n", SaveDataSystem<RankingData>.Data.Datas)}");
 
         //現在のシーンを保存する

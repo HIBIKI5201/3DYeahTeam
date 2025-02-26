@@ -8,4 +8,5 @@
     IngamePhase_2 = 5,
     IngamePhase_3 = 6,
     IngamePhase_Result = 7,
+    SpaceShip = 8,
 }
