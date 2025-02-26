@@ -22,9 +22,14 @@ public class ChargeManager : MonoBehaviour
     private bool _chargeFinish = false;
     public bool ChargeFinish { get => _chargeFinish; }
 
+    private AudioManager _audioManager;
+
     public void Phase3Init()
     {
         _timer = Time.time;
+
+        _audioManager = ServiceLocator.GetInstance<AudioManager>();
+        _audioManager.PlaySoundEffect(16);
 
         //アップデート用コルーチン起動
         StartCoroutine(ChargeManaUpdate());
@@ -35,38 +40,36 @@ public class ChargeManager : MonoBehaviour
     /// </summary>
     private IEnumerator ChargeManaUpdate()
     {
-        while (true)
+        while (!_chargeFinish)
         {
             if (Time.time > _timer + _timeLimit && !_chargeFinish)
             {
                 Phase3End();
-                yield break;
+                Debug.Log("aaa");
             }
 
             if (Input.GetKeyDown(KeyCode.Space) && !_chargeFinish)
             {
-                OnChangePushCounter(_pushUp);
+                OnChangePushCounter();
             }
 
             //時間経過でカウントが減っていく処理
             if (_pushCounter > 0 && !_chargeFinish)
             {
-                OnChangePushCounter(-_waitForSecondsDown * Time.deltaTime);
+                _pushCounter -= _waitForSecondsDown * Time.deltaTime;
             }
             yield return null;
         }
+        yield break;
     }
 
     /// <summary>
     /// ChargeCountの加算加減処理
     /// </summary>
-    public void OnChangePushCounter(float point)
+    public void OnChangePushCounter()
     {
-        if (point == 0)
-        {
-            point = _pushUp;
-        }
-        _pushCounter += point;
+        _audioManager.PlaySoundEffect(2);
+        _pushCounter += _pushUp;
         Debug.Log($"現在値は　{_pushCounter}");
     }
     private void Phase3End()
