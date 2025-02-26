@@ -351,7 +351,7 @@ Transform:
   m_GameObject: {fileID: 1703293933}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -153.5, y: 10320, z: 40043.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -612,7 +612,6 @@ MonoBehaviour:
   _maxPosition: 1000
   _minPosition: -1000
   _capMaterial: {fileID: 6428810894217598949, guid: 7611f4906b289c14e9208ffe8139335d, type: 3}
-  _cucumberMesh: {fileID: -214725659512172608, guid: 7611f4906b289c14e9208ffe8139335d, type: 3}
   _bestTimings:
   - 500
   - -500
@@ -756,7 +755,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!54 &2501328033244762946
 Rigidbody:
@@ -793,8 +792,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2484523971777974876}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1360.5947, y: 940.6701, z: 407.09796}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -875,6 +874,7 @@ GameObject:
   - component: {fileID: 686993656201109004}
   - component: {fileID: 2501328033244762946}
   - component: {fileID: 972582178390099}
+  - component: {fileID: 7436699890367710777}
   m_Layer: 0
   m_Name: cutter
   m_TagString: Untagged
@@ -977,6 +977,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1703293934}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!114 &7436699890367710777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4415124749643786690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c2c69bb427f88f408b097383b690c25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _target: {fileID: 686993656201109004}
 --- !u!1 &7936432805250469829
 GameObject:
   m_ObjectHideFlags: 0

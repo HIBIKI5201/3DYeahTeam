@@ -14,36 +14,39 @@ public class CutterMoveController : MonoBehaviour
     public float _speed = 2.0f; // 移動速度
     public float _maxPosition = 1.0f; // 右端
     public float _minPosition = -1.0f; // 左端
+
     [SerializeField, Header("きゅうり情報")] Material _capMaterial;
-    [SerializeField] Mesh _cucumberMesh;
     private float _currentPosition;
-    private float _defaultXPosition = 0.0f;
+
     [SerializeField, Header("ベストタイミング")] float[] _bestTimings = new float[2];
     private Vector3 _cuttingObjectPosition;
     List<float> _distanceList = new List<float>();
+
     List<GameObject> _cuttingObject = new List<GameObject>();
     private GameObject _targetObject;
-    private GameObject _centerObject;
+
     private bool _movingRight = true;
     private int _cutCount = 0;
     private float diffResult = 0;
     private float _result;
+
     public event Action<GameObject> OnCuttingFinish;
 
     private GameObject _leftSide;
     private GameObject _rightSide;
     private GameObject center;
+
     int initial = 0;
     private IngameSystem _ingameSystem;
     private async void Start()
     {
         await Awaitable.NextFrameAsync();
 
-        ServiceLocator.SetInstance(this, ServiceLocator.LocateType.Singleton);
         _ingameSystem = ServiceLocator.GetInstance<IngameSystem>();
         _ingameSystem.Cucumber.gameObject.SetActive(true);
-        var a = _ingameSystem.Cucumber.CucumberModel;
-        a.AddComponent<BoxCollider>();
+        var a = _ingameSystem.Cucumber;
+        var collider = a.AddComponent<BoxCollider>();
+        collider.isTrigger = true;
 
         _ingameSystem.Cucumber.transform.position = new Vector3(20, 0, 20);
     }
@@ -143,6 +146,7 @@ public class CutterMoveController : MonoBehaviour
         if (_currentPosition >= _maxPosition) _movingRight = false;
         if (_currentPosition <= _minPosition) _movingRight = true;
     }
+
     private void OnDestroy()
     {
         ServiceLocator.DestroyInstance<CutterMoveController>();
@@ -153,7 +157,12 @@ public class CutterMoveController : MonoBehaviour
     public float GetCurrentPosition() => _currentPosition;
     private void OnTriggerEnter(Collider other)
     {
-        _targetObject = other.gameObject;
-       // Debug.Log(_targetObject.name);
+        var filter = other.GetComponentInChildren<MeshFilter>();
+        if (filter)
+        {
+            _targetObject = filter.gameObject;
+
+        }
+        // Debug.Log(_targetObject.name);
     }
 }
