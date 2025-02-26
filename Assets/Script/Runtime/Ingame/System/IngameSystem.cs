@@ -11,8 +11,10 @@ public class IngameSystem : MonoBehaviour
     private Task _loadTask = Task.CompletedTask;
 
     [SerializeField]
-    private GameObject _cucumber;
-    public GameObject Cucumber { get => _cucumber; }
+    private GameObject _cucumberModel;
+
+    private CucumberManager _cucumber;
+    public CucumberManager Cucumber { get => _cucumber; }
     
     private CucumberData _cucumberData = new();
     public CucumberData CucumberData { get => _cucumberData; }
@@ -27,9 +29,12 @@ public class IngameSystem : MonoBehaviour
     private void Start()
     {
         //インゲーム開始時に生成
-        if (_cucumber)
+        if (_cucumberModel)
         {
-            _cucumber = Instantiate(_cucumber, Vector2.zero, Quaternion.identity);
+            var go = Instantiate(_cucumberModel, Vector3.zero, Quaternion.identity);
+            go.transform.localScale = Vector3.one;
+
+            GenerateCucumberManager(go);
         }
 
 #if UNITY_EDITOR
@@ -77,11 +82,20 @@ public class IngameSystem : MonoBehaviour
         //前のインスタンスを破壊
         if (instance != _cucumber)
         {
-            Destroy(_cucumber);
+            Destroy(_cucumber.gameObject);
         }
-        
-        _cucumber = instance;
-        _cucumber.transform.parent = transform;
+
+        GenerateCucumberManager(instance);
+    }
+
+    private void GenerateCucumberManager(GameObject go)
+    {
+        GameObject parent = new GameObject("Cucumber");
+
+        _cucumber = parent.AddComponent<CucumberManager>();
+        _cucumber.Init(go);
+
+        parent.transform.parent = transform;
     }
     
     /// <summary>
