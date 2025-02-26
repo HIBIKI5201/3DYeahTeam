@@ -26,6 +26,9 @@ public class CutterMoveController : MonoBehaviour
     List<GameObject> _cuttingObject = new List<GameObject>();
     private GameObject _targetObject;
 
+    [SerializeField, Header("演出設定")]
+    private Vector3 _knifeOffset = new Vector3(0, 100, 0);
+
     private bool _movingRight = true;
     private int _cutCount = 0;
     private float diffResult = 0;
@@ -49,6 +52,17 @@ public class CutterMoveController : MonoBehaviour
         var cucumber = _ingameSystem.Cucumber.gameObject;
         var collider = cucumber.AddComponent<BoxCollider>();
         collider.isTrigger = true;
+
+        var ship = ServiceLocator.GetInstance<SpaceShip>();
+        if (ship)
+        {
+            var knife = ship.Knife;
+            knife.transform.position = transform.position + _knifeOffset;
+            knife.transform.parent = transform;
+            knife.transform.rotation = Quaternion.Euler(3, -90, 5) * Quaternion.identity;
+
+
+        }
 
         _ingameSystem.Cucumber.transform.position = new Vector3(20, 0, 20) + _cuttingObjectPosition;
     }
