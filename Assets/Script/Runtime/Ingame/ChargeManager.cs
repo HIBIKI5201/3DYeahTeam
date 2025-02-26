@@ -59,12 +59,8 @@ public class ChargeManager : MonoBehaviour
                 _pushCounter -= _waitForSecondsDown;
             }
 
-            //キー入力でカウントに加算する処理
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                _pushCounter += _pushUp;
-                Debug.Log($"現在値は　{_pushCounter}");
-            }
+            _pushCounter += _pushUp;
+            Debug.Log($"現在値は　{_pushCounter}");
         }
     }
 }
