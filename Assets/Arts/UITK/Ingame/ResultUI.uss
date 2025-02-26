@@ -1,7 +1,11 @@
-.window-close {
-    translate: -100% 0;
+.window-open {
+    height: 100%;
+    width: 35%;
+    background-color: rgba(255, 255, 255, 0.25);
+    align-items: center;
     transition-duration: 0.5s;
-    transition-timing-function: ease-in-out;
+    transition-timing-function: ease-out;
+    translate: 0 0;
 }
 
 .window-close {

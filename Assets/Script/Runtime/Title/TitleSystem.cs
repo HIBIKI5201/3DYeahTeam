@@ -1,16 +1,12 @@
+﻿using SymphonyFrameWork.System;
 using UnityEngine;
 
 public class TitleSystem : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        var audio = ServiceLocator.GetInstance<AudioManager>();
+        audio.BGMChanged(0, 1);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
