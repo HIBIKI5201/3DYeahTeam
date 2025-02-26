@@ -17,13 +17,14 @@ public class CutterMoveController : MonoBehaviour
 
     [SerializeField, Header("きゅうり情報")] Material _capMaterial;
     private float _currentPositionX;
+    private float _lastPositionX;
     private Vector3 _firstPos;
 
     [SerializeField, Header("ベストタイミング")] float[] _bestTimings = new float[2];
     private Vector3 _cuttingObjectPosition;
     List<float> _distanceList = new List<float>();
 
-    List<GameObject> _cuttingObject = new List<GameObject>();
+    GameObject[] _cuttingObject = new GameObject[3];
     private GameObject _targetObject;
 
     [SerializeField, Header("演出設定")]
@@ -40,6 +41,11 @@ public class CutterMoveController : MonoBehaviour
 
     int initial = 0;
     private IngameSystem _ingameSystem;
+
+    private void Awake()
+    {
+        _cuttingObject = new GameObject[3];
+    }
     private async void Start()
     {
         _cuttingObjectPosition = transform.position;
@@ -90,14 +96,36 @@ public class CutterMoveController : MonoBehaviour
            _capMaterial);
             if (pieces == null) return;
 
+            _cutCount++;
+
             //戻り値オブジェクトをリストや変数にいれて新規オブジェクトにBoxCollider付与
             var leftSide = pieces[0];
             var rightSide = pieces[1];
-            _cuttingObject.Add(leftSide);
-            _cuttingObject.Add(rightSide);
-            rightSide.AddComponent<BoxCollider>();
-            _distanceList.Add(Mathf.Abs(_bestTimings[_cutCount] - _currentPositionX));
-            _cutCount++;
+
+            if (_cutCount == 1)
+            {
+                _cuttingObject[0] = leftSide;
+                _cuttingObject[2] = rightSide;
+
+                _lastPositionX = _currentPositionX;
+            }
+            else
+            {
+                if (_lastPositionX < _currentPositionX)
+                {
+                    _cuttingObject[1] = leftSide;
+                    _cuttingObject[2] = rightSide;
+                }
+                else
+                {
+                    _cuttingObject[0] = leftSide;
+                    _cuttingObject[1] = rightSide;
+                }
+            }
+
+                rightSide.AddComponent<BoxCollider>();
+            _distanceList.Add(Mathf.Abs(_bestTimings[_cutCount - 1] - _currentPositionX));
+
 
             if (_cutCount == 1)
             {
@@ -127,7 +155,6 @@ public class CutterMoveController : MonoBehaviour
             _cuttingObjectPosition.x = 0;
             _maxPosition = 0;
             if (initial != 0) return;
-            center = right;
         }
         else
         {
@@ -135,8 +162,8 @@ public class CutterMoveController : MonoBehaviour
             _cuttingObjectPosition.x = 0;
             _minPosition = 0;
             if (initial != 0) return;
-            center = left;
         }
+        center = _cuttingObject[1];
         _result = Mathf.Abs((diffResult / 100) - 100);
     }
 
