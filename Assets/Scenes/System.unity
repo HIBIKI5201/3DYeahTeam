@@ -306,10 +306,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mixer: {fileID: 24100000, guid: 018a404777c845143b851e33377e7a7d, type: 2}
-  _bgmList: []
+  _bgmList:
+  - Volume: 1
+    Clip: {fileID: 8300000, guid: 827850b6b27e9b84b8cb249e7674fe3c, type: 3}
   _soundEffectList:
-  - Volume: 0
-    Clip: {fileID: 0}
+  - Volume: 1
+    Clip: {fileID: 8300000, guid: 827850b6b27e9b84b8cb249e7674fe3c, type: 3}
 --- !u!114 &589204800
 MonoBehaviour:
   m_ObjectHideFlags: 0
