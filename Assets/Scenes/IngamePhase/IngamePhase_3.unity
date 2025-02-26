@@ -440,7 +440,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _uiManager: {fileID: 1444628213}
-  _waitTime: 0
+  _waitTime: 3
+  _document: {fileID: 1444628211}
 --- !u!1001 &1313854589
 PrefabInstance:
   m_ObjectHideFlags: 0
