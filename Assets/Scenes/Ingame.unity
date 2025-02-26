@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60f44a37e951fc9469429da3c1cb22e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cucumber: {fileID: 0}
+  _cucumber: {fileID: 2804586601690688328, guid: d4009b81bf197604a8bbe16deaf173bb, type: 3}
 --- !u!4 &1968020122
 Transform:
   m_ObjectHideFlags: 0
