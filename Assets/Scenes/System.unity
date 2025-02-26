@@ -310,7 +310,11 @@ MonoBehaviour:
   - Volume: 1
     Clip: {fileID: 8300000, guid: 99eb47e37e401ba4687133e673df37ac, type: 3}
   - Volume: 1
-    Clip: {fileID: 8300000, guid: 696588b7babdeee4ca3fdb008321c374, type: 3}
+    Clip: {fileID: 8300000, guid: f90171a38747d0944a91c36ca7bf7b63, type: 3}
+  - Volume: 1
+    Clip: {fileID: 8300000, guid: 4cd8a8f694444664e82c5fb5003f256f, type: 3}
+  - Volume: 1
+    Clip: {fileID: 8300000, guid: 2244b3387aab6794fa01bb1c434b2911, type: 3}
 --- !u!114 &589204800
 MonoBehaviour:
   m_ObjectHideFlags: 0
