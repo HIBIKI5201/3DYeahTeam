@@ -9,7 +9,8 @@ public class IngameSystem : MonoBehaviour
     
     private PhaseKind _nowPhase = 0;
     private Task _loadTask = Task.CompletedTask;
-    
+
+    [SerializeField]
     private GameObject _cucumber;
     public GameObject Cucumber { get => _cucumber; }
     
@@ -25,6 +26,12 @@ public class IngameSystem : MonoBehaviour
 
     private void Start()
     {
+        //インゲーム開始時に生成
+        if (_cucumber)
+        {
+            Instantiate(_cucumber, Vector2.zero, Quaternion.identity);
+        }
+
 #if UNITY_EDITOR
         //フェーズシーンから始めた時の特殊処理
         var system = ServiceLocator.GetInstance<MainSystem>();
