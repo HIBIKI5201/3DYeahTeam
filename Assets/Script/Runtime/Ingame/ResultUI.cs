@@ -50,6 +50,9 @@ public class ResultUI : MonoBehaviour
             _list.itemsSource = _breakList;
 
             _list.selectionType = SelectionType.None;
+
+            var backButton = root.Q<Button>("back-to-title-button");
+            backButton.clicked += BackToTitle;
         }
     }
 
@@ -57,5 +60,11 @@ public class ResultUI : MonoBehaviour
     public void OpenResult()
     {
         _parent.RemoveFromClassList("window-close");
+    }
+
+    private void BackToTitle()
+    {
+        var system = ServiceLocator.GetInstance<MainSystem>();
+        system.SceneChange(SceneListEnum.Title);
     }
 }
