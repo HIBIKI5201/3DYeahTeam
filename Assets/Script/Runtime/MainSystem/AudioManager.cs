@@ -123,6 +123,12 @@ public class AudioManager : MonoBehaviour
     /// <param name="duration"></param>
     public async void BGMChanged(int index, float duration)
     {
+        if (_bgmList.Count <= index)
+        {
+            Debug.LogWarning("入力されたインデックスはBGMリストの範囲外です");
+            return;
+        }
+
         //前のBGM変更があれば止める
         if (_bgmChangeToken is { IsCancellationRequested: false })
         {
@@ -173,9 +179,10 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySoundEffect(int index)
     {
-        if (_soundEffectList.Count < index)
+        if (_soundEffectList.Count <= index)
         {
-            Debug.LogWarning("与えられたインデックスはSEリストの範囲外です");
+            Debug.LogWarning("入力されたインデックスはSEリストの範囲外です");
+            return;
         }
 
         //データを取得して再生
