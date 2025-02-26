@@ -15,6 +15,7 @@ public class CutterMoveController : MonoBehaviour
     public float _maxPosition = 1.0f; // 右端
     public float _minPosition = -1.0f; // 左端
     [SerializeField, Header("きゅうり情報")] Material _capMaterial;
+    [SerializeField] Mesh _cucumberMesh;
     private float _currentPosition;
     private float _defaultXPosition = 0.0f;
     [SerializeField, Header("ベストタイミング")] float[] _bestTimings = new float[2];
@@ -33,9 +34,16 @@ public class CutterMoveController : MonoBehaviour
     private GameObject _rightSide;
     private GameObject center;
     int initial = 0;
+    private IngameSystem _ingameSystem;
     private void Start()
     {
         ServiceLocator.SetInstance(this, ServiceLocator.LocateType.Singleton);
+        _ingameSystem = ServiceLocator.GetInstance<IngameSystem>();
+        _ingameSystem.Cucumber.SetActive(true);
+        var a = _ingameSystem.Cucumber.transform.Find("cucumber");
+        a.AddComponent<BoxCollider>();
+
+        _ingameSystem.Cucumber.transform.position = new Vector3(20, 0, 20);
     }
     private void Update()
     {
@@ -75,22 +83,22 @@ public class CutterMoveController : MonoBehaviour
 
     private void MakeDiff()
     {
-        if (_cuttingObjectPosition.z > 0)
+        if (_cuttingObjectPosition.x > 0)
         {
 
-            diffResult += _cuttingObjectPosition.z - _bestTimings[0];
-            _cuttingObjectPosition.z = 0;
+            diffResult += _cuttingObjectPosition.x - _bestTimings[0];
+            _cuttingObjectPosition.x = 0;
             _maxPosition = 0;
             if (initial != 0) return;
-            center = _leftSide;
+            center = _rightSide;
         }
         else
         {
-            diffResult += Mathf.Abs(_cuttingObjectPosition.z - _bestTimings[1]);
-            _cuttingObjectPosition.z = 0;
+            diffResult += Mathf.Abs(_cuttingObjectPosition.x - _bestTimings[1]);
+            _cuttingObjectPosition.x = 0;
             _minPosition = 0;
             if (initial != 0) return;
-            center = _rightSide;
+            center = _leftSide;
         }
         _result = Mathf.Abs((diffResult / 100) - 100);
     }
@@ -123,7 +131,7 @@ public class CutterMoveController : MonoBehaviour
     private void MoveCutter()
     {
         if (_cutCount >= 2) return;
-        _cuttingObjectPosition.z = _currentPosition;
+        _cuttingObjectPosition.x = _currentPosition;
         transform.position = _cuttingObjectPosition;
         if (_movingRight)
             _currentPosition += _speed * Time.deltaTime;
@@ -144,5 +152,6 @@ public class CutterMoveController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         _targetObject = other.gameObject;
+       // Debug.Log(_targetObject.name);
     }
 }

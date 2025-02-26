@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
-using System;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Audio;
-using System.Linq;
 
 public class AudioManager : MonoBehaviour
 {
@@ -116,6 +117,33 @@ public class AudioManager : MonoBehaviour
     /// <returns></returns>
     public AudioMixerGroup GetMixerGroup(AudioType type) => _audioDict[type].group;
 
+    public async Task BGMFadeOut(float duration, CancellationToken token = default)
+    {
+        AudioSource source = _audioDict[AudioType.BGM].source;
+
+        while (source.volume > 0)
+        {
+            source.volume -= 1 / (duration / 2) * Time.deltaTime;
+            await Awaitable.NextFrameAsync(token);
+        }
+
+        source.Stop();
+    }
+
+    public async Task BGMFadeIn(float duration, float volume, CancellationToken token = default)
+    {
+        AudioSource source = _audioDict[AudioType.BGM].source;
+
+        source.Play();
+
+        while (source.volume < volume)
+        {
+            source.volume += 1 / (duration / 2) * Time.deltaTime * volume;
+            await Awaitable.NextFrameAsync(token);
+        }
+    }
+
+
     /// <summary>
     /// BGMを変更する
     /// </summary>
@@ -145,31 +173,21 @@ public class AudioManager : MonoBehaviour
         //BGMをフェードアウト
         try
         {
-            while (source.volume > 0)
-            {
-                source.volume -= duration / 2 * Time.time;
-                await Awaitable.NextFrameAsync(token);
-            }
+            await BGMFadeOut(duration, token);
         }
         finally
         {
             source.volume = 0;
 
             //新たなクリップに差し替え
-            source.Stop();
             source.clip = data.Clip;
-            source.Play();
         }
 
 
         //BGMをフェードイン
         try
         {
-            while (source.volume < data.Volume)
-            {
-                source.volume += duration / 2 * Time.time * data.Volume;
-                await Awaitable.NextFrameAsync(token);
-            }
+            await BGMFadeIn(duration, data.Volume, token);
         }
         finally
         {
