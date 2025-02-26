@@ -16,13 +16,16 @@ public class TrajectionMovement : MonoBehaviour
     ParticleSystem jetEffect;
     [SerializeField]Transform cameraTarget;
 
-    private void Start()
+    async void Start()
     {
         ingameSystem = ServiceLocator.GetInstance<IngameSystem>();
         shellwork = transform.GetComponent<ShellWork>();
         shellwork.hitWithPlanet += SetHitStop;
+
+        await Awaitable.NextFrameAsync();
+
         cameraTarget.parent = ingameSystem.Cucumber.transform;
-        effect.transform.parent = ingameSystem.Cucumber.transform;
+        effect.transform.parent = ingameSystem.Cucumber.gameObject.transform;
         jetEffect = effect.transform.GetComponent<ParticleSystem>();
         Rigidbody rb = ingameSystem.Cucumber.transform.AddComponent<Rigidbody>();
         rb.isKinematic = true;
