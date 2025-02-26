@@ -63,6 +63,7 @@ public class ChoseObjectScript : MonoBehaviour
 
                 // `selectedObject` を `ingameSystem` に送信
                 _ingameSystem.SetCucumberInstance(_selectedObject);
+                _ = SceneLoader.UnloadScene(SceneListEnum.SpaceShip.ToString());
                 _ingameSystem.NextPhaseEvent();
             }
         }

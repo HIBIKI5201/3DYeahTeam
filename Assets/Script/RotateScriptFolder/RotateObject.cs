@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class RotateObject : MonoBehaviour
 {
@@ -87,8 +88,10 @@ public class RotateObject : MonoBehaviour
             var rightSide = pieces[1];
             _cutObject.Add(leftSide);
             _cutObject.Add(rightSide);
-            leftSide.AddComponent<MeshCollider>();
-            rightSide.AddComponent<MeshCollider>();
+
+            MeshColliderRefresh(leftSide);
+            MeshColliderRefresh(rightSide);
+
             rightSide.transform.position += rightSide.transform.up * -20f;
             if (savedRightSide == null)
             {
@@ -100,6 +103,22 @@ public class RotateObject : MonoBehaviour
             Debug.LogError("オブジェクトの切断に失敗しました。");
         }
         _cutCount++;
+    }
+
+    private void MeshColliderRefresh(GameObject gameObject)
+    {
+        MeshCollider collider = null;
+
+        if (!gameObject.TryGetComponent(out collider))
+        {
+            collider = gameObject.AddComponent<MeshCollider>();
+        }
+
+        Mesh mesh = gameObject.GetComponent<MeshFilter>().mesh;
+        mesh.RecalculateNormals();
+        mesh.RecalculateBounds();
+
+        collider.sharedMesh = mesh;
     }
     public void Distance(float currentYRotation)
     {
