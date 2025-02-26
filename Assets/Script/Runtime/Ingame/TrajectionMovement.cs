@@ -164,8 +164,8 @@ public class TrajectionMovement : MonoBehaviour
     
     private void Update()
     {
-        // test用コード
-        //if (Input.GetKeyDown(KeyCode.Space)) { CheckPow(10, 10, 10);  }
+        
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(0)) { CheckPow(ingameSystem.CucumberData.Phase3Data, ingameSystem.CucumberData.Phase2Data, ingameSystem.CucumberData.Phase1Data);  }
 
         if (hittingPlanetIndex == transform.childCount - 1 && bloomHighIntensity > theIntensity) { theIntensity += 100 * Time.deltaTime; bloom.intensity.Override(theIntensity); bloom.tint.Override( new Color(theIntensity * 100* Time.deltaTime +10 , 10, 10)); }
 
