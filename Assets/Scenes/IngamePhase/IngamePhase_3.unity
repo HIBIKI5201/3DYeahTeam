@@ -389,8 +389,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1098029127}
   - component: {fileID: 1098029126}
+  - component: {fileID: 1098029128}
   m_Layer: 0
-  m_Name: ChargeManager
+  m_Name: Phase3Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -426,6 +427,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1098029128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1098029125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db98590ffdaa8c84f930eb3ee365cf69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _uiManager: {fileID: 1444628213}
+  _waitTime: 0
 --- !u!1001 &1313854589
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -793,7 +808,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1444628210}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -815,6 +830,7 @@ MonoBehaviour:
   _chargeManager: {fileID: 1098029126}
   _countLimit: 50
   _buttontexture: {fileID: 2800000, guid: b9768195d61f4fe42a3e82ded096959d, type: 3}
+  _countDown: 1
 --- !u!1001 &1673726912
 PrefabInstance:
   m_ObjectHideFlags: 0

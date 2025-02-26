@@ -1,4 +1,5 @@
 ﻿using SymphonyFrameWork.System;
+using System.Collections;
 using UnityEngine;
 
 public class ChargeManager : MonoBehaviour
@@ -21,51 +22,59 @@ public class ChargeManager : MonoBehaviour
     private bool _chargeFinish = false;
     public bool ChargeFinish { get => _chargeFinish; }
 
-    private void Start()
+    public void Phase3Init()
     {
         _timer = Time.time;
+
+        //アップデート用コルーチン起動
+        StartCoroutine(ChargeManaUpdate());
     }
 
-    private void Update()
+    /// <summary>
+    /// ChargeManaのupdate関数として使用
+    /// </summary>
+    private IEnumerator ChargeManaUpdate()
     {
-        if (!_chargeFinish && Time.time > _timer + _timeLimit)
+        while (true)
         {
-            _chargeFinish = true;
+            if (Time.time > _timer + _timeLimit && !_chargeFinish)
+            {
+                Phase3End();
+                yield break;
+            }
 
-            IngameSystem system = ServiceLocator.GetInstance<IngameSystem>();
-            system.CucumberData.Phase3Data = _pushCounter;//一旦そのままデータを代入しているが、後々スコアにするために計算すると思う
-            system.NextPhaseEvent();
-        }
+            if (Input.GetKeyDown(KeyCode.Space) && !_chargeFinish)
+            {
+                OnChangePushCounter(_pushUp);
+            }
 
-        if (Input.GetKeyDown(KeyCode.Space) && !_chargeFinish)
-        {
-            OnClickChargeButton();
-        }
-
-        //時間経過でカウントが減っていく処理
-        if (_pushCounter > 0 && !_chargeFinish)
-        {
-            _pushCounter -= _waitForSecondsDown * Time.deltaTime;
-        }
-    }
-    public void OnClickChargeButton()
-    {
-        if (Time.time < _timer + _timeLimit)
-        {
-            ChargeAction();
+            //時間経過でカウントが減っていく処理
+            if (_pushCounter > 0 && !_chargeFinish)
+            {
+                OnChangePushCounter(-_waitForSecondsDown * Time.deltaTime);
+            }
+            yield return null;
         }
     }
 
     /// <summary>
-    /// カウントアップとカウントダウンを行うスクリプト
+    /// ChargeCountの加算加減処理
     /// </summary>
-    private void ChargeAction()
+    public void OnChangePushCounter(float point)
     {
-        if (!_chargeFinish)
+        if (point == 0)
         {
-
-            _pushCounter += _pushUp;
-            Debug.Log($"現在値は　{_pushCounter}");
+            point = _pushUp;
         }
+        _pushCounter += point;
+        Debug.Log($"現在値は　{_pushCounter}");
+    }
+    private void Phase3End()
+    {
+        _chargeFinish = true;
+
+        IngameSystem system = ServiceLocator.GetInstance<IngameSystem>();
+        system.CucumberData.Phase3Data = _pushCounter;//一旦そのままデータを代入しているが、後々スコアにするために計算すると思う
+        system.NextPhaseEvent();
     }
 }
