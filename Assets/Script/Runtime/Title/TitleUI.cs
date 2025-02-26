@@ -28,6 +28,14 @@ public class TitleUI : MonoBehaviour
 
     private void OnStart()
     {
+        //SEを再生
+        var audio = ServiceLocator.GetInstance<AudioManager>();
+        audio.PlaySoundEffect(0);
+
+        //BGMを停止
+        _ = audio.BGMFadeOut(2);
+
+        //インゲームをロード
         var system = ServiceLocator.GetInstance<MainSystem>();
         system.SceneChange(SceneListEnum.Ingame);
     }
