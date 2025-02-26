@@ -146,6 +146,8 @@ MonoBehaviour:
   - 30
   effect: {fileID: 821300527}
   cameraTarget: {fileID: 414811048}
+  bloomLowIntensity: 2.1
+  bloomHighIntensity: 150
   hitStopDuration: 0.5
   coastTime: 3
 --- !u!114 &7393221

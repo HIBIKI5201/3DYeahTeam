@@ -46,6 +46,7 @@ public class ShellWork : MonoBehaviour
     {
         animator.SetInteger("index", index);
         hitWithPlanet?.Invoke(index);
+        //Debug.Log(index + "が壊れた");
     }
 
     public void OnChildTriggerEnter(GameObject planet)
