@@ -128,12 +128,18 @@ public class TrajectionMovement : MonoBehaviour
     
     void SetHitStop(int index)
     {
-        audioManager.PlaySoundEffect(0);
+        if(index > transform.childCount /2) PlayExplosionSound(10);
+        else PlayExplosionSound(11);
+
         hitStopTimeRemaining = hitStopDuration;
         hittingPlanetIndex = index;
         
     }
 
+    public void PlayExplosionSound(int i)
+    {
+        audioManager.PlaySoundEffect(i);
+    }
     void SetCrashedName(int i)
     {
         CrashedPlanet crashedPlanet = (CrashedPlanet)i;
