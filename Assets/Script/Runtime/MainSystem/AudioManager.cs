@@ -16,13 +16,23 @@ public class AudioManager : MonoBehaviour
     {
         Master,
         BGM,
-        SoundEffect,
+        SE,
     }
 
     private Dictionary<AudioType, (AudioMixerGroup group, AudioSource source, float originalVolume)> _audioDict = new();
 
-    [SerializeField] private List<AudioClip> _bgmList = new();
+    [SerializeField] private List<AudioData> _bgmList = new();
     private CancellationTokenSource _bgmChangeToken;
+
+    [Serializable]
+    private class AudioData
+    {
+        public float Volume = 1;
+        public AudioClip Clip = default;
+    }
+
+    [SerializeField]
+    private List<AudioData> _soundEffectList = new();
 
     private void Awake()
     {
@@ -63,10 +73,15 @@ public class AudioManager : MonoBehaviour
                 source.playOnAwake = false;
 
                 //初期のボリュームを取得
-                _mixer.GetFloat($"{name}_Volume", out float value);
-
-                //各情報を追加
-                _audioDict.Add(type, (group, source, value));
+                if (_mixer.GetFloat($"{name}_Volume", out float value))
+                {
+                    //各情報を追加
+                    _audioDict.Add(type, (group, source, value));
+                }
+                else
+                {
+                    Debug.LogWarning($"{name}_Volume is not found");
+                }
             }
             else
             {
@@ -108,6 +123,12 @@ public class AudioManager : MonoBehaviour
     /// <param name="duration"></param>
     public async void BGMChanged(int index, float duration)
     {
+        if (_bgmList.Count <= index)
+        {
+            Debug.LogWarning("入力されたインデックスはBGMリストの範囲外です");
+            return;
+        }
+
         //前のBGM変更があれば止める
         if (_bgmChangeToken is { IsCancellationRequested: false })
         {
@@ -119,7 +140,7 @@ public class AudioManager : MonoBehaviour
         var token = _bgmChangeToken.Token;
 
         AudioSource source = _audioDict[AudioType.BGM].source;
-        AudioClip bgm = _bgmList[index];
+        var data = _bgmList[index];
 
         //BGMをフェードアウト
         try
@@ -136,7 +157,7 @@ public class AudioManager : MonoBehaviour
 
             //新たなクリップに差し替え
             source.Stop();
-            source.clip = bgm;
+            source.clip = data.Clip;
             source.Play();
         }
 
@@ -144,15 +165,31 @@ public class AudioManager : MonoBehaviour
         //BGMをフェードイン
         try
         {
-            while (source.volume < 1)
+            while (source.volume < data.Volume)
             {
-                source.volume += duration / 2 * Time.time;
+                source.volume += duration / 2 * Time.time * data.Volume;
                 await Awaitable.NextFrameAsync(token);
             }
         }
         finally
         {
-            source.volume = 1;
+            source.volume = data.Volume;
         }
+    }
+
+    public void PlaySoundEffect(int index)
+    {
+        if (_soundEffectList.Count <= index)
+        {
+            Debug.LogWarning("入力されたインデックスはSEリストの範囲外です");
+            return;
+        }
+
+        //データを取得して再生
+        AudioSource source = _audioDict[AudioType.SE].source;
+        var data = _soundEffectList[index];
+
+        source.volume = data.Volume;
+        source.PlayOneShot(data.Clip);
     }
 }

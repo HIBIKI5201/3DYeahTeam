@@ -4,7 +4,9 @@ using UnityEngine;
 public class ChargeManager : MonoBehaviour
 {
     private float _pushCounter;
+    public float PushCounter { get => _pushCounter; }
     private float _timer;
+    public float Timer { get => _timer; }
 
     [SerializeField]
     private float _pushUp = 3;
@@ -14,13 +16,10 @@ public class ChargeManager : MonoBehaviour
     [Space(10)]
     [SerializeField]
     private float _timeLimit = 5;
+    public float TimeLimit { get => _timeLimit; }
 
-    [Space(10)]
-    [Tooltip("UI上での上限、PushCountは全然上限を超える")]
-    [SerializeField]
-    private float _countLimit = 50;
-
-    private bool _chageFinish = false;
+    private bool _chargeFinish = false;
+    public bool ChargeFinish { get => _chargeFinish; }
 
     private void Start()
     {
@@ -29,13 +28,19 @@ public class ChargeManager : MonoBehaviour
 
     private void Update()
     {
-        if (!_chageFinish && Time.time > _timer + _timeLimit)
+        if (!_chargeFinish && Time.time > _timer + _timeLimit)
         {
-            _chageFinish = true;
+            _chargeFinish = true;
 
             IngameSystem system = ServiceLocator.GetInstance<IngameSystem>();
             system.CucumberData.Phase3Data = _pushCounter;//一旦そのままデータを代入しているが、後々スコアにするために計算すると思う
             system.NextPhaseEvent();
+        }
+
+        //時間経過でカウントが減っていく処理
+        if (_pushCounter > 0 && !_chargeFinish)
+        {
+            _pushCounter -= _waitForSecondsDown;
         }
     }
     public void OnClickChargeButton()
@@ -51,13 +56,8 @@ public class ChargeManager : MonoBehaviour
     /// </summary>
     private void ChargeAction()
     {
-        if (!_chageFinish)
+        if (!_chargeFinish)
         {
-            //時間経過でカウントが減っていく処理
-            if (_pushCounter > 0)
-            {
-                _pushCounter -= _waitForSecondsDown;
-            }
 
             _pushCounter += _pushUp;
             Debug.Log($"現在値は　{_pushCounter}");
