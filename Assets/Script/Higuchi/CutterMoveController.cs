@@ -40,9 +40,8 @@ public class CutterMoveController : MonoBehaviour
         ServiceLocator.SetInstance(this, ServiceLocator.LocateType.Singleton);
         _ingameSystem = ServiceLocator.GetInstance<IngameSystem>();
         _ingameSystem.Cucumber.SetActive(true);
-        GameObject cucumber = GameObject.Find("cucumber");
-        cucumber.AddComponent<BoxCollider>();
-
+        var a = _ingameSystem.Cucumber.transform.Find("cucumber");
+        a.AddComponent<BoxCollider>();
 
         _ingameSystem.Cucumber.transform.position = new Vector3(20, 0, 20);
     }
@@ -91,7 +90,7 @@ public class CutterMoveController : MonoBehaviour
             _cuttingObjectPosition.x = 0;
             _maxPosition = 0;
             if (initial != 0) return;
-            center = _leftSide;
+            center = _rightSide;
         }
         else
         {
@@ -99,7 +98,7 @@ public class CutterMoveController : MonoBehaviour
             _cuttingObjectPosition.x = 0;
             _minPosition = 0;
             if (initial != 0) return;
-            center = _rightSide;
+            center = _leftSide;
         }
         _result = Mathf.Abs((diffResult / 100) - 100);
     }
@@ -153,6 +152,6 @@ public class CutterMoveController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         _targetObject = other.gameObject;
-        Debug.Log(_targetObject.name);
+       // Debug.Log(_targetObject.name);
     }
 }
