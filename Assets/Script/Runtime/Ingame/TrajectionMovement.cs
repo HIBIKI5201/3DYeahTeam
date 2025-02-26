@@ -13,14 +13,14 @@ public class TrajectionMovement : MonoBehaviour
     ShellWork shellwork;
     GameObject effect;
     ParticleSystem jetEffect;
+    [SerializeField]Transform _camera;
 
     private void Start()
     {
-        Camera camera = Camera.main;
         ingameSystem = ServiceLocator.GetInstance<IngameSystem>();
         shellwork = GetComponent<ShellWork>();
         shellwork.hitWithPlanet += SetHitStop;
-        camera.transform.parent = ingameSystem.Cucumber.transform;
+        _camera.transform.parent = ingameSystem.Cucumber.transform;
         effect.transform.parent = ingameSystem.Cucumber.transform;
         jetEffect = effect.GetComponent<ParticleSystem>();
 
@@ -28,6 +28,10 @@ public class TrajectionMovement : MonoBehaviour
         {
             caluculateSpeed.Add( shellwork.Planets[i].transform.position.z / 10 );
         }
+    }
+    private void OnDisable()
+    {
+        _camera.transform.parent = null;
     }
     void CheckPow(float Phase1Data, float Phase2Data, float Phase3Data)
     {
