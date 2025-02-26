@@ -4,6 +4,7 @@ using UnityEngine;
 public class ChargeManager : MonoBehaviour
 {
     private float _pushCounter;
+    public float PushCounter { get => _pushCounter; }
     private float _timer;
 
     [SerializeField]
@@ -14,11 +15,6 @@ public class ChargeManager : MonoBehaviour
     [Space(10)]
     [SerializeField]
     private float _timeLimit = 5;
-
-    [Space(10)]
-    [Tooltip("UI上での上限、PushCountは全然上限を超える")]
-    [SerializeField]
-    private float _countLimit = 50;
 
     private bool _chageFinish = false;
 
