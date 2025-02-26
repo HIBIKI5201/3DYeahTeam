@@ -1,11 +1,10 @@
-﻿using UnityEngine;
-using System;
-using ChargeShot.Runtime.Ingame;
+﻿using ChargeShot.Runtime.Ingame;
 using SymphonyFrameWork.System;
-using Unity.VisualScripting;
+using SymphonyFrameWork.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using SymphonyFrameWork.Utility;
+using UnityEngine;
 /// <summary>
 /// カッターの管理クラス
 /// </summary>
@@ -17,7 +16,8 @@ public class CutterMoveController : MonoBehaviour
     public float _minPosition = -1.0f; // 左端
 
     [SerializeField, Header("きゅうり情報")] Material _capMaterial;
-    private float _currentPosition;
+    private float _currentPositionX;
+    private Vector3 _firstPos;
 
     [SerializeField, Header("ベストタイミング")] float[] _bestTimings = new float[2];
     private Vector3 _cuttingObjectPosition;
@@ -36,8 +36,6 @@ public class CutterMoveController : MonoBehaviour
 
     public event Action<GameObject> OnCuttingFinish;
 
-    private GameObject _leftSide;
-    private GameObject _rightSide;
     private GameObject center;
 
     int initial = 0;
@@ -51,7 +49,9 @@ public class CutterMoveController : MonoBehaviour
         _ingameSystem = ServiceLocator.GetInstance<IngameSystem>();
         var cucumber = _ingameSystem.Cucumber.gameObject;
         var collider = cucumber.AddComponent<BoxCollider>();
+        _targetObject = _ingameSystem.Cucumber.CucumberModel;
         collider.isTrigger = true;
+        _firstPos = cucumber.transform.position;
 
         var ship = ServiceLocator.GetInstance<SpaceShip>();
         if (ship)
@@ -60,8 +60,6 @@ public class CutterMoveController : MonoBehaviour
             knife.transform.position = transform.position + _knifeOffset;
             knife.transform.parent = transform;
             knife.transform.rotation = Quaternion.Euler(3, -90, 5) * Quaternion.identity;
-
-
         }
 
         _ingameSystem.Cucumber.transform.position = new Vector3(20, 0, 20) + _cuttingObjectPosition;
@@ -88,22 +86,31 @@ public class CutterMoveController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            var pieces = MeshCutService.Cut(_targetObject, this.transform.position, this.transform.up,
+            var pieces = MeshCutService.Cut(_targetObject, this.transform.position, this.transform.right,
            _capMaterial);
             if (pieces == null) return;
 
             //戻り値オブジェクトをリストや変数にいれて新規オブジェクトにBoxCollider付与
-            _leftSide = pieces[0];
-            _rightSide = pieces[1];
-            _cuttingObject.Add(_leftSide);
-            _cuttingObject.Add(_rightSide);
-            _rightSide.AddComponent<BoxCollider>();
-            // 右側のオブジェクトを少し移動
-            _rightSide.transform.position += _rightSide.transform.right * -300f;
-            _distanceList.Add(Mathf.Abs(_bestTimings[_cutCount] - _currentPosition));
+            var leftSide = pieces[0];
+            var rightSide = pieces[1];
+            _cuttingObject.Add(leftSide);
+            _cuttingObject.Add(rightSide);
+            rightSide.AddComponent<BoxCollider>();
+            _distanceList.Add(Mathf.Abs(_bestTimings[_cutCount] - _currentPositionX));
             _cutCount++;
 
-            MakeDiff();
+            if (_cutCount == 1)
+            {
+                // 右側のオブジェクトを少し移動
+                leftSide.transform.position += leftSide.transform.right * -300f;
+            }
+            else
+            {
+                // 左側のオブジェクトを少し移動
+                rightSide.transform.position += rightSide.transform.right * 300f;
+            }
+
+            MakeDiff(rightSide, leftSide);
 
             if (_cutCount > 1)
             {
@@ -112,16 +119,15 @@ public class CutterMoveController : MonoBehaviour
         }
     }
 
-    private void MakeDiff()
+    private void MakeDiff(GameObject right, GameObject left)
     {
-        if (_cuttingObjectPosition.x > 0)
+        if (_cuttingObjectPosition.x > _firstPos.x)
         {
-
             diffResult += _cuttingObjectPosition.x - _bestTimings[0];
             _cuttingObjectPosition.x = 0;
             _maxPosition = 0;
             if (initial != 0) return;
-            center = _rightSide;
+            center = right;
         }
         else
         {
@@ -129,7 +135,7 @@ public class CutterMoveController : MonoBehaviour
             _cuttingObjectPosition.x = 0;
             _minPosition = 0;
             if (initial != 0) return;
-            center = _leftSide;
+            center = left;
         }
         _result = Mathf.Abs((diffResult / 100) - 100);
     }
@@ -137,11 +143,7 @@ public class CutterMoveController : MonoBehaviour
     private System.Collections.IEnumerator SendIngameSystem()
     {
 
-        float _distance = 0;
-        foreach (var data in _distanceList)
-        {
-            _distance += data;
-        }
+        float distance = _distanceList.Sum();
 
         center.name = "center";
         Debug.Log($"{center.name}  : {center.gameObject.transform.position}");
@@ -155,6 +157,7 @@ public class CutterMoveController : MonoBehaviour
             if (data.name == "center") continue;
             Destroy(data);
         }
+
         OnCuttingFinish?.Invoke(center);
         Destroy(gameObject);
     }
@@ -166,15 +169,15 @@ public class CutterMoveController : MonoBehaviour
     {
         if (_cutCount >= 2) return;
 
-        _cuttingObjectPosition.x = _currentPosition;
+        _cuttingObjectPosition.x = _currentPositionX;
         transform.position = _cuttingObjectPosition;
         if (_movingRight)
-            _currentPosition += _speed * Time.deltaTime;
+            _currentPositionX += _speed * Time.deltaTime;
         else
-            _currentPosition -= _speed * Time.deltaTime;
+            _currentPositionX -= _speed * Time.deltaTime;
 
-        if (_currentPosition >= _maxPosition) _movingRight = false;
-        if (_currentPosition <= _minPosition) _movingRight = true;
+        if (_currentPositionX >= _maxPosition) _movingRight = false;
+        if (_currentPositionX <= _minPosition) _movingRight = true;
     }
 
     private void OnDestroy()
@@ -184,7 +187,7 @@ public class CutterMoveController : MonoBehaviour
     /// <summary>
     /// 現在の位置を取得
     /// </summary>
-    public float GetCurrentPosition() => _currentPosition;
+    public float GetCurrentPosition() => _currentPositionX;
     private void OnTriggerEnter(Collider other)
     {
         var filter = other.GetComponentInChildren<MeshFilter>();

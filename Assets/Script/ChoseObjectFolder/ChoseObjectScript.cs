@@ -16,9 +16,11 @@ public class ChoseObjectScript : MonoBehaviour
     {
         _ingameSystem = ServiceLocator.GetInstance<IngameSystem>();
     }
-    private void Start()
+    private async void Start()
     {
-        var a = ServiceLocator.GetInstance<RotateObject>();
+        await Awaitable.NextFrameAsync();
+
+        _rotateobj = ServiceLocator.GetInstance<RotateObject>();
         _rotateobj.OnCutEnd += CutEnd;
     }
     private void CutEnd(List<GameObject> gameObjects)
