@@ -1,16 +1,35 @@
 ﻿using UnityEngine;
+using SymphonyFrameWork.System;
+using System.Linq;
 
 public class ChoseObjectScript : MonoBehaviour
 {
     private GameObject selectedObject;
     private Material selectedMaterial;
+    private bool isOkNextPhase;
+    IngameSystem _ingameSystem;
     [SerializeField] private Material isSelectMaterial;
-
+    private void Awake()
+    {
+        _ingameSystem = ServiceLocator.GetInstance<IngameSystem>();
+        selectedObject = GameObject.Find("center");
+        BoxCollider boxCollider = selectedObject.GetComponent<BoxCollider>();
+        Destroy(boxCollider);
+        selectedObject = null;
+    }
     void Update()
     {
         if (Input.GetMouseButtonDown(0)) 
         {
             SelectObject();
+        }
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            if (isOkNextPhase)
+            {
+                _ingameSystem.SetCucumberInstance(selectedObject);
+                _ingameSystem.NextPhaseEvent();
+            }
         }
     }
 
@@ -27,6 +46,7 @@ public class ChoseObjectScript : MonoBehaviour
             {
                 selectedObject.GetComponent<Renderer>().material = selectedMaterial;
             }
+            isOkNextPhase = true;
             selectedObject = hitObject;
             var ChoseGameObjectSize = hitObject.gameObject.GetComponent<MeshFilter>().mesh.bounds.size;
             selectedMaterial = selectedObject.GetComponent<Renderer>().material;

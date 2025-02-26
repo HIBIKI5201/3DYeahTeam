@@ -12,6 +12,11 @@ public class RotateObject : MonoBehaviour
     public GameObject _targetObject; // 切断したいオブジェクト
     public GameObject _cuttingPlane; // 切断平面
     public Material _capMaterial; // 切断面に適用するマテリアル
+
+    private void Awake()
+    {
+        _targetObject = GameObject.Find("center");
+    }
     void Update()
     {
         // 回転方向に応じて回転
