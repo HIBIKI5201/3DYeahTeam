@@ -24,6 +24,16 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private List<AudioClip> _bgmList = new();
     private CancellationTokenSource _bgmChangeToken;
 
+    [Serializable]
+    private class SoundEffect
+    {
+        public float Volume = 1;
+        public AudioClip Clip = default;
+    }
+
+    [SerializeField]
+    private List<SoundEffect> _soundEffectList = new();
+
     private void Awake()
     {
         AudioSourceInit();
@@ -63,10 +73,15 @@ public class AudioManager : MonoBehaviour
                 source.playOnAwake = false;
 
                 //初期のボリュームを取得
-                _mixer.GetFloat($"{name}_Volume", out float value);
-
-                //各情報を追加
-                _audioDict.Add(type, (group, source, value));
+                if (_mixer.GetFloat($"{name}_Volume", out float value))
+                {
+                    //各情報を追加
+                    _audioDict.Add(type, (group, source, value));
+                }
+                else
+                {
+                    Debug.LogWarning($"{name}_Volume is not found");
+                }
             }
             else
             {
@@ -154,5 +169,20 @@ public class AudioManager : MonoBehaviour
         {
             source.volume = 1;
         }
+    }
+
+    public void PlaySoundEffect(int index)
+    {
+        if (_soundEffectList.Count < index)
+        {
+            Debug.LogWarning("与えられたインデックスはSEリストの範囲外です");
+        }
+
+        //データを取得して再生
+        AudioSource source = _audioDict[AudioType.SoundEffect].source;
+        var data = _soundEffectList[index];
+
+        source.volume = data.Volume;
+        source.PlayOneShot(data.Clip);
     }
 }
