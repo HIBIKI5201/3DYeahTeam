@@ -5,6 +5,7 @@ public class RotateObject : MonoBehaviour
 {
     public float rotationSpeed = 50f;  // 回転速度
     public float perfectRotation = 90;
+    private Quaternion saveFirstRotation; // 1回目の回転を保存
     private bool rotatingClockwise = true;  // 時計回りか反時計回りかを管理
     private float currentRotation = 0f;  // 現在の回転角度
     private GameObject savedRightSide;
@@ -35,6 +36,7 @@ public class RotateObject : MonoBehaviour
         {
             if (savedRightSide == null)
             {
+                saveFirstRotation = transform.rotation; // 1回目の回転を保存  // 1回目の回転
                 // 最初のカット
                 Cut(_targetObject);
             }
@@ -43,6 +45,9 @@ public class RotateObject : MonoBehaviour
                 // 右側のオブジェクトをさらにカット
                 Cut(_targetObject);
                 Cut(savedRightSide);
+                Quaternion secondRotation = transform.rotation;  // 2回目の回転
+                float angleDifference = Quaternion.Angle(saveFirstRotation, secondRotation); // クォータニオンの角度差
+                Debug.Log("回転の変化量 (Quaternion): " + angleDifference + "°");
             }
         }
     }
@@ -56,7 +61,9 @@ public class RotateObject : MonoBehaviour
         {
             var leftSide = pieces[0];
             var rightSide = pieces[1];
-            rightSide.transform.position += rightSide.transform.right * -0.1f;
+            leftSide.AddComponent<MeshCollider>();
+            rightSide.AddComponent<MeshCollider>();
+            rightSide.transform.position += rightSide.transform.up * -20f;
             if (savedRightSide == null)
             {
                 savedRightSide = rightSide; // 右側のオブジェクトを保存
