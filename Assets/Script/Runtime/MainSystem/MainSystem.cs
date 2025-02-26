@@ -35,7 +35,8 @@ public class MainSystem : MonoBehaviour
         //インゲームのフェーズから始めた場合の処理
         if (_nowScene == SceneListEnum.IngamePhase_1 ||
             _nowScene == SceneListEnum.IngamePhase_2 ||
-            _nowScene == SceneListEnum.IngamePhase_3)
+            _nowScene == SceneListEnum.IngamePhase_3 ||
+            _nowScene == SceneListEnum.IngamePhase_Result)
         {
             LoadIngameScene();
 
