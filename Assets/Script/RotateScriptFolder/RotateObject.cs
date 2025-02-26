@@ -24,14 +24,7 @@ public class RotateObject : MonoBehaviour
         _targetObject = GameObject.Find("center");
         _targetObject.transform.position = CucumberPosition.transform.position;
     }
-    private void Start()
-    {
-        ServiceLocator.SetInstance(this, ServiceLocator.LocateType.Singleton);
-    }
-    private void OnDestroy()
-    {
-        ServiceLocator.DestroyInstance(this);
-    }
+
     void Update()
     {
         // 回転方向に応じて回転
