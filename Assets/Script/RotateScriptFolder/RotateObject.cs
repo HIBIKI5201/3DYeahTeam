@@ -17,7 +17,7 @@ public class RotateObject : MonoBehaviour
     public Material _capMaterial; // 切断面に適用するマテリアル
     public Transform CucumberPosition;
     private List<GameObject> _cutObject = new List<GameObject>();
-    public event Action<List<GameObject>> _cutEnd;
+    public event Action<List<GameObject>> OnCutEnd;
     private int _cutCount = 0;
     private void Awake()
     {
@@ -68,7 +68,7 @@ public class RotateObject : MonoBehaviour
                 Quaternion secondRotation = transform.rotation;  // 2回目の回転
                 float angleDifference = Quaternion.Angle(saveFirstRotation, secondRotation); // クォータニオンの角度差
                 Debug.Log("回転の変化量 (Quaternion): " + angleDifference + "°");
-                _cutEnd?.Invoke(_cutObject);
+                OnCutEnd?.Invoke(_cutObject);
             }
         }
     }

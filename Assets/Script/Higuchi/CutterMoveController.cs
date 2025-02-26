@@ -5,6 +5,7 @@ using SymphonyFrameWork.System;
 using Unity.VisualScripting;
 using System.Collections.Generic;
 using System.Linq;
+using SymphonyFrameWork.Utility;
 /// <summary>
 /// カッターの管理クラス
 /// </summary>
@@ -40,15 +41,16 @@ public class CutterMoveController : MonoBehaviour
     private IngameSystem _ingameSystem;
     private async void Start()
     {
-        await Awaitable.NextFrameAsync();
+        _cuttingObjectPosition = transform.position;
+
+        await SymphonyTask.WaitUntil(() => SceneLoader.GetExistScene(SceneListEnum.SpaceShip.ToString(), out _));
 
         _ingameSystem = ServiceLocator.GetInstance<IngameSystem>();
-        _ingameSystem.Cucumber.gameObject.SetActive(true);
-        var a = _ingameSystem.Cucumber;
-        var collider = a.AddComponent<BoxCollider>();
+        var cucumber = _ingameSystem.Cucumber.gameObject;
+        var collider = cucumber.AddComponent<BoxCollider>();
         collider.isTrigger = true;
 
-        _ingameSystem.Cucumber.transform.position = new Vector3(20, 0, 20);
+        _ingameSystem.Cucumber.transform.position = new Vector3(20, 0, 20) + _cuttingObjectPosition;
     }
     private void Update()
     {
@@ -60,6 +62,16 @@ public class CutterMoveController : MonoBehaviour
     /// </summary>
     private void CuttingObject()
     {
+        if (2 <= _cutCount)
+        {
+            return;
+        }
+
+        if (!_targetObject)
+        {
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             var pieces = MeshCutService.Cut(_targetObject, this.transform.position, this.transform.up,
@@ -116,11 +128,14 @@ public class CutterMoveController : MonoBehaviour
         {
             _distance += data;
         }
+
         center.name = "center";
         Debug.Log($"{center.name}  : {center.gameObject.transform.position}");
         var inGameSystem = ServiceLocator.GetInstance<IngameSystem>();
         inGameSystem.CucumberData.Phase1Data = _result; //差分の合計値を一旦入れとく
+
         yield return new WaitForSeconds(3f);
+
         foreach (var data in _cuttingObject)
         {
             if (data.name == "center") continue;
@@ -136,6 +151,7 @@ public class CutterMoveController : MonoBehaviour
     private void MoveCutter()
     {
         if (_cutCount >= 2) return;
+
         _cuttingObjectPosition.x = _currentPosition;
         transform.position = _cuttingObjectPosition;
         if (_movingRight)
@@ -163,6 +179,5 @@ public class CutterMoveController : MonoBehaviour
             _targetObject = filter.gameObject;
 
         }
-        // Debug.Log(_targetObject.name);
     }
 }

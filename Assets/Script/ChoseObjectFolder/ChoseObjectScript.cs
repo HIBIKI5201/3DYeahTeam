@@ -1,31 +1,25 @@
-﻿using UnityEngine;
-using SymphonyFrameWork.System;
-using System.Linq;
-using NUnit.Framework;
+﻿using SymphonyFrameWork.System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class ChoseObjectScript : MonoBehaviour
 {
-    private GameObject selectedObject;
-    private Material selectedMaterial;
-    private bool isOkNextPhase;
-    private bool isDone;
+    private GameObject _selectedObject;
+    private Material _selectedMaterial;
+    private bool _isOkNextPhase;
+    private bool _isDone;
     IngameSystem _ingameSystem;
-    [SerializeField] private Material isSelectMaterial;
-    [SerializeField] RotateObject rotateobj;
+    [SerializeField] private Material _isSelectMaterial;
+    [SerializeField] RotateObject _rotateobj;
     List<GameObject> a = new List<GameObject>();
     private void Awake()
     {
         _ingameSystem = ServiceLocator.GetInstance<IngameSystem>();
-        selectedObject = GameObject.Find("center");
-        BoxCollider boxCollider = selectedObject.GetComponent<BoxCollider>();
-        Destroy(boxCollider);
-        selectedObject = null;
     }
     private void Start()
     {
-        //var a = ServiceLocator.GetInstance<RotateObject>();
-        rotateobj._cutEnd += CutEnd;
+        var a = ServiceLocator.GetInstance<RotateObject>();
+        _rotateobj.OnCutEnd += CutEnd;
     }
     private void CutEnd(List<GameObject> gameObjects)
     {
@@ -33,8 +27,8 @@ public class ChoseObjectScript : MonoBehaviour
         {
             a.Add(g);
         }
-       
-        isDone = true;
+
+        _isDone = true;
     }
     void Update()
     {
@@ -45,8 +39,8 @@ public class ChoseObjectScript : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            selectedObject.name = "select";
-            if (isOkNextPhase && isDone)
+            _selectedObject.name = "select";
+            if (_isOkNextPhase && _isDone)
             {
                 // "select" 以外を削除
                 a.RemoveAll(g =>
@@ -60,7 +54,7 @@ public class ChoseObjectScript : MonoBehaviour
                 });
 
                 // `selectedObject` を `ingameSystem` に送信
-                _ingameSystem.SetCucumberInstance(selectedObject);
+                _ingameSystem.SetCucumberInstance(_selectedObject);
                 _ingameSystem.NextPhaseEvent();
             }
         }
@@ -70,22 +64,22 @@ public class ChoseObjectScript : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-       
+
         if (Physics.Raycast(ray, out hit))
         {
             GameObject hitObject = hit.collider.gameObject;
 
-            if (selectedObject != null)
+            if (_selectedObject != null)
             {
-                selectedObject.GetComponent<Renderer>().material = selectedMaterial;
+                _selectedObject.GetComponent<Renderer>().material = _selectedMaterial;
             }
-            isOkNextPhase = true;
-            selectedObject = hitObject;
+            _isOkNextPhase = true;
+            _selectedObject = hitObject;
             var ChoseGameObjectSize = hitObject.gameObject.GetComponent<MeshFilter>().mesh.bounds.size;
-            selectedMaterial = selectedObject.GetComponent<Renderer>().material;
-            selectedObject.GetComponent<Renderer>().material = isSelectMaterial;
-            a.Add(selectedObject);
-            Debug.Log("選択されたオブジェクト: " + selectedObject.name);
+            _selectedMaterial = _selectedObject.GetComponent<Renderer>().material;
+            _selectedObject.GetComponent<Renderer>().material = _isSelectMaterial;
+            a.Add(_selectedObject);
+            Debug.Log("選択されたオブジェクト: " + _selectedObject.name);
             Debug.Log("選択されたオブジェクトのサイズ: " + ChoseGameObjectSize);
         }
     }
