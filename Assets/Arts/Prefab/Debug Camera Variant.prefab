@@ -16,30 +16,6 @@ PrefabInstance:
       propertyPath: m_TagString
       value: EditorOnly
       objectReference: {fileID: 0}
-    - target: {fileID: 4799800784318596068, guid: 4ac8bbfd958912842a8c26916d93388a, type: 3}
-      propertyPath: m_RenderPostProcessing
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6020848476655311543, guid: 4ac8bbfd958912842a8c26916d93388a, type: 3}
-      propertyPath: field of view
-      value: 59
-      objectReference: {fileID: 0}
-    - target: {fileID: 6020848476655311543, guid: 4ac8bbfd958912842a8c26916d93388a, type: 3}
-      propertyPath: m_FocalLength
-      value: 3.5438256
-      objectReference: {fileID: 0}
-    - target: {fileID: 6020848476655311543, guid: 4ac8bbfd958912842a8c26916d93388a, type: 3}
-      propertyPath: m_SensorSize.x
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6020848476655311543, guid: 4ac8bbfd958912842a8c26916d93388a, type: 3}
-      propertyPath: m_SensorSize.y
-      value: 4.01
-      objectReference: {fileID: 0}
-    - target: {fileID: 6020848476655311543, guid: 4ac8bbfd958912842a8c26916d93388a, type: 3}
-      propertyPath: m_projectionMatrixMode
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 6668745022979766028, guid: 4ac8bbfd958912842a8c26916d93388a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
