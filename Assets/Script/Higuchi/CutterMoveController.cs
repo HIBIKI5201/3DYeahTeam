@@ -35,12 +35,14 @@ public class CutterMoveController : MonoBehaviour
     private GameObject center;
     int initial = 0;
     private IngameSystem _ingameSystem;
-    private void Start()
+    private async void Start()
     {
+        await Awaitable.NextFrameAsync();
+
         ServiceLocator.SetInstance(this, ServiceLocator.LocateType.Singleton);
         _ingameSystem = ServiceLocator.GetInstance<IngameSystem>();
-        _ingameSystem.Cucumber.SetActive(true);
-        var a = _ingameSystem.Cucumber.transform.Find("cucumber");
+        _ingameSystem.Cucumber.gameObject.SetActive(true);
+        var a = _ingameSystem.Cucumber.CucumberModel;
         a.AddComponent<BoxCollider>();
 
         _ingameSystem.Cucumber.transform.position = new Vector3(20, 0, 20);
