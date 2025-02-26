@@ -41,7 +41,7 @@ public class TrajectionMovement : MonoBehaviour
         var resultPow= Phase1Data + Phase2Data + Phase3Data;
         for (int i = checkSpeed.Length-1; i  >= 0  ; i--)
         {
-            Debug.Log(checkSpeed[i]);
+            //Debug.Log(checkSpeed[i]);
             if (checkSpeed[i] <= resultPow)
             {
                 TranjectCucumber(i);
@@ -75,9 +75,11 @@ public class TrajectionMovement : MonoBehaviour
     float resultSpeed;
     float deceleration;
     bool tranjected;
+    public Action AllFinished;
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) { CheckPow(3, 5, 4);  }
+        // test用コード
+        //if (Input.GetKeyDown(KeyCode.Space)) { CheckPow(3, 5, 4);  }
         if (hitStopTimeRemaining > 0f)
         {
             hitStopTimeRemaining -= Time.unscaledDeltaTime;
@@ -85,10 +87,11 @@ public class TrajectionMovement : MonoBehaviour
         }
         if(hittingPlanetIndex == finalPlanteIndex && hittingPlanetIndex > 0)
         {
-            Debug.Log("Sliding");
+            //Debug.Log("Sliding");
             slidingTimer -= Time.unscaledDeltaTime;
             if (coastTime > 0f) { ingameSystem.Cucumber.transform.Translate(transform.forward * Time.deltaTime * resultSpeed  );  if(resultSpeed >0) resultSpeed -= deceleration * Time.deltaTime; }
-            if (jetEffect.isPlaying) jetEffect.Stop(); 
+            if (jetEffect.isPlaying) jetEffect.Stop();
+            if(resultSpeed > 0) { AllFinished?.Invoke(); }
             tranjected = false;
             return;
         }
