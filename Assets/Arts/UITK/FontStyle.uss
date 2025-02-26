@@ -1,3 +1,5 @@
 .font {
-    -unity-font-definition: url("project://database/Packages/com.unity.cinemachine/Runtime/Debug/CinemachineRuntimeTheme.tss?fileID=2230732570650464555&guid=df9aec944f4474a04847b6d6375e4138&type=3#NotInter-Regular");
+    -unity-font-definition: url("project://database/Assets/AssetStoreTools/Font/851CHIKARA-YOWAKU_002.ttf?fileID=12800000&guid=595748de8db42994daa8c4921bcf1d83&type=3#851CHIKARA-YOWAKU_002");
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: rgb(0, 0, 0);
 }

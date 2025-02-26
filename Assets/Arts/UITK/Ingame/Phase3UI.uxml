@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement style="flex-grow: 1;">
+        <ui:Button name="ChargeButton" style="width: 193px; height: 186px; top: 826px; left: 1616px; -unity-background-scale-mode: scale-to-fit; background-color: rgb(255, 0, 0);" />
+        <ui:VisualElement style="height: 610px; width: 159px; left: 1710px; top: -37px; background-color: rgba(0, 128, 255, 0);" />
+    </ui:VisualElement>
+</ui:UXML>

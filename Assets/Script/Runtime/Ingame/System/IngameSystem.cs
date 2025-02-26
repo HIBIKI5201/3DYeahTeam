@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using SymphonyFrameWork.System;
 using UnityEngine;
@@ -74,6 +74,7 @@ public class IngameSystem : MonoBehaviour
         }
         
         _cucumber = instance;
+        _cucumber.transform.parent = transform;
     }
     
     /// <summary>

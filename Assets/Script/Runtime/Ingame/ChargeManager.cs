@@ -29,17 +29,20 @@ public class ChargeManager : MonoBehaviour
 
     private void Update()
     {
-        if (Time.time < _timer + _timeLimit)
-        {
-            ChargeAction();
-        }
-        else if (!_chageFinish)
+        if (!_chageFinish && Time.time > _timer + _timeLimit)
         {
             _chageFinish = true;
 
             IngameSystem system = ServiceLocator.GetInstance<IngameSystem>();
             system.CucumberData.Phase3Data = _pushCounter;//一旦そのままデータを代入しているが、後々スコアにするために計算すると思う
             system.NextPhaseEvent();
+        }
+    }
+    public void OnClickChargeButton()
+    {
+        if (Time.time < _timer + _timeLimit)
+        {
+            ChargeAction();
         }
     }
 

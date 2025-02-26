@@ -1,0 +1,8 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Arts/UITK/Ingame/ResultUI.uss?fileID=7433441132597879392&amp;guid=0eb18ffb8360b4646b682ce85f4f40d0&amp;type=3#ResultUI" />
+    <engine:VisualElement class="window-close" style="height: 100%; width: 35%; background-color: rgba(255, 255, 255, 0.25); align-items: center; transition-duration: 0.5s; transition-timing-function: ease-out;">
+        <engine:Label text="Result" style="font-size: 100%; margin-top: 4%; margin-right: 4%; margin-bottom: 4%; margin-left: 4%;" />
+        <engine:Label text="0CP" name="score" style="margin-top: 2%; margin-right: 2%; margin-bottom: 2%; margin-left: 2%; font-size: 50%;" />
+        <engine:ListView name="list" style="width: 70%; height: 70%;" />
+    </engine:VisualElement>
+</engine:UXML>
