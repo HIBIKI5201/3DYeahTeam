@@ -126,11 +126,15 @@ public class AudioManager : MonoBehaviour
             source.volume -= 1 / (duration / 2) * Time.deltaTime;
             await Awaitable.NextFrameAsync(token);
         }
+
+        source.Stop();
     }
 
     public async Task BGMFadeIn(float duration, float volume, CancellationToken token = default)
     {
         AudioSource source = _audioDict[AudioType.BGM].source;
+
+        source.Play();
 
         while (source.volume < volume)
         {
@@ -176,9 +180,7 @@ public class AudioManager : MonoBehaviour
             source.volume = 0;
 
             //新たなクリップに差し替え
-            source.Stop();
             source.clip = data.Clip;
-            source.Play();
         }
 
 
