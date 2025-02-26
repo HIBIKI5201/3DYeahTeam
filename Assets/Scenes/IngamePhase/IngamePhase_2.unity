@@ -331,7 +331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea66d8f27179a9044b769fca4640e939, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isSelectMaterial: {fileID: 0}
+  _isSelectMaterial: {fileID: 2100000, guid: c3ff4470d38de5a4eb3bd9c956ad8226, type: 2}
   _rotateobj: {fileID: 0}
 --- !u!4 &508768774
 Transform:
