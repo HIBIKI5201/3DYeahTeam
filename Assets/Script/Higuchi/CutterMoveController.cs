@@ -49,7 +49,7 @@ public class CutterMoveController : MonoBehaviour
                 var rightSide = pieces[1];
                 rightSide.AddComponent<BoxCollider>();
                 // 右側のオブジェクトを少し移動
-                rightSide.transform.position += rightSide.transform.up * 0.5f;
+                rightSide.transform.position += rightSide.transform.up * 300f;
                 _distanceList.Add(Mathf.Abs(_bestTimings[_cutCount] - _currentPosition));
                 _cutCount++;
                 if (_cutCount > 1)
