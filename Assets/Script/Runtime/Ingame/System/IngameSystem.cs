@@ -31,7 +31,7 @@ public class IngameSystem : MonoBehaviour
         //インゲーム開始時に生成
         if (_cucumberModel)
         {
-            var go = Instantiate(_cucumberModel, Vector2.zero, Quaternion.identity);
+            var go = Instantiate(_cucumberModel, Vector3.zero, Quaternion.identity);
             go.transform.localScale = Vector3.one;
 
             GenerateCucumberManager(go);
@@ -92,8 +92,8 @@ public class IngameSystem : MonoBehaviour
     {
         GameObject parent = new GameObject("Cucumber");
 
-        var manager = parent.AddComponent<CucumberManager>();
-        manager.Init(go);
+        _cucumber = parent.AddComponent<CucumberManager>();
+        _cucumber.Init(go);
 
         parent.transform.parent = transform;
     }
