@@ -28,6 +28,11 @@ public class CutterMoveController : MonoBehaviour
     private float diffResult = 0;
     private float _result;
     public event Action<GameObject> OnCuttingFinish;
+
+    private GameObject _leftSide;
+    private GameObject _rightSide;
+    private GameObject center;
+    int initial = 0;
     private void Start()
     {
         ServiceLocator.SetInstance(this, ServiceLocator.LocateType.Singleton);
@@ -49,13 +54,13 @@ public class CutterMoveController : MonoBehaviour
             if (pieces == null) return;
 
             //戻り値オブジェクトをリストや変数にいれて新規オブジェクトにBoxCollider付与
-            var leftSide = pieces[0];
-            var rightSide = pieces[1];
-            _cuttingObject.Add(leftSide);
-            _cuttingObject.Add(rightSide);
-            rightSide.AddComponent<BoxCollider>();
+            _leftSide = pieces[0];
+            _rightSide = pieces[1];
+            _cuttingObject.Add(_leftSide);
+            _cuttingObject.Add(_rightSide);
+            _rightSide.AddComponent<BoxCollider>();
             // 右側のオブジェクトを少し移動
-            rightSide.transform.position += rightSide.transform.right * -300f;
+            _rightSide.transform.position += _rightSide.transform.right * -300f;
             _distanceList.Add(Mathf.Abs(_bestTimings[_cutCount] - _currentPosition));
             _cutCount++;
 
@@ -72,17 +77,22 @@ public class CutterMoveController : MonoBehaviour
     {
         if (_cuttingObjectPosition.z > 0)
         {
+
             diffResult += _cuttingObjectPosition.z - _bestTimings[0];
             _cuttingObjectPosition.z = 0;
             _maxPosition = 0;
+            if (initial != 0) return;
+            center = _leftSide;
         }
         else
         {
             diffResult += Mathf.Abs(_cuttingObjectPosition.z - _bestTimings[1]);
             _cuttingObjectPosition.z = 0;
             _minPosition = 0;
+            if(initial != 0) return;
+            center = _rightSide;
         }
-         _result = Mathf.Abs((diffResult / 100) - 100);
+        _result = Mathf.Abs((diffResult / 100) - 100);
     }
 
     private System.Collections.IEnumerator SendIngameSystem()
@@ -93,12 +103,12 @@ public class CutterMoveController : MonoBehaviour
             _distance += data;
         }
 
-        var centerObject = _cuttingObject.OrderBy(obj => Mathf.Abs(obj.transform.position.x)).First(); //真ん中のきゅうりを求める
-
+        Debug.Log($"{center.name}  : {center.gameObject.transform.position}");
         var inGameSystem = ServiceLocator.GetInstance<IngameSystem>();
         inGameSystem.CucumberData.Phase1Data = _result; //差分の合計値を一旦入れとく
         yield return new WaitForSeconds(3f);
-        OnCuttingFinish?.Invoke(centerObject);
+        OnCuttingFinish?.Invoke(center);
+        Destroy(gameObject);
     }
 
     /// <summary>
