@@ -24,8 +24,12 @@ public class TrajectionMovement : MonoBehaviour
 
         await Awaitable.NextFrameAsync();
 
+        float cucumberFixedScale = 0.05f / SerchCucumberLength(ingameSystem.Cucumber.transform.GetChild(0).GetComponent<MeshFilter>());
+        Debug.Log(cucumberFixedScale);
         cameraTarget.parent = ingameSystem.Cucumber.transform;
         effect.transform.parent = ingameSystem.Cucumber.gameObject.transform;
+        ingameSystem.Cucumber.transform.GetChild(0).rotation *= new Quaternion(0,Mathf.Sin(Mathf.PI/4),0,Mathf.Cos(Mathf.PI/4));
+        ingameSystem.Cucumber.transform.GetChild(0).localScale = new Vector3(cucumberFixedScale, cucumberFixedScale, cucumberFixedScale);
         jetEffect = effect.transform.GetComponent<ParticleSystem>();
         Rigidbody rb = ingameSystem.Cucumber.transform.AddComponent<Rigidbody>();
         rb.isKinematic = true;
@@ -38,6 +42,39 @@ public class TrajectionMovement : MonoBehaviour
         }
     }
 
+    float SerchCucumberLength(MeshFilter meshFilter)
+    {
+        float longestEdgeLength = 0f;
+        if (meshFilter != null)
+        {
+            // メッシュの頂点と三角形インデックスを取得
+            Mesh mesh = meshFilter.mesh;
+            Vector3[] vertices = mesh.vertices;
+            int[] triangles = mesh.triangles;
+
+            
+
+            // 三角形の辺を計算
+            for (int i = 0; i < triangles.Length; i += 3)
+            {
+                // 三角形の3つの頂点インデックスを取得
+                int index0 = triangles[i];
+                int index1 = triangles[i + 1];
+                int index2 = triangles[i + 2];
+
+                // 三角形の辺の長さを計算
+                float edge01 = Vector3.Distance(vertices[index0], vertices[index1]);
+                float edge12 = Vector3.Distance(vertices[index1], vertices[index2]);
+                float edge20 = Vector3.Distance(vertices[index2], vertices[index0]);
+
+                // 一番長い辺を見つける
+                float longestEdgeInTriangle = Mathf.Max(edge01, edge12, edge20);
+                longestEdgeLength = Mathf.Max(longestEdgeLength, longestEdgeInTriangle);
+            }
+            
+        }
+        return longestEdgeLength;
+    }
 
     void CheckPow(float Phase1Data, float Phase2Data, float Phase3Data)
     {
@@ -81,9 +118,9 @@ public class TrajectionMovement : MonoBehaviour
     private void Update()
     {
         // test用コード
-        //if (Input.GetKeyDown(KeyCode.Space)) { CheckPow(10, 10, 10);  }
+        if (Input.GetKeyDown(KeyCode.Space)) { CheckPow(10, 10, 10);  }
 
-        if (hittingPlanetIndex > 0 && hittingPlanetIndex <= transform.childCount-2 && cameraTarget.localPosition.z <= transform.GetChild(hittingPlanetIndex + 1).localScale.x / 2f)
+        if (hittingPlanetIndex > 0 && hittingPlanetIndex <= transform.childCount-2 && cameraTarget.localPosition.z <= transform.GetChild(hittingPlanetIndex + 1).lossyScale.x / 2f)
         {
             cameraTarget.localPosition = new Vector3(cameraTarget.localPosition.x, cameraTarget.localPosition.y, cameraTarget.localPosition.z - 0.01f);
         }
