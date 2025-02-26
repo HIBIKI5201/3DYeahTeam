@@ -29,17 +29,20 @@ public class ChargeManager : MonoBehaviour
 
     private void Update()
     {
-        if (Time.time < _timer + _timeLimit)
-        {
-            ChargeAction();
-        }
-        else if (!_chageFinish)
+        if (!_chageFinish && Time.time > _timer + _timeLimit)
         {
             _chageFinish = true;
 
             IngameSystem system = ServiceLocator.GetInstance<IngameSystem>();
             system.CucumberData.Phase3Data = _pushCounter;//一旦そのままデータを代入しているが、後々スコアにするために計算すると思う
             system.NextPhaseEvent();
+        }
+    }
+    public void OnClickChargeButton()
+    {
+        if (Time.time < _timer + _timeLimit)
+        {
+            ChargeAction();
         }
     }
 
@@ -56,12 +59,8 @@ public class ChargeManager : MonoBehaviour
                 _pushCounter -= _waitForSecondsDown;
             }
 
-            //キー入力でカウントに加算する処理
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                _pushCounter += _pushUp;
-                Debug.Log($"現在値は　{_pushCounter}");
-            }
+            _pushCounter += _pushUp;
+            Debug.Log($"現在値は　{_pushCounter}");
         }
     }
 }
