@@ -81,7 +81,7 @@ public class TrajectionMovement : MonoBehaviour
     private void Update()
     {
         // test用コード
-        if (Input.GetKeyDown(KeyCode.Space)) { CheckPow(10, 10, 10);  }
+        //if (Input.GetKeyDown(KeyCode.Space)) { CheckPow(10, 10, 10);  }
 
         if (hittingPlanetIndex > 0 && hittingPlanetIndex <= transform.childCount-2 && cameraTarget.localPosition.z <= transform.GetChild(hittingPlanetIndex + 1).localScale.x / 2f)
         {
