@@ -147,7 +147,7 @@ public class AudioManager : MonoBehaviour
         {
             while (source.volume > 0)
             {
-                source.volume -= duration / 2 * Time.time;
+                source.volume -= 1/ (duration / 2) * Time.deltaTime;
                 await Awaitable.NextFrameAsync(token);
             }
         }
@@ -167,7 +167,8 @@ public class AudioManager : MonoBehaviour
         {
             while (source.volume < data.Volume)
             {
-                source.volume += duration / 2 * Time.time * data.Volume;
+                source.volume +=1/ (duration / 2) * Time.deltaTime * data.Volume;
+                Debug.Log($"volume {source.volume}");
                 await Awaitable.NextFrameAsync(token);
             }
         }
