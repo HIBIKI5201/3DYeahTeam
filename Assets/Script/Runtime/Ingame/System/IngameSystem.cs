@@ -29,7 +29,7 @@ public class IngameSystem : MonoBehaviour
         //インゲーム開始時に生成
         if (_cucumber)
         {
-            Instantiate(_cucumber, Vector2.zero, Quaternion.identity);
+            _cucumber = Instantiate(_cucumber, Vector2.zero, Quaternion.identity);
         }
 
 #if UNITY_EDITOR
