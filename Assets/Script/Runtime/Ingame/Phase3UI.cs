@@ -6,10 +6,12 @@ public class Phase3UI : MonoBehaviour
 {
     private UIDocument _document;
 
-    private Phase3Window _phase3Window;
+    private IngameButtonWindow _buttonWindow;
 
     [SerializeField]
     private ChargeManager _chargeManager;
+    [SerializeField]
+    private Texture2D _buttontexture;
 
     private async void Awake()
     {
@@ -19,11 +21,12 @@ public class Phase3UI : MonoBehaviour
         if (_document)
         {
             var root = _document.rootVisualElement;
-            _phase3Window = root.Q<Phase3Window>();
+            _buttonWindow = root.Q<IngameButtonWindow>();
 
-            await _phase3Window.InitializeTask;
+            await _buttonWindow.InitializeTask;
 
-            _phase3Window.ChargeButton.clicked += _chargeManager.OnClickChargeButton;
+            _buttonWindow.ChargeButton.clicked += _chargeManager.OnClickChargeButton;
+            _buttonWindow.ChargeButton.style.backgroundImage = new StyleBackground(_buttontexture);
         }
     }
 }
