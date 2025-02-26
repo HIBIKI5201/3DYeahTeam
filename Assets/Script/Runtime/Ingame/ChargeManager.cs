@@ -37,6 +37,11 @@ public class ChargeManager : MonoBehaviour
             system.NextPhaseEvent();
         }
 
+        if (Input.GetKeyDown(KeyCode.Space) && !_chargeFinish)
+        {
+            OnClickChargeButton();
+        }
+
         //時間経過でカウントが減っていく処理
         if (_pushCounter > 0 && !_chargeFinish)
         {
