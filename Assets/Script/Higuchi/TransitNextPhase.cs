@@ -17,6 +17,7 @@ public class TransitNextPhase : MonoBehaviour
         try
         {
             _ingameSystem.SetCucumberInstance(centerCucumber);
+            _ingameSystem.NextPhaseEvent();
         }
         catch
         {
