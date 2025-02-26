@@ -50,6 +50,7 @@ public class TrajectionMovement : MonoBehaviour
         postPro.profile.TryGet<Bloom>(out bloom);
         bloom.intensity.Override(bloomLowIntensity);
 
+        ingameSystem.Cucumber.transform.position = Vector3.zero;
         float cucumberFixedScale = 0.05f / SerchCucumberLength(ingameSystem.Cucumber.CucumberModel.GetComponent<MeshFilter>());
         if (float.IsInfinity(cucumberFixedScale)) cucumberFixedScale =0.0001f;
         cameraTarget.parent = ingameSystem.Cucumber.transform;
