@@ -67,7 +67,6 @@ public class Phase3UI : MonoBehaviour
             if (_countDown >= 0)
             {
                 //カウントダウン用のテキストを表示
-                Debug.Log($"{_chargeManager.TimeLimit} , {_timer}, {Time.time}");
                 _countDown = (_chargeManager.TimeLimit + _timer) - Time.time;
                 _phase3Window.TimerText.text = _countDown.ToString("0.00");
             }
