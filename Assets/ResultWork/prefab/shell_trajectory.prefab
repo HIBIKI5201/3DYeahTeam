@@ -58394,7 +58394,6 @@ GameObject:
   - component: {fileID: 5214653676279839029}
   - component: {fileID: 300725019542656839}
   - component: {fileID: 4139737115277202676}
-  - component: {fileID: 4102649130187696460}
   m_Layer: 0
   m_Name: shell_trajectory
   m_TagString: Untagged
@@ -58458,28 +58457,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f3294876c48cc44486c67a74b807b26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4102649130187696460
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8047428310939969753}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe8826923e1ae5f4fb97227f1bf9e39b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  checkSpeed:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  hitStopDuration: 0.5
-  coastTime: 3
 --- !u!1 &8047540764868079345
 GameObject:
   m_ObjectHideFlags: 0
