@@ -90,6 +90,9 @@ public class ChoseObjectScript : MonoBehaviour
             a.Add(_selectedObject);
             Debug.Log("選択されたオブジェクト: " + _selectedObject.name);
             Debug.Log("選択されたオブジェクトのサイズ: " + ChoseGameObjectSize);
+            var rotateObj =  ServiceLocator.GetInstance<RotateObject>();
+
+            rotateObj.Distance(rotateObj.AngleDifference);
         }
     }
 }
