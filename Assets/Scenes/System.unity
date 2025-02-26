@@ -285,6 +285,32 @@ MonoBehaviour:
     Clip: {fileID: 8300000, guid: 67d74fbb67f09084086a8169fb79c100, type: 3}
   - Volume: 1
     Clip: {fileID: 8300000, guid: ffc665ad9ea81ed47876b49600e63b79, type: 3}
+  - Volume: 1
+    Clip: {fileID: 8300000, guid: 9eee8f2de5412324e8495a9fd1078604, type: 3}
+  - Volume: 1
+    Clip: {fileID: 8300000, guid: 692ac4e52423a31449a80b38b8c8c470, type: 3}
+  - Volume: 1
+    Clip: {fileID: 8300000, guid: cf1b39a51afb88640a9067d107a1a122, type: 3}
+  - Volume: 1
+    Clip: {fileID: 8300000, guid: 8582b844610595241938c92f5305d759, type: 3}
+  - Volume: 1
+    Clip: {fileID: 8300000, guid: 243adc8700049ce4c8cde7268a98abd7, type: 3}
+  - Volume: 1
+    Clip: {fileID: 8300000, guid: fb6b4d7f0dd4cd244950e8ea9947aac4, type: 3}
+  - Volume: 1
+    Clip: {fileID: 8300000, guid: 66fc4f82b40759446a151bfc6cc81e1f, type: 3}
+  - Volume: 1
+    Clip: {fileID: 8300000, guid: f9d66ebc6c433354280d7e46c5ef1a8b, type: 3}
+  - Volume: 1
+    Clip: {fileID: 8300000, guid: 692c4affb91a1a94f93d715a1616e96b, type: 3}
+  - Volume: 1
+    Clip: {fileID: 8300000, guid: 8bf6ed911fcad414095677242efc7fe8, type: 3}
+  - Volume: 1
+    Clip: {fileID: 8300000, guid: 20c8ecd806605c242a5b038c3f83475b, type: 3}
+  - Volume: 1
+    Clip: {fileID: 8300000, guid: 99eb47e37e401ba4687133e673df37ac, type: 3}
+  - Volume: 1
+    Clip: {fileID: 8300000, guid: 696588b7babdeee4ca3fdb008321c374, type: 3}
 --- !u!114 &589204800
 MonoBehaviour:
   m_ObjectHideFlags: 0
