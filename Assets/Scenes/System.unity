@@ -304,7 +304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 574cc65290bbf8b499bb7396c19d1f89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mixer: {fileID: 0}
+  _mixer: {fileID: 24100000, guid: 018a404777c845143b851e33377e7a7d, type: 2}
   _bgmList: []
 --- !u!1001 &1574873261567425549
 PrefabInstance:
