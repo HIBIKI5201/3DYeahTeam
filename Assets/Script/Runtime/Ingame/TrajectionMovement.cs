@@ -172,4 +172,9 @@ public class TrajectionMovement : MonoBehaviour
         
     }
 
+#if UNITY_EDITOR
+    [ContextMenu("CheckPow")]
+    private void CheckPowDebug() => CheckPow(10, 10, 10);
+#endif
+
 }
