@@ -912,7 +912,7 @@ MonoBehaviour:
     m_Value: 0
   xMultiplier:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.179
   yMultiplier:
     m_OverrideState: 1
     m_Value: 1
