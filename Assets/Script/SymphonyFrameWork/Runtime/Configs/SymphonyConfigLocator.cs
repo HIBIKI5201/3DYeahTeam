@@ -1,9 +1,9 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using SymphonyFrameWork.Core;
-using SymphonyFrameWork.Editor;
 using UnityEngine;
 #if UNITY_EDITOR
+using SymphonyFrameWork.Editor;
 using UnityEditor;
 #endif
 
@@ -15,7 +15,9 @@ namespace SymphonyFrameWork.Config
         private static readonly Dictionary<Type, PathType> _typeDict = new()
         {
             { typeof(SceneManagerConfig), PathType.Runtime },
+#if UNITY_EDITOR
             { typeof(AutoEnumGeneratorConfig), PathType.Editor }
+#endif
         };
 
         /// <summary>
@@ -31,7 +33,9 @@ namespace SymphonyFrameWork.Config
             var path = type switch
             {
                 PathType.Runtime => SymphonyConstant.RESOURCES_RUNTIME_PATH,
+#if UNITY_EDITOR
                 PathType.Editor => SymphonyConstant.RESOURCES_EDITOR_PATH,
+#endif
                 _ => string.Empty
             } + "/";
 
@@ -75,7 +79,9 @@ namespace SymphonyFrameWork.Config
         private enum PathType
         {
             Runtime,
+#if UNITY_EDITOR
             Editor
+#endif
         }
     }
 }

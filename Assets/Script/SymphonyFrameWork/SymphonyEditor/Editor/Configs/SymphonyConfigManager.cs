@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿#if UNITY_EDITOR
+using System.IO;
 using SymphonyFrameWork.Config;
 using SymphonyFrameWork.Debugger;
 using UnityEditor;
@@ -61,3 +62,4 @@ namespace SymphonyFrameWork.Editor
         }
     }
 }
+#endif

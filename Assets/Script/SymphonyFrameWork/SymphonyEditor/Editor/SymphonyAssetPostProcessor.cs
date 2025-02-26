@@ -1,4 +1,5 @@
-﻿using SymphonyFrameWork.Core;
+﻿#if UNITY_EDITOR
+using SymphonyFrameWork.Core;
 using UnityEditor;
 
 namespace SymphonyFrameWork.Editor
@@ -100,3 +101,4 @@ namespace SymphonyFrameWork.Editor
         }
     }
 }
+#endif

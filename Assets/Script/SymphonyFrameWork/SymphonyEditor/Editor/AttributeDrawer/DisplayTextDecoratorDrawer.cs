@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿#if UNITY_EDITOR
+using UnityEditor;
 using UnityEngine;
 
 namespace SymphonyFrameWork.Attribute
@@ -32,3 +33,4 @@ namespace SymphonyFrameWork.Attribute
         }
     }
 }
+#endif

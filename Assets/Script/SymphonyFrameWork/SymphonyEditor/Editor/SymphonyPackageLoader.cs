@@ -1,8 +1,9 @@
-﻿using System.Collections.Concurrent;
-using System.Linq;
-using System.Threading.Tasks;
+﻿# if UNITY_EDITOR
 using SymphonyFrameWork.Core;
 using SymphonyFrameWork.Utility;
+using System.Collections.Concurrent;
+using System.Linq;
+using System.Threading.Tasks;
 using UnityEditor;
 using UnityEditor.PackageManager;
 using UnityEngine;
@@ -145,3 +146,4 @@ namespace SymphonyFrameWork.Editor
         }
     }
 }
+#endif

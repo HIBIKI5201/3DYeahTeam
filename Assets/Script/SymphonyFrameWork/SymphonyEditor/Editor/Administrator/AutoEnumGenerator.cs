@@ -1,3 +1,4 @@
+﻿#if UNITY_EDITOR
 using System.IO;
 using System.Linq;
 using SymphonyFrameWork.Config;
@@ -37,3 +38,4 @@ namespace SymphonyFrameWork.Editor
         }
     }
 }
+#endif

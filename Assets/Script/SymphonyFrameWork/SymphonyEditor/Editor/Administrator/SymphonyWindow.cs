@@ -1,4 +1,5 @@
-﻿using SymphonyFrameWork.Config;
+﻿#if UNITY_EDITOR
+using SymphonyFrameWork.Config;
 using SymphonyFrameWork.Core;
 using UnityEditor;
 using UnityEngine;
@@ -97,3 +98,4 @@ namespace SymphonyFrameWork.Editor
         #endregion
     }
 }
+#endif

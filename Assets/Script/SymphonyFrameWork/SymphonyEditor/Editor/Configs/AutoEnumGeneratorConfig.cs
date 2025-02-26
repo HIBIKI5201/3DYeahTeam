@@ -1,3 +1,4 @@
+﻿#if UNITY_EDITOR
 using SymphonyFrameWork.Attribute;
 using UnityEngine;
 
@@ -14,3 +15,4 @@ namespace SymphonyFrameWork.Editor
         }
     }
 }
+#endif
