@@ -89,7 +89,7 @@ public class CutterMoveController : MonoBehaviour
             diffResult += Mathf.Abs(_cuttingObjectPosition.z - _bestTimings[1]);
             _cuttingObjectPosition.z = 0;
             _minPosition = 0;
-            if(initial != 0) return;
+            if (initial != 0) return;
             center = _rightSide;
         }
         _result = Mathf.Abs((diffResult / 100) - 100);
@@ -97,16 +97,22 @@ public class CutterMoveController : MonoBehaviour
 
     private System.Collections.IEnumerator SendIngameSystem()
     {
+
         float _distance = 0;
         foreach (var data in _distanceList)
         {
             _distance += data;
         }
-
+        center.name = "center";
         Debug.Log($"{center.name}  : {center.gameObject.transform.position}");
         var inGameSystem = ServiceLocator.GetInstance<IngameSystem>();
         inGameSystem.CucumberData.Phase1Data = _result; //差分の合計値を一旦入れとく
         yield return new WaitForSeconds(3f);
+        foreach (var data in _cuttingObject)
+        {
+            if (data.name == "center") continue;
+            Destroy(data);
+        }
         OnCuttingFinish?.Invoke(center);
         Destroy(gameObject);
     }
