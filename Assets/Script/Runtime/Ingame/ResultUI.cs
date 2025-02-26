@@ -39,12 +39,13 @@ public class ResultUI : MonoBehaviour
             _list.bindItem = (element, index) =>
             {
                 var value = _breakList[index];
-                (element as Label).text = $"<strike>value</strike>";
+                var label = element as Label;
+                label.enableRichText = true;
+                label.text = $"<strike>value</strike>";
             };
             _list.itemsSource = _breakList;
 
             _list.selectionType = SelectionType.None;
-            _list.fixedItemHeight = _list.style.fontSize.value.value;
         }
     }
 

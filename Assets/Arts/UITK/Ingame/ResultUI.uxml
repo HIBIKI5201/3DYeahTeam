@@ -3,6 +3,6 @@
     <engine:VisualElement name="parent" class="window-open window-close">
         <engine:Label text="Result" style="font-size: 100%; margin-top: 4%; margin-right: 4%; margin-bottom: 4%; margin-left: 4%;" />
         <engine:Label text="0CP" name="score" style="margin-top: 2%; margin-right: 2%; margin-bottom: 2%; margin-left: 2%; font-size: 50%;" />
-        <engine:ListView name="list" fixed-item-height="50" style="width: 70%; height: 70%; font-size: 50px; white-space: pre; border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); text-overflow: ellipsis;" />
+        <engine:ListView name="list" fixed-item-height="50" style="width: 70%; height: 70%; font-size: 50px; white-space: pre; text-overflow: ellipsis;" />
     </engine:VisualElement>
 </engine:UXML>
