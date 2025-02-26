@@ -30,12 +30,14 @@ public class ShellWork : MonoBehaviour
         animator.SetInteger("crashed", index);
         hitWithPlanet?.Invoke(index);
     }
-    private void OnTriggerEnter(Collider other)
+
+    public void OnChildTriggerEnter(GameObject planet)
     {
-        int i = Array.IndexOf(planets, other.gameObject);
-        if (i < 0) return;  
+        int i = Array.IndexOf(planets, planet);
+        if (i < 0) return;
         SetCrashing(i + 1);
     }
+
 }
 
 public enum CrashedPlanet
