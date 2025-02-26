@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering.VirtualTexturing;
 
 public class RotateObject : MonoBehaviour
 {
@@ -22,6 +23,10 @@ public class RotateObject : MonoBehaviour
     private List<GameObject> _cutObject = new List<GameObject>();
     public event Action<List<GameObject>> OnCutEnd;
     private int _cutCount = 0;
+
+    float angleDifference = 0;
+
+    public float AngleDifference { get { return angleDifference; } }
 
     private AudioManager _audioManager;
     private async void Start()
@@ -74,12 +79,13 @@ public class RotateObject : MonoBehaviour
                 Cut(_targetObject);
                 Cut(savedRightSide);
                 Quaternion secondRotation = transform.rotation;  // 2回目の回転
-                float angleDifference = Quaternion.Angle(saveFirstRotation, secondRotation); // クォータニオンの角度差
+                angleDifference = Quaternion.Angle(saveFirstRotation, secondRotation); // クォータニオンの角度差
                 Debug.Log("回転の変化量 (Quaternion): " + angleDifference + "°");
                 OnCutEnd?.Invoke(_cutObject);
             }
         }
     }
+
     public void Cut(GameObject target)
     {
 
@@ -112,6 +118,9 @@ public class RotateObject : MonoBehaviour
 
     public void Distance(float currentYRotation)
     {
+        
+        var system = ServiceLocator.GetInstance<IngameSystem>();
+        /*
         // Mathf.DeltaAngle を使って適切な回転差分を取得
         float distanceRotation = Mathf.Abs(Mathf.DeltaAngle(currentYRotation, perfectRotation));
         Debug.Log(distanceRotation);
@@ -119,10 +128,27 @@ public class RotateObject : MonoBehaviour
         if (Mathf.Abs(distanceRotation) < 10)
         {
             Debug.Log("perfectTiming");
+            system.CucumberData.Phase2Data = 100;
         }
         else
         {
             Debug.Log("badTiming");
+            system.CucumberData.Phase2Data = distanceRotation;
+
+        }
+        */
+        if (currentYRotation <= 50 && currentYRotation >= 35)
+        {
+            Debug.Log("perfectTiming");
+            system.CucumberData.Phase2Data = 100;
+        }
+        else
+        {
+            if (currentYRotation >= 90) currentYRotation -= 45;
+            else if(currentYRotation >= 180) currentYRotation -= 90;
+            system.CucumberData.Phase2Data = Mathf.Abs(45 - currentYRotation);
+            Debug.Log("badTiming point: "  + system.CucumberData.Phase2Data);
+            
         }
     }
 }
