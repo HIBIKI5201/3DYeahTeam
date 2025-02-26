@@ -6,6 +6,8 @@ public class ShellWork : MonoBehaviour
     GameObject[] planets;
     public GameObject[] Planets{ get => planets; }
     Animator animator;
+
+    public Action SerializePlanets;
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -15,7 +17,6 @@ public class ShellWork : MonoBehaviour
         {
             planets[i] = transform.GetChild(i).gameObject;
         }
-        
     }
     void CrashPlanets(CrashedPlanet crashedPlanet)
     {
@@ -27,7 +28,7 @@ public class ShellWork : MonoBehaviour
     public Action<int> hitWithPlanet;
     void SetCrashing(int index)
     {
-        animator.SetInteger("crashed", index);
+        animator.SetInteger("index", index);
         hitWithPlanet?.Invoke(index);
     }
 
