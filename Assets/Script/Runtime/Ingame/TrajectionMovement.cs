@@ -10,6 +10,9 @@ using UnityEngine.Rendering.Universal;
 public class TrajectionMovement : MonoBehaviour
 {
     [SerializeField , Tooltip("小さい順に評価値を入れて")]float[] checkSpeed = new float[7] {0f,5f,10f,15f,20f,25f,30f};
+
+    public Action AllFinished;
+
     List<float> caluculateSpeed = new List<float>();
     IngameSystem ingameSystem;
     ShellWork shellwork;
@@ -21,6 +24,18 @@ public class TrajectionMovement : MonoBehaviour
     Bloom bloom;
     [SerializeField] float bloomLowIntensity = 2.1f;
     [SerializeField] float bloomHighIntensity = 150f;
+
+    int hittingPlanetIndex = -100;
+    int finalPlanteIndex;
+    float hitStopTimeRemaining = 0;
+    [SerializeField] float hitStopDuration = 0.05f;
+    [SerializeField] float coastTime = 3f;
+
+    float slidingTimer;
+    float resultSpeed;
+    float deceleration;
+    bool tranjected;
+    float theIntensity;
 
     async void Start()
     {
@@ -117,22 +132,11 @@ public class TrajectionMovement : MonoBehaviour
         cameraTarget.localPosition = new Vector3(0, cameraTarget.localPosition.y, 9.3f);
     }
 
-    int hittingPlanetIndex = -100;
-    int finalPlanteIndex;
-    float hitStopTimeRemaining = 0;
-    [SerializeField] float hitStopDuration = 0.05f;
-    [SerializeField] float coastTime = 3f;
-    float slidingTimer;
-    float resultSpeed;
-    float deceleration;
-    bool tranjected;
-    public Action AllFinished;
-
-    float theIntensity;
+    
     private void Update()
     {
         // test用コード
-        if (Input.GetKeyDown(KeyCode.Space)) { CheckPow(10, 10, 10);  }
+        //if (Input.GetKeyDown(KeyCode.Space)) { CheckPow(10, 10, 10);  }
 
         if (hittingPlanetIndex == transform.childCount - 1 && bloomHighIntensity > theIntensity) { theIntensity += 100 * Time.deltaTime; bloom.intensity.Override(theIntensity); bloom.tint.Override( new Color(theIntensity * 100* Time.deltaTime +10 , 10, 10)); }
 
