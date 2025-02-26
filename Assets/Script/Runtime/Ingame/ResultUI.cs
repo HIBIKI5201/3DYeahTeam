@@ -12,6 +12,8 @@ public class ResultUI : MonoBehaviour
     private ListView _list;
 
     private List<string> _breakList = new();
+
+    private Button _backButton;
     private void Awake()
     {
         _document = GetComponent<UIDocument>();
@@ -51,8 +53,8 @@ public class ResultUI : MonoBehaviour
 
             _list.selectionType = SelectionType.None;
 
-            var backButton = root.Q<Button>("back-to-title-button");
-            backButton.clicked += BackToTitle;
+            _backButton = root.Q<Button>("back-to-title-button");
+            _backButton.clicked += BackToTitle;
         }
     }
 
@@ -60,6 +62,7 @@ public class ResultUI : MonoBehaviour
     public void OpenResult()
     {
         _parent.RemoveFromClassList("window-close");
+        _backButton.RemoveFromClassList("button-close");
     }
 
     private void BackToTitle()

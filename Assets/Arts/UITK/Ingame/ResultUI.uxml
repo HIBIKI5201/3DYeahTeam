@@ -8,6 +8,6 @@
         <engine:ListView name="list" fixed-item-height="50" style="width: 70%; height: 70%; font-size: 50px; white-space: pre; text-overflow: ellipsis;" />
     </engine:VisualElement>
     <engine:VisualElement style="position: absolute; bottom: 10%; right: 10%; width: 20%; height: 15%;">
-        <engine:Button text="タイトルに戻る" name="back-to-title-button" class="font button" style="width: 100%; height: 100%; font-size: 50px; background-color: rgb(77, 77, 77);" />
+        <engine:Button text="タイトルに戻る" name="back-to-title-button" class="font button button-open button-close" style="width: 100%; height: 100%; font-size: 50px; background-color: rgb(77, 77, 77);" />
     </engine:VisualElement>
 </engine:UXML>
