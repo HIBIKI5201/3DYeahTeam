@@ -161,7 +161,7 @@ public class TrajectionMovement : MonoBehaviour
         cameraTarget.localPosition = new Vector3(0, cameraTarget.localPosition.y, 9.3f);
     }
 
-    
+    [SerializeField] ResultUI resultUI;
     private void Update()
     {
         
@@ -189,6 +189,8 @@ public class TrajectionMovement : MonoBehaviour
                 AllFinished?.Invoke(); 
                 
                 bloom.intensity.Override(bloomLowIntensity); bloom.tint.Override(new Color(0, 0, 0));
+                var result = ingameSystem.CucumberData.Phase3Data * ingameSystem.CucumberData.Phase2Data * ingameSystem.CucumberData.Phase1Data;
+                resultUI.Score = result.ToString();
             }
             tranjected = false;
             return;

@@ -12,9 +12,7 @@ public class CutterMoveController : MonoBehaviour
 {
     [Header("カッターの動き設定")]
     public float _speed = 2.0f; // 移動速度
-    [SerializeField]
     public float _maxPosition = 1.0f; // 右端
-    [SerializeField]
     public float _minPosition = -1.0f; // 左端
 
     [SerializeField, Header("きゅうり情報")] Material _capMaterial;
@@ -79,9 +77,6 @@ public class CutterMoveController : MonoBehaviour
 
         _ingameSystem.Cucumber.transform.position = new Vector3(20, 0, 20) + _cuttingObjectPosition;
     }
-
-    private float _point1;
-    private float _point2;
     private void Update()
     {
         MoveCutter();
@@ -111,7 +106,6 @@ public class CutterMoveController : MonoBehaviour
     private void kiru()
     {
         _audioManager.PlaySoundEffect(3);
-
         var pieces = MeshCutService.Cut(_targetObject, this.transform.position, this.transform.right,
        _capMaterial);
         if (pieces == null) return;
@@ -133,13 +127,11 @@ public class CutterMoveController : MonoBehaviour
         {
             if (_lastPositionX < _currentPositionX)
             {
-                _point1 = _currentPositionX;
                 _cuttingObject[1] = leftSide;
                 _cuttingObject[2] = rightSide;
             }
             else
             {
-                _point2 = _currentPositionX;
                 _cuttingObject[0] = leftSide;
                 _cuttingObject[1] = rightSide;
             }
@@ -243,6 +235,7 @@ public class CutterMoveController : MonoBehaviour
         if (filter)
         {
             _targetObject = filter.gameObject;
+
         }
     }
 }
