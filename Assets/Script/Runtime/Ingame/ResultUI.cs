@@ -9,6 +9,9 @@ public class ResultUI : MonoBehaviour
 
     private VisualElement _parent;
     private Label _score;
+
+    public string Score { set { _score.text = value; } }
+
     private ListView _list;
 
     private List<string> _breakList = new();
