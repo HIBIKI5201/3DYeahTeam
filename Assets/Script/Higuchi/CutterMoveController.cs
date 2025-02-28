@@ -144,8 +144,7 @@ public class CutterMoveController : MonoBehaviour
                 _cuttingObject[1] = rightSide;
             }
         }
-
-        rightSide.AddComponent<BoxCollider>();
+        MeshUtil.MeshColliderRefresh(rightSide);
         _distanceList.Add(Mathf.Abs(_bestTimings[_cutCount - 1] - _currentPositionX));
 
 
