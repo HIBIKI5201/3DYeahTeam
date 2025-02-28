@@ -472,11 +472,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 773862492492520122, guid: 38f50afbd10fd09488727229fc8390e4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 14350
+      value: 14062.5
       objectReference: {fileID: 0}
     - target: {fileID: 773862492492520122, guid: 38f50afbd10fd09488727229fc8390e4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 58900
+      value: 42000
       objectReference: {fileID: 0}
     - target: {fileID: 773862492492520122, guid: 38f50afbd10fd09488727229fc8390e4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -488,11 +488,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 773862492492520122, guid: 38f50afbd10fd09488727229fc8390e4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 1
+      value: 0.8433915
       objectReference: {fileID: 0}
     - target: {fileID: 773862492492520122, guid: 38f50afbd10fd09488727229fc8390e4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0.53729963
       objectReference: {fileID: 0}
     - target: {fileID: 773862492492520122, guid: 38f50afbd10fd09488727229fc8390e4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -857,6 +857,10 @@ PrefabInstance:
     - target: {fileID: 4252918568842066023, guid: bbe7c304b2cc0a6438f94e5732feb1ce, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4624781345174722927, guid: bbe7c304b2cc0a6438f94e5732feb1ce, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 129
       objectReference: {fileID: 0}
     - target: {fileID: 4864291809731499363, guid: bbe7c304b2cc0a6438f94e5732feb1ce, type: 3}
       propertyPath: m_StaticEditorFlags
