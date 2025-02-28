@@ -162,10 +162,11 @@ public class TrajectionMovement : MonoBehaviour
     }
 
     [SerializeField] ResultUI resultUI;
+    bool onlyOnce;
     private void Update()
     {
         
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(0)) { CheckPow(ingameSystem.CucumberData.Phase3Data, ingameSystem.CucumberData.Phase2Data, ingameSystem.CucumberData.Phase1Data);  }
+        if (!onlyOnce &&Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(0)) { CheckPow(ingameSystem.CucumberData.Phase3Data, ingameSystem.CucumberData.Phase2Data, ingameSystem.CucumberData.Phase1Data); onlyOnce = true; }
 
         if (hittingPlanetIndex == transform.childCount - 1 && bloomHighIntensity > theIntensity) { theIntensity += 100 * Time.deltaTime; bloom.intensity.Override(theIntensity); bloom.tint.Override( new Color(theIntensity * 100* Time.deltaTime +10 , 10, 10)); }
 
