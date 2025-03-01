@@ -68,6 +68,8 @@ public class Phase1CutTest : MonoBehaviour
         _cucumber = _ingameSystem.Cucumber.CucumberModel;
 
         _center = (_minX + _maxX) / 2;
+        _nullLeft = _minX;
+        _nullRight = _maxX;
 
         //ナイフの位置設定
         var ship = ServiceLocator.GetInstance<SpaceShip>();
@@ -83,17 +85,6 @@ public class Phase1CutTest : MonoBehaviour
     private void Update()
     {
         MoveCutter();
-
-        if (Input.GetKeyDown(KeyCode.Space) && _cutCount < 2)
-        {
-            if (_cutCount == 0 ||//切断回数が初回の場合
-                transform.position.x < _nullLeft ||
-                transform.position.x > _nullRight)
-            {
-                CutObject();
-                Debug.Log($"{transform.position.x} , {_nullPos}");
-            }
-        }
     }
 
     /// <summary>
@@ -121,11 +112,16 @@ public class Phase1CutTest : MonoBehaviour
     /// <summary>
     /// きゅうりを切断する
     /// </summary>
-    private void CutObject()
+    public void CutObject()
     {
         GameObject[] pieces = null;
         GameObject target = _cucumber;
 
+        if (_cutCount >= 2) return;
+
+        if (_cutCount != 0 &&//切断回数が初回の場合
+            transform.position.x >= _nullLeft &&
+            transform.position.x <= _nullRight) return;
         if (_cutCount == 1)
         {
             if (transform.position.x > _firstCutPos)
@@ -138,7 +134,9 @@ public class Phase1CutTest : MonoBehaviour
             }
         }
 
+
         pieces = MeshCutService.Cut(target, transform.position, transform.right, _capMaterial);
+        if (pieces == null) return;
         _audioManager.PlaySoundEffect(3);
 
         _cutCount++;
@@ -167,7 +165,7 @@ public class Phase1CutTest : MonoBehaviour
                 _nullPos = _firstCutPos - leftPiece.transform.position.x + leftPiece.transform.right.x * -300f;
                 leftPiece.transform.position += leftPiece.transform.right * -300f;
                 _maxX += leftPiece.transform.right.x * -300f;//包丁の移動範囲を更新
-                _nullLeft = _nullPos ;
+                _nullLeft = _nullPos;
                 _nullRight = _firstCutPos;
             }
         }
