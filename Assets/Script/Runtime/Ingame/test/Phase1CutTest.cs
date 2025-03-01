@@ -18,6 +18,7 @@ public class Phase1CutTest : MonoBehaviour
     //移動限界たち
     [SerializeField] private float _maxX = 1.0f;
     [SerializeField] private float _minX = -1.0f;
+    private float _center;
 
     [Header("切断設定")]
     [SerializeField] private Material _capMaterial;
@@ -39,7 +40,10 @@ public class Phase1CutTest : MonoBehaviour
 
     private GameObject _cucumber;
     private int _cutCount = 0;
-    private float _firstCut;
+    private float _firstCutPos;
+    private float _nullLeft;
+    private float _nullRight;
+    private float _nullPos;
     private bool _movingRight = true;
 
     public event Action<GameObject> OnCuttingFinish;
@@ -63,6 +67,8 @@ public class Phase1CutTest : MonoBehaviour
         _ingameSystem = ServiceLocator.GetInstance<IngameSystem>();
         _cucumber = _ingameSystem.Cucumber.CucumberModel;
 
+        _center = (_minX + _maxX) / 2;
+
         //ナイフの位置設定
         var ship = ServiceLocator.GetInstance<SpaceShip>();
         if (ship != null)
@@ -80,7 +86,13 @@ public class Phase1CutTest : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && _cutCount < 2)
         {
-            CutObject();
+            if (_cutCount == 0 ||//切断回数が初回の場合
+                transform.position.x < _nullLeft ||
+                transform.position.x > _nullRight)
+            {
+                CutObject();
+                Debug.Log($"{transform.position.x} , {_nullPos}");
+            }
         }
     }
 
@@ -111,40 +123,68 @@ public class Phase1CutTest : MonoBehaviour
     /// </summary>
     private void CutObject()
     {
-        _audioManager.PlaySoundEffect(3);
+        GameObject[] pieces = null;
+        GameObject target = _cucumber;
 
-        var pieces = MeshCutService.Cut(_cucumber, transform.position, transform.right, _capMaterial);
-        if (pieces == null) return;
+        if (_cutCount == 1)
+        {
+            if (transform.position.x > _firstCutPos)
+            {
+                target = _rightPiece;
+            }
+            else
+            {
+                target = _leftPiece;
+            }
+        }
+
+        pieces = MeshCutService.Cut(target, transform.position, transform.right, _capMaterial);
+        _audioManager.PlaySoundEffect(3);
 
         _cutCount++;
         GameObject leftPiece = pieces[0];
         GameObject rightPiece = pieces[1];
 
-        MeshUtil.MeshColliderRefresh(rightPiece);
+        MeshUtil.MeshColliderRefresh(leftPiece);
 
-        if (_cutCount == 1)
+        if (_cutCount == 1)//一回目の場合
         {
-            _leftPiece = leftPiece;
             _rightPiece = rightPiece;
-            _firstCut = transform.position.x;
+            _leftPiece = leftPiece;
+            _firstCutPos = transform.position.x;
 
-            //ちょっとずらす
-            rightPiece.transform.position += rightPiece.transform.right * 300f;
+            if (_center < _firstCutPos)//真ん中よりも右側なら右ピースを右にずらす
+            {
+                _nullPos = _firstCutPos + rightPiece.transform.position.x + rightPiece.transform.right.x * 300f;
+                rightPiece.transform.position += rightPiece.transform.right * 300f;
+                _maxX += leftPiece.transform.right.x * 300f;
+                _nullLeft = _firstCutPos;
+                _nullRight = _nullPos;
+
+            }
+            else//左側なら左ピースを左にずらす
+            {
+                _nullPos = _firstCutPos - leftPiece.transform.position.x + leftPiece.transform.right.x * -300f;
+                leftPiece.transform.position += leftPiece.transform.right * -300f;
+                _maxX += leftPiece.transform.right.x * -300f;//包丁の移動範囲を更新
+                _nullLeft = _nullPos ;
+                _nullRight = _firstCutPos;
+            }
         }
-        else
+        else//二回目の場合
         {
-            if (_maxX < transform.position.x)
+            if (transform.position.x > _firstCutPos)
             {
                 _centerPiece = leftPiece;
                 _rightPiece = rightPiece;
+                rightPiece.transform.position += rightPiece.transform.right * 300f;
             }
             else
             {
-                _leftPiece = leftPiece;
                 _centerPiece = rightPiece;
+                _leftPiece = leftPiece;
+                leftPiece.transform.position += leftPiece.transform.right * -300f;
             }
-
-            leftPiece.transform.position += leftPiece.transform.right * -300f;
         }
 
         _pointList.Add(Mathf.Abs(_bestTimings[_cutCount - 1] - transform.position.x));

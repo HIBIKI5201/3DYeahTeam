@@ -6,6 +6,7 @@ public class ChargeManager : MonoBehaviour
 {
     private float _pushCounter;
     public float PushCounter { get => _pushCounter; }
+
     private float _timer;
     public float Timer { get => _timer; }
 
