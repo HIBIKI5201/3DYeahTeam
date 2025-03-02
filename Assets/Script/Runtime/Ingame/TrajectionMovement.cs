@@ -161,11 +161,12 @@ public class TrajectionMovement : MonoBehaviour
         cameraTarget.localPosition = new Vector3(0, cameraTarget.localPosition.y, 9.3f);
     }
 
-    
+    [SerializeField] ResultUI resultUI;
+    bool onlyOnce;
     private void Update()
     {
         
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(0)) { CheckPow(ingameSystem.CucumberData.Phase3Data, ingameSystem.CucumberData.Phase2Data, ingameSystem.CucumberData.Phase1Data);  }
+        if (!onlyOnce &&Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(0)) { CheckPow(ingameSystem.CucumberData.Phase3Data, ingameSystem.CucumberData.Phase2Data, ingameSystem.CucumberData.Phase1Data); onlyOnce = true; }
 
         if (hittingPlanetIndex == transform.childCount - 1 && bloomHighIntensity > theIntensity) { theIntensity += 100 * Time.deltaTime; bloom.intensity.Override(theIntensity); bloom.tint.Override( new Color(theIntensity * 100* Time.deltaTime +10 , 10, 10)); }
 
@@ -189,6 +190,8 @@ public class TrajectionMovement : MonoBehaviour
                 AllFinished?.Invoke(); 
                 
                 bloom.intensity.Override(bloomLowIntensity); bloom.tint.Override(new Color(0, 0, 0));
+                var result = ingameSystem.CucumberData.Phase3Data * ingameSystem.CucumberData.Phase2Data * ingameSystem.CucumberData.Phase1Data;
+                resultUI.Score = result.ToString();
             }
             tranjected = false;
             return;

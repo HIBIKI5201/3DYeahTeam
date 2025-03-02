@@ -138,18 +138,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   checkSpeed:
   - 0
-  - 5
-  - 10
-  - 15
   - 20
-  - 25
-  - 30
+  - 50
+  - 100
+  - 200
+  - 250
+  - 300
   effect: {fileID: 821300527}
   cameraTarget: {fileID: 414811048}
   bloomLowIntensity: 2.1
   bloomHighIntensity: 150
   hitStopDuration: 0.5
   coastTime: 3
+  resultUI: {fileID: 1060992072}
 --- !u!114 &7393221
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10447,7 +10448,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: ade8adce3c154b84aac5a41914b7cdaf, type: 2}
     - target: {fileID: 4139737115277202676, guid: bbf19d4045737044e86e23cdbfe4b9d6, type: 3}
       propertyPath: objDuration
-      value: 1.99
+      value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: 4139737115277202676, guid: bbf19d4045737044e86e23cdbfe4b9d6, type: 3}
       propertyPath: breakableObjects.Array.size
