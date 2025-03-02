@@ -12,12 +12,18 @@ public class SetBreakObjBreak : MonoBehaviour
         ingameSystem = ServiceLocator.GetInstance<IngameSystem>();
         trajectionMovment =  ServiceLocator.GetInstance<TrajectionMovement>();
         animator =transform.GetComponent<Animator>();
+        getReady = true;
         
     }
-
+    bool getReady;
     bool onlyOnce;
     private void Update()
     {
-        if(ingameSystem.Cucumber.transform.position.z >= transform.position.z && !onlyOnce) { onlyOnce = true; animator.SetTrigger("break"); trajectionMovment.SetCrashedName(transform.name); trajectionMovment.PlayExplosionSound(9); }
+        if (getReady && ingameSystem.Cucumber.transform.position.z >= transform.position.z && !onlyOnce)
+        {
+            onlyOnce = true; animator.SetTrigger("break");
+            trajectionMovment.SetCrashedName(transform.name);
+            trajectionMovment.PlayExplosionSound(9);
+        }
     }
 }
