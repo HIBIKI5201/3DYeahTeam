@@ -361,6 +361,7 @@ GameObject:
   - component: {fileID: 998070730}
   - component: {fileID: 998070728}
   - component: {fileID: 998070733}
+  - component: {fileID: 998070734}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -375,17 +376,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 998070727}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ab61a4b68f58aa7418ef2f9ebe7afc06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSpeed: 50
   perfectRotation: 90
-  _targetObject: {fileID: 0}
-  _cuttingPlane: {fileID: 998070727}
-  _capMaterial: {fileID: 2100000, guid: c077cc73f801e7645915d2acc3b32975, type: 2}
-  CucumberPosition: {fileID: 492595772}
 --- !u!23 &998070730
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -467,6 +464,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _target: {fileID: 998070728}
+--- !u!114 &998070734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 998070727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3dcf5cd29232d640ba5ed068ddca73a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 50
 --- !u!1 &1062028804
 GameObject:
   m_ObjectHideFlags: 0
