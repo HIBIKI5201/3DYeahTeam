@@ -1,6 +1,5 @@
 ﻿using SymphonyFrameWork.System;
 using UnityEngine;
-using System.Linq;
 
 public class TransitNextPhase : MonoBehaviour
 {
@@ -9,7 +8,8 @@ public class TransitNextPhase : MonoBehaviour
     {
         _ingameSystem = ServiceLocator.GetInstance<IngameSystem>();
         yield return new WaitForSeconds(1);
-        ServiceLocator.GetInstance<CutterMoveController>().OnCuttingFinish += TransitPhase;
+        //ServiceLocator.GetInstance<CutterMoveController>().OnCuttingFinish += TransitPhase;
+        ServiceLocator.GetInstance<Phase1CutTest>().OnCuttingFinish += TransitPhase;
     }
 
     private void TransitPhase(GameObject centerCucumber)

@@ -1,7 +1,6 @@
 ﻿using SymphonyFrameWork.System;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class ChoseObjectScript : MonoBehaviour
 {
     private GameObject _selectedObject;

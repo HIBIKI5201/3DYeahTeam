@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+
 /// <summary>
 /// カッターの管理クラス
 /// </summary>
@@ -182,7 +183,6 @@ public class CutterMoveController : MonoBehaviour
 
     private System.Collections.IEnumerator SendIngameSystem()
     {
-
         float distance = _distanceList.Sum();
 
         center.name = "center";
