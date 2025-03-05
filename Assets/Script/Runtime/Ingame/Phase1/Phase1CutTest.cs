@@ -112,7 +112,7 @@ public class Phase1CutTest : MonoBehaviour
     /// <summary>
     /// きゅうりを切断する
     /// </summary>
-    public void CutObject()
+    public void Phase1Cut()
     {
         GameObject[] pieces = null;
         GameObject target = _cucumber;

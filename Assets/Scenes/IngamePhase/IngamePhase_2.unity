@@ -383,6 +383,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSpeed: 50
   perfectRotation: 90
+  _targetObject: {fileID: 0}
+  _cuttingPlane: {fileID: 0}
+  _capMaterial: {fileID: 0}
+  CucumberPosition: {fileID: 0}
 --- !u!23 &998070730
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -444,13 +448,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 998070727}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -153.5, y: 10320, z: 40043.5}
-  m_LocalScale: {x: 100, y: 1, z: 100}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -37.923096, y: 10408.69, z: 40169.32}
+  m_LocalScale: {x: 300, y: 1, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!114 &998070733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -463,7 +467,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c2c69bb427f88f408b097383b690c25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _target: {fileID: 998070728}
+  _target: {fileID: 998070734}
 --- !u!114 &998070734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -476,7 +480,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3dcf5cd29232d640ba5ed068ddca73a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 50
+  _speed: 100
+  _capMaterial: {fileID: 2100000, guid: c077cc73f801e7645915d2acc3b32975, type: 2}
 --- !u!1 &1062028804
 GameObject:
   m_ObjectHideFlags: 0
@@ -608,13 +613,14 @@ GameObject:
   m_Component:
   - component: {fileID: 1820779891}
   - component: {fileID: 1820779890}
+  - component: {fileID: 1820779892}
   m_Layer: 5
   m_Name: UIDocument
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1820779890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -629,7 +635,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 86a569d31e7fef544879a373f27306ae, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: 01c3ff67975c21042919b490964c9879, type: 3}
+  sourceAsset: {fileID: 9197481963319205126, guid: 4a59f9100681e374ab962e7dcf4d5971, type: 3}
   m_SortingOrder: 0
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920
@@ -649,6 +655,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1820779892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1820779889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db013b091b42e194a8e8e7e0c5863cd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _buttontexture: {fileID: 2800000, guid: 8d5930e571d85cc4da76ea767727562f, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -3,7 +3,7 @@ using SymphonyFrameWork.System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class Phase1UI : MonoBehaviour
+public class Phase2UI : MonoBehaviour
 {
     private UIDocument _document;
     private IngameButtonWindow _buttonWindow;
@@ -12,7 +12,7 @@ public class Phase1UI : MonoBehaviour
     [SerializeField]
     private Texture2D _buttontexture;
 
-    private Phase1CutTest _phase1;
+    private RotateCucumber Phase2;
 
     private async void Awake()
     {
@@ -28,9 +28,9 @@ public class Phase1UI : MonoBehaviour
     }
     private void Start()
     {
-        _phase1 = ServiceLocator.GetInstance<Phase1CutTest>();
+        Phase2 = ServiceLocator.GetInstance<RotateCucumber>();
         //ボタンの処理、イメージ画像を登録
-        _buttonWindow.ChargeButton.clicked += _phase1.Phase1Cut;
+        _buttonWindow.ChargeButton.clicked += Phase2.Phase2Cut;
         _buttonWindow.ChargeButton.style.backgroundImage = new StyleBackground(_buttontexture);
         
     }

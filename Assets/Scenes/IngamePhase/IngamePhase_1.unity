@@ -965,7 +965,7 @@ MonoBehaviour:
   _speed: 1000
   _maxX: 1000
   _minX: -1200
-  _capMaterial: {fileID: 6428810894217598949, guid: 7611f4906b289c14e9208ffe8139335d, type: 3}
+  _capMaterial: {fileID: 2100000, guid: c077cc73f801e7645915d2acc3b32975, type: 2}
   _knifeOffset: {x: 0, y: 700, z: 1000}
 --- !u!1 &7936432805250469829
 GameObject:

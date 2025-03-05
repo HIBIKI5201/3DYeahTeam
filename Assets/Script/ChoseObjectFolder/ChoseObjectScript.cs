@@ -9,7 +9,7 @@ public class ChoseObjectScript : MonoBehaviour
     private bool _isDone;
     IngameSystem _ingameSystem;
     [SerializeField] private Material _isSelectMaterial;
-    [SerializeField] RotateObject _rotateobj;
+    [SerializeField] RotateCucumber _rotateobj;
     List<GameObject> a = new List<GameObject>();
     private async void Awake()
     {
@@ -21,7 +21,8 @@ public class ChoseObjectScript : MonoBehaviour
     {
         await Awaitable.NextFrameAsync();
 
-        _rotateobj = ServiceLocator.GetInstance<RotateObject>();
+        //_rotateobj = ServiceLocator.GetInstance<RotateObject>();
+        _rotateobj = ServiceLocator.GetInstance<RotateCucumber>();
         _rotateobj.OnCutEnd += CutEnd;
     }
     private void CutEnd(List<GameObject> gameObjects)
