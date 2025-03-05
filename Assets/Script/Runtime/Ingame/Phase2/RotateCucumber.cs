@@ -7,7 +7,10 @@ using System.Collections.Generic;
 
 public class RotateCucumber : MonoBehaviour
 {
-    [SerializeField] private float _speed = 45f; // 回転速度
+    [SerializeField] 
+    private float _speed = 45f; // 回転速度
+    [SerializeField]
+    private Material _capMaterial;//
 
     private AudioManager _audioManager;
     private IngameSystem _ingameSystem;
@@ -16,8 +19,6 @@ public class RotateCucumber : MonoBehaviour
     private GameObject _cucumber;
     private Vector3 _center; // モデルの中心座標
 
-    [SerializeField]
-    private Material _capMaterial;
 
     private int _cutCount;
     private GameObject[] _piese;
@@ -67,7 +68,6 @@ public class RotateCucumber : MonoBehaviour
         _piese[1] = pieces[1];
 
         MeshUtil.MeshColliderRefresh(_piese[0]);
-        _piese[1].GetComponent<Renderer>().renderingLayerMask = 129;
         _piese[1].transform.parent = _cucumber.transform;
         _addDecal.OnDecal(_piese[1].transform, transform.position, transform.rotation);
     }

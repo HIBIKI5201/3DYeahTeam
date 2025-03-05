@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace ChargeShot.Runtime.Ingame
@@ -175,8 +176,13 @@ namespace ChargeShot.Runtime.Ingame
 
             // assign mats
             // 新規生成したマテリアルリストをそれぞれのオブジェクトに適用する
-            leftSideObj.GetComponent<MeshRenderer>().materials = mats;
-            rightSideObj.GetComponent<MeshRenderer>().materials = mats;
+            MeshRenderer leftRenderer = leftSideObj.GetComponent<MeshRenderer>();
+            leftRenderer.materials = mats;
+            MeshRenderer rightRenderer = rightSideObj.GetComponent<MeshRenderer>();
+            rightRenderer.materials = mats;
+
+            //レンダリングレイヤーを左右で同じにする
+            rightRenderer.renderingLayerMask = leftRenderer.renderingLayerMask;
 
             // 左右のGameObjectの配列を返す
             return new[] { leftSideObj, rightSideObj };
