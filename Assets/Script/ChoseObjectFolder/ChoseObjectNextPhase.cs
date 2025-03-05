@@ -1,14 +1,15 @@
 ﻿using SymphonyFrameWork.System;
 using UnityEngine;
-using System.Linq;
 
 public class ChoseObjectNextPhase : MonoBehaviour
 {
-    IngameSystem _ingameSystem;
+    private IngameSystem _ingameSystem;
     private System.Collections.IEnumerator Start()
     {
         _ingameSystem = ServiceLocator.GetInstance<IngameSystem>();
+
         yield return new WaitForSeconds(1);
+
         ServiceLocator.GetInstance<CutterMoveController>().OnCuttingFinish += TransitPhase;
     }
 
