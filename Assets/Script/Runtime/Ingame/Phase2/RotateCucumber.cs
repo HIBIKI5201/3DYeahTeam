@@ -11,6 +11,7 @@ public class RotateCucumber : MonoBehaviour
 
     private AudioManager _audioManager;
     private IngameSystem _ingameSystem;
+    private AddDecal _addDecal;
 
     private GameObject _cucumber;
     private Vector3 _center; // モデルの中心座標
@@ -27,6 +28,7 @@ public class RotateCucumber : MonoBehaviour
     {
         _audioManager = ServiceLocator.GetInstance<AudioManager>();
         _ingameSystem = ServiceLocator.GetInstance<IngameSystem>();
+        _addDecal = GetComponent<AddDecal>();
 
         if (_ingameSystem != null)
         {
@@ -65,6 +67,8 @@ public class RotateCucumber : MonoBehaviour
         _piese[1] = pieces[1];
 
         MeshUtil.MeshColliderRefresh(_piese[0]);
+        _piese[1].GetComponent<Renderer>().renderingLayerMask = 129;
         _piese[1].transform.parent = _cucumber.transform;
+        _addDecal.OnDecal(_piese[1].transform, transform.position, transform.rotation);
     }
 }

@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: test
+  m_Name: DecalYellow
   m_Shader: {fileID: -6465566751694194690, guid: 91f18904c4450784294e2ae101cb5da5, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
