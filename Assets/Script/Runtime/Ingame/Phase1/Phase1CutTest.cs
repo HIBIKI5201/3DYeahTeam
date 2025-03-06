@@ -25,8 +25,8 @@ public class Phase1CutTest : MonoBehaviour
 
     private float[] _bestTimings = new float[2];//ベストな切る位置
 
-    [Header("ナイフの初期位置")]
-    [SerializeField] private Vector3 _knifeOffset = new Vector3(0, 0, 0);//ナイフの初期位置
+    //[Header("ナイフの初期位置")]
+    //[SerializeField] private Vector3 _knifeOffset = new Vector3(0, 0, 0);//ナイフの初期位置
 
     //切断後のオブジェクトたち
     private GameObject _leftPiece;
@@ -71,15 +71,15 @@ public class Phase1CutTest : MonoBehaviour
         _nullLeft = _minX;
         _nullRight = _maxX;
 
-        //ナイフの位置設定
-        var ship = ServiceLocator.GetInstance<SpaceShip>();
-        if (ship != null)
-        {
-            var knife = ship.Knife;
-            knife.transform.SetParent(transform);
-            knife.transform.localPosition = _knifeOffset;//ナイフの初期位置を設定
-            knife.transform.localRotation = Quaternion.Euler(3, -90, 5);//ナイフの角度の制御
-        }
+        ////ナイフの位置設定
+        //var ship = ServiceLocator.GetInstance<SpaceShip>();
+        //if (ship != null)
+        //{
+        //    var knife = ship.Knife;
+        //    knife.transform.SetParent(transform);
+        //    knife.transform.localPosition = _knifeOffset;//ナイフの初期位置を設定
+        //    knife.transform.localRotation = Quaternion.Euler(3, -90, 5);//ナイフの角度の制御
+        //}
     }
 
     private void Update()
@@ -112,7 +112,7 @@ public class Phase1CutTest : MonoBehaviour
     /// <summary>
     /// きゅうりを切断する
     /// </summary>
-    public void CutObject()
+    public void Phase1Cut()
     {
         GameObject[] pieces = null;
         GameObject target = _cucumber;

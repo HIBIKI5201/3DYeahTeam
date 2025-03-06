@@ -3,35 +3,37 @@ using System.Collections.Generic;
 using UnityEngine;
 public class ChoseObjectScript : MonoBehaviour
 {
+    [SerializeField]
+    private Material _isSelectMaterial;
+    [SerializeField]
+    private RotateCucumber _rotateobj;
+
     private GameObject _selectedObject;
     private Material _selectedMaterial;
-    private bool _isOkNextPhase;
-    private bool _isDone;
-    IngameSystem _ingameSystem;
-    [SerializeField] private Material _isSelectMaterial;
-    [SerializeField] RotateObject _rotateobj;
-    List<GameObject> a = new List<GameObject>();
-    private async void Awake()
-    {
-        await Awaitable.NextFrameAsync();
+    private IngameSystem _ingameSystem;
 
-        _ingameSystem = ServiceLocator.GetInstance<IngameSystem>();
-    }
+    private bool _isOkNextPhase;
+    private bool _isChose;
+
+    private List<GameObject> _choseObjects = new List<GameObject>();
+
     private async void Start()
     {
         await Awaitable.NextFrameAsync();
 
-        _rotateobj = ServiceLocator.GetInstance<RotateObject>();
+        _ingameSystem = ServiceLocator.GetInstance<IngameSystem>();
+        _rotateobj = ServiceLocator.GetInstance<RotateCucumber>();
         _rotateobj.OnCutEnd += CutEnd;
     }
-    private void CutEnd(List<GameObject> gameObjects)
+
+    private void CutEnd(GameObject[] gameObjects)
     {
-        foreach (var g in gameObjects)
+        foreach (var pieces in gameObjects)
         {
-            a.Add(g);
+            _choseObjects.Add(pieces);
         }
 
-        _isDone = true;
+        _isChose = true;
     }
     void Update()
     {
@@ -47,10 +49,10 @@ public class ChoseObjectScript : MonoBehaviour
                 _selectedObject.name = "select";
             }
 
-            if (_isOkNextPhase && _isDone)
+            if (_isOkNextPhase && _isChose)
             {
                 // "select" 以外を削除
-                a.RemoveAll(g =>
+                _choseObjects.RemoveAll(g =>
                 {
                     if (g.name != "select")
                     {
@@ -81,17 +83,22 @@ public class ChoseObjectScript : MonoBehaviour
             {
                 _selectedObject.GetComponent<Renderer>().material = _selectedMaterial;
             }
+
             _isOkNextPhase = true;
             _selectedObject = hitObject;
+
             var ChoseGameObjectSize = hitObject.gameObject.GetComponent<MeshFilter>().mesh.bounds.size;
             _selectedMaterial = _selectedObject.GetComponent<Renderer>().material;
             _selectedObject.GetComponent<Renderer>().material = _isSelectMaterial;
-            a.Add(_selectedObject);
+
+            _choseObjects.Add(_selectedObject);
+
             Debug.Log("選択されたオブジェクト: " + _selectedObject.name);
             Debug.Log("選択されたオブジェクトのサイズ: " + ChoseGameObjectSize);
-            var rotateObj =  ServiceLocator.GetInstance<RotateObject>();
+            var rotateObj = ServiceLocator.GetInstance<RotateCucumber>();
 
-            rotateObj.Distance(rotateObj.AngleDifference);
+            //今度ここの修正をする
+            //rotateObj.Distance(rotateObj.AngleDifference);
         }
     }
 }
