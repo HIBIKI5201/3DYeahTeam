@@ -1,0 +1,4 @@
+[submodule "Assets/AssetStoreTools"]
+	path = Assets/AssetStoreTools
+	url = ../3DYeahTeam_AssetStoreTools.git
+	branch = main
