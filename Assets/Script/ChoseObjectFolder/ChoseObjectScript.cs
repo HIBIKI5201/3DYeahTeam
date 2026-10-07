@@ -6,10 +6,13 @@ public class ChoseObjectScript : MonoBehaviour
     [SerializeField]
     private Material _isSelectMaterial;
     [SerializeField]
+    private Material _isSelectInnerMaterial;
+    [SerializeField]
     private RotateCucumber _rotateobj;
 
     private GameObject _selectedObject;
     private Material _selectedMaterial;
+    private Material _selectedInnerMaterial;
     private IngameSystem _ingameSystem;
 
     private bool _isOkNextPhase;
@@ -81,15 +84,18 @@ public class ChoseObjectScript : MonoBehaviour
 
             if (_selectedObject != null)
             {
-                _selectedObject.GetComponent<Renderer>().material = _selectedMaterial;
+                Material[] origin = { _selectedMaterial, _selectedInnerMaterial };
+                _selectedObject.GetComponent<Renderer>().sharedMaterials = origin;
             }
 
             _isOkNextPhase = true;
             _selectedObject = hitObject;
 
             var ChoseGameObjectSize = hitObject.gameObject.GetComponent<MeshFilter>().mesh.bounds.size;
-            _selectedMaterial = _selectedObject.GetComponent<Renderer>().material;
-            _selectedObject.GetComponent<Renderer>().material = _isSelectMaterial;
+            _selectedMaterial = _selectedObject.GetComponent<Renderer>().sharedMaterials[0];
+            _selectedInnerMaterial = _selectedObject.GetComponent<Renderer>().sharedMaterials[1];
+            Material[] isSelect = { _isSelectMaterial, _isSelectInnerMaterial };
+            _selectedObject.GetComponent<Renderer>().sharedMaterials = isSelect;
 
             _choseObjects.Add(_selectedObject);
 

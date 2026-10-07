@@ -332,7 +332,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isSelectMaterial: {fileID: 2100000, guid: c3ff4470d38de5a4eb3bd9c956ad8226, type: 2}
-  _rotateobj: {fileID: 0}
+  _isSelectInnerMaterial: {fileID: 2100000, guid: b92fb3a88665d3841813c0a7cd5b673a, type: 2}
+  _rotateobj: {fileID: 998070734}
 --- !u!4 &508768774
 Transform:
   m_ObjectHideFlags: 0
@@ -449,14 +450,14 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1062028804}
   m_Enabled: 1
-  serializedVersion: 11
+  serializedVersion: 12
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
-  m_CookieSize: 10
+  m_CookieSize2D: {x: 10, y: 10}
   m_Shadows:
     m_Type: 2
     m_Resolution: -1
@@ -533,17 +534,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Version: 3
   m_UsePipelineSettings: 1
   m_AdditionalLightsShadowResolutionTier: 2
-  m_LightLayerMask: 1
-  m_RenderingLayers: 1
   m_CustomShadowLayers: 0
-  m_ShadowLayerMask: 1
-  m_ShadowRenderingLayers: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1 &1545050292
 GameObject:
   m_ObjectHideFlags: 0
@@ -580,11 +587,15 @@ MonoBehaviour:
   m_EndAngleFade: 180
   m_UVScale: {x: 1, y: 1}
   m_UVBias: {x: 0, y: 0}
-  m_DecalLayerMask: 128
+  m_RenderingLayerMask:
+    serializedVersion: 0
+    m_Bits: 128
   m_ScaleMode: 0
   m_Offset: {x: 0, y: 0, z: 1500}
   m_Size: {x: 10000, y: 10, z: 3000}
   m_FadeFactor: 1
+  version: 1
+  m_DecalLayerMask: 128
 --- !u!4 &1545050294
 Transform:
   m_ObjectHideFlags: 0
@@ -634,9 +645,13 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 4a59f9100681e374ab962e7dcf4d5971, type: 3}
   m_SortingOrder: 0
+  m_Position: 0
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920
   m_WorldSpaceHeight: 1080
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
 --- !u!4 &1820779891
 Transform:
   m_ObjectHideFlags: 0
